@@ -5,6 +5,7 @@
 > 沉淀日期：2026-11-08
 
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-orange)](LICENSE)
+[![tests](https://github.com/AASJS/shunshi-body-calendar/actions/workflows/test.yml/badge.svg)](https://github.com/AASJS/shunshi-body-calendar/actions/workflows/test.yml)
 [![在线试用](https://img.shields.io/badge/在线试用-GitHub_Pages-2ea44f)](https://aasjs.github.io/shunshi-body-calendar/)
 [![访问统计](https://komarev.com/ghpvc/?username=AASJS&label=%E8%AE%BF%E9%97%AE&color=a05a2c&style=flat&short=true)](https://aasjs.github.io/shunshi-body-calendar/)
 [![Stars](https://img.shields.io/github/stars/AASJS/shunshi-body-calendar?style=social)](https://github.com/AASJS/shunshi-body-calendar/stargazers)
@@ -53,6 +54,9 @@
 | `资产沉淀-顺时项目总索引.md` | 六层模型、逐层清单、依赖图、复用 SOP、ima 归档映射 |
 | `资产沉淀-资产看板.html` | 可检索离线看板 |
 | `*-流程图.html` / `*-使用图-9x16.html` | 系统流程图、用户使用流程图与 3 张 9:16 使用图 |
+| `内容依据与隐私说明.html` | 健康内容来源与审校方式、localStorage 记忆明细与一键清除 |
+| `中医身体日历-生成脚本.js` | 能力内核独立模块（Node / 浏览器双端），可编程复用 |
+| `tests/` + `package.json` | 自动化回归测试：生成结果 / 区县解析 / PNG 导出 / 窄屏布局 / 医疗安全边界 |
 | `png/` | 16 张成品图导出备份（9:16 卡、长页、流程图、十套配色一览） |
 
 > **路径说明**：仓库保持工作区原有平铺结构，PNG 单独归 `png/` 目录，两者互不依赖。`shunshi-agent/SETUP.md` 与方案文档里写死了相对路径，移动文件会让引用失效，请勿重组目录。
@@ -78,6 +82,7 @@
 - 不诊断、不开方药 / 药膳 / 穴位、不判吉凶、不承诺疗效。
 - 默认中低强度运动（RPE 9–11 / 谈话测试），红旗症状保守提示「立即停止并就医」。
 - 所有产物均标注：不替代医疗建议。
+- 健康内容的来源与审校方式、本机记忆（localStorage）保存什么与如何清除，详见 **[内容依据与隐私说明.html](%E5%86%85%E5%AE%B9%E4%BE%9D%E6%8D%AE%E4%B8%8E%E9%9A%90%E7%A7%81%E8%AF%B4%E6%98%8E.html)**（[在线版](https://aasjs.github.io/shunshi-body-calendar/%E5%86%85%E5%AE%B9%E4%BE%9D%E6%8D%AE%E4%B8%8E%E9%9A%90%E7%A7%81%E8%AF%B4%E6%98%8E.html)）。
 
 ## 技术约束
 
@@ -93,6 +98,17 @@
 3. 生成后右侧预览长页与 9:16 卡，说「导出卡片」即可下载 PNG；也可用「导出模式」批量出图。
 4. 想从已有长页派生竖图或报告，改用 `中医身体日历-一源多出.html`。
 
+## 自动化测试
+
+关键回归（生成结果 / 区县解析 / PNG 导出 / 窄屏布局 / 医疗安全边界）已固化为可重复测试，每次 push 由 GitHub Actions 自动执行：
+
+```bash
+npm test                 # 核心回归（零依赖）
+npm i && npx playwright install chromium && npm run test:browser   # 浏览器回归
+```
+
+详见 [tests/README.md](tests/README.md)。
+
 ## 许可与使用
 
 - 本库以 **CC BY-NC 4.0**（署名—非商业性使用）许可发布，详见 [LICENSE](LICENSE)；引用请注明出处。
@@ -101,6 +117,7 @@
 
 ## 更新日志
 
+- **v1.2.0（2026-11-08）**：自动化回归测试（核心 + 浏览器 + CI）、内核 JS 模块、「内容依据与隐私说明」页
 - **v1.1.0（2026-11-08）**：GitHub Pages 在线试用站点、CC BY-NC 4.0 许可证、README 效果速览与徽章
 - **v1.0.0（2026-11-08）**：首次发布——智能体 / 一源多出 / 县级联动内核 / 国风日历卡 / Skill 包 / 文档索引 / 16 张成品图
 
