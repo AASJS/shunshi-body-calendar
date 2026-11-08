@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>顺时项目 · 资产沉淀看板</title>
+<style>
+:root{--paper:#f4efe4;--card:#fbf8f1;--ink:#26241f;--sub:#5d574c;--line:#ddd4c2;
+--zhu:#a4372a;--dai:#33566b;--jin:#9a7a3c;--lv:#5b6b4e;--hui:#8b8272;--zi:#6c4a68;
+--cS:var(--zi);--cA:var(--zhu);--cB:var(--dai);--cC:var(--jin);--cD:var(--lv);--cE:var(--ink);--cF:var(--hui)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+font-family:"Songti SC","Noto Serif CJK SC","Source Han Serif SC",Georgia,serif;
+-webkit-font-smoothing:antialiased;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding:38px 26px 90px}
+header{border-bottom:2px solid var(--ink);padding-bottom:22px;margin-bottom:26px}
+.kicker{font-size:14px;letter-spacing:.32em;color:var(--zhu);font-weight:700;margin-bottom:10px}
+h1{font-size:46px;line-height:1.2;margin:0 0 12px;letter-spacing:.04em;font-weight:800}
+.lede{font-size:19px;color:var(--sub);max-width:860px;margin:0}
+.meta{margin-top:16px;font-size:15px;color:var(--sub)}
+.meta b{color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:26px 0 30px}
+.stat{background:var(--card);border:1px solid var(--line);padding:16px 14px;text-align:center}
+.stat .n{font-size:34px;font-weight:800;line-height:1;color:var(--zhu)}
+.stat .l{font-size:13px;color:var(--sub);margin-top:8px}
+.notice{background:#f6ece0;border-left:5px solid var(--zhu);padding:16px 20px;font-size:17px;margin-bottom:30px}
+.notice b{color:var(--zhu)}
+h2{font-size:27px;margin:38px 0 14px;padding-bottom:9px;border-bottom:1px solid var(--line);letter-spacing:.03em}
+h2 .en{font-size:13px;color:var(--hui);letter-spacing:.2em;font-weight:400;margin-left:10px}
+table{width:100%;border-collapse:collapse;font-size:16px;background:var(--card)}
+th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#eee7d8;font-size:14px;letter-spacing:.06em;color:var(--sub);font-weight:700}
+td:first-child{white-space:nowrap;font-weight:700}
+.layers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0 8px}
+.lay{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--cc);padding:15px 16px}
+.lay .t{font-size:19px;font-weight:800;color:var(--cc)}
+.lay .d{font-size:14px;color:var(--sub);margin:6px 0 12px}
+.lay .bar{height:9px;background:#e9e1d1;position:relative}
+.lay .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--cc)}
+.lay .num{font-size:14px;margin-top:9px;color:var(--sub)}
+.lay .num b{font-size:20px;color:var(--ink)}
+.toolbar{position:sticky;top:0;z-index:9;background:var(--paper);padding:14px 0 12px;
+border-bottom:1px solid var(--line);margin-bottom:6px}
+.searchrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+input[type=search]{flex:1;min-width:260px;font-size:18px;padding:11px 15px;border:1px solid var(--line);
+background:var(--card);color:var(--ink);font-family:inherit;outline:none}
+input[type=search]:focus{border-color:var(--zhu)}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.chip{font-size:14px;padding:6px 13px;border:1px solid var(--line);background:var(--card);
+color:var(--sub);cursor:pointer;font-family:inherit;transition:.15s}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chip .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cc);margin-right:6px}
+.chip.on .dot{background:var(--paper)}
+.count{font-size:15px;color:var(--sub);margin:12px 0 10px}
+.count b{color:var(--zhu);font-size:20px}
+#list{display:grid;gap:9px}
+.item{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--cc);
+padding:14px 17px;display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:start}
+.item .path{font-size:18px;font-weight:700;word-break:break-all;line-height:1.4}
+.item .tags{font-size:12px;color:var(--sub);margin-top:6px;display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.tag{padding:2px 8px;border:1px solid var(--line);white-space:nowrap}
+.tag.L{color:#fff;background:var(--cc);border-color:var(--cc);font-weight:700}
+.item .note{grid-column:1/-1;font-size:15px;color:var(--sub);margin-top:5px}
+.item .side{text-align:right;white-space:nowrap}
+.item .kb{font-size:15px;color:var(--sub)}
+.item .dim{font-size:13px;color:var(--jin);font-weight:700;display:block;margin-top:3px}
+.copy{font-size:12px;padding:5px 10px;border:1px solid var(--line);background:transparent;
+color:var(--sub);cursor:pointer;font-family:inherit;margin-top:8px}
+.copy:hover{border-color:var(--zhu);color:var(--zhu)}
+.empty{text-align:center;padding:50px;color:var(--sub);font-size:18px}
+pre{background:var(--card);border:1px solid var(--line);padding:18px;font-size:14px;
+overflow-x:auto;line-height:1.7;color:var(--sub);font-family:inherit;white-space:pre-wrap}
+.foot{margin-top:44px;padding-top:18px;border-top:2px solid var(--ink);font-size:14px;color:var(--sub)}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);
+background:var(--ink);color:var(--paper);padding:12px 24px;font-size:16px;opacity:0;
+pointer-events:none;transition:.25s;z-index:99}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:820px){.stats{grid-template-columns:repeat(3,1fr)}.layers{grid-template-columns:1fr 1fr}
+h1{font-size:34px}.wrap{padding:24px 16px 70px}}
+@media(max-width:520px){.layers,.stats{grid-template-columns:1fr 1fr}table{font-size:14px}th,td{padding:8px}}
+</style></head><body><div class="wrap">
+<header>
+<div class="kicker">资 产 沉 淀 · ASSET INDEX</div>
+<h1>顺时项目 · 资产看板</h1>
+<p class="lede">把「学《黄帝内经》身体日历 → 公众号内容 Skill → 排版助手定位 → 县级联动 → 10 套国风模板 → 顺时对答智能体」这条线上散落的文件，整理成可检索、可复用、可迁移、可入库的资产台账。</p>
+<div class="meta">沉淀日期 <b>2026-11-08</b> ｜ 范围 <b>/workspace</b> ｜ 配套文档 <b>资产沉淀-顺时项目总索引.md</b> ｜ 单文件离线 · 零外部依赖 · 零配图</div>
+</header>
+
+<div class="stats">
+<div class="stat"><div class="n">78</div><div class="l">资产总数</div></div>
+<div class="stat"><div class="n">60</div><div class="l">业务文件（沉淀对象）</div></div>
+<div class="stat"><div class="n">12.5M</div><div class="l">总体积</div></div>
+<div class="stat"><div class="n">13</div><div class="l">PNG 成品</div></div>
+<div class="stat"><div class="n">3</div><div class="l">Skill 包</div></div>
+<div class="stat"><div class="n">4</div><div class="l">可运行成品</div></div>
+</div>
+
+<div class="notice"><b>口径：</b>清单共 <b>78</b> 条 = 沉淀对象 <b>76</b> 个（业务文件 60 + 只读参考 16）+ 本轮新增索引 <b>2</b> 件；统计卡「业务文件」按沉淀对象计 60。<br><b>沉淀原则：只建索引，不搬文件。</b> <code>shunshi-agent/SETUP.md</code>、<code>顺时对答智能体-方案.md</code>、<code>paiban-today-info/README.md</code> 里写死了相对路径，物理移动会让引用集体失效。要归档请走总索引第 4 节「最小可迁移集」打包。</div>
+
+<h2>一页速查<span class="en">QUICK LOOKUP</span></h2>
+<table><tr><th>我现在想…</th><th>用这个</th><th>备注</th></tr>
+<tr><td>直接出两份成品</td><td>顺时对答智能体.html</td><td>双击即可，零依赖；建议本地起 http 服务</td></tr>
+<tr><td>注册成可调用智能体</td><td>shunshi-agent/</td><td>整包放到 ~/.codebuddy/skills/</td></tr>
+<tr><td>只要 System Prompt</td><td>顺时对答智能体-方案.md 第九节</td><td>L0 档，贴进任意对话模型</td></tr>
+<tr><td>改三段式问法</td><td>shunshi-agent/assets/ 两个 md + 工作站</td><td><b>L1 / L2 必须同步改</b></td></tr>
+<tr><td>改养生规则 / 加区县</td><td>身体日历-县级联动.html</td><td>内核，改完需重新抽取进工作站</td></tr>
+<tr><td>改行政区划数据</td><td>today-info.snippet.js</td><td>31 省 / 341 市 / 2995 县级</td></tr>
+<tr><td>换皮肤 / 调字号</td><td>国风养生日历卡-西乡县.html + 设计说明.md</td><td>10 套皮肤字典源</td></tr>
+<tr><td>导 PNG</td><td>工作站导出模式 / ?export=long / ?export=1</td><td>2x 默认，可切 1x</td></tr>
+<tr><td>写公众号长文</td><td>jingxin-gzh-content-skill/</td><td>六段反共识骨架</td></tr>
+<tr><td>发教程做传播</td><td>顺时对答智能体-用户使用图-9x16-{1,2,3}.png</td><td>1080×1920，可直接发</td></tr>
+<tr><td>查安全边界</td><td>shunshi-agent/references/safety-boundary.md</td><td>最高优先级，先于一切生成</td></tr>
+</table>
+
+<h2>六层资产模型<span class="en">SIX LAYERS</span></h2>
+<div class="layers" id="layers"></div>
+
+<h2>资产清单<span class="en">SEARCHABLE INVENTORY</span></h2>
+<div class="toolbar">
+ <div class="searchrow"><input type="search" id="q" placeholder="搜文件名、路径或说明，例如：皮肤 / 导出 / PNG / SETUP / 安全"></div>
+ <div class="chips" id="chipsL"></div>
+ <div class="chips" id="chipsT"></div>
+</div>
+<div class="count">共 <b id="cnt">0</b> 条资产</div>
+<div id="list"></div>
+
+<h2>依赖关系<span class="en">WHO DEPENDS ON WHOM</span></h2>
+<pre>【只读参考】huangdi-neijing-body-calendar/references/safety-boundary.md
+        │ 直接引用
+        ▼
+【E 方案】顺时对答智能体-方案.md ──路径引用──▶ B 层各文件
+        │ 落地为
+        ├──▶【A / L1】shunshi-agent/  ──SETUP.md 引用──▶ B 层 + E 层 + F 层
+        │
+        └──▶【A / L2】顺时对答智能体.html
+                 ▲ 抽取自（已内嵌，运行时不依赖外部文件）
+        ┌────────┴────────┐
+   B:身体日历-县级联动.html   B:国风养生日历卡-西乡县.html
+   （CAP_A / CAP_B）          （SKINS + 卡片 CSS）
+        ▲                          ▲
+   B:today-info.snippet.js    B:国风养生日历卡.html（10 套初版）
+   （JX_AREA 离线区划）
+
+【A】paiban-today-info/ ──同源副本──▶ 根目录 today-info.html / .snippet.js
+【A】jingxin-gzh-content-skill/ ──独立支线，与其他层无代码依赖
+B + A(L2) ──生成──▶ C 成品实例 ──拆解/绘图──▶ D 图示物料
+
+三条关键结论：
+① 只有 顺时对答智能体.html 是运行时自包含的，单文件拷走即可运行。
+② shunshi-agent/ 的 SETUP.md 是路径中枢，写死了 B/E/F 层相对路径。
+③ L1 与 L2 共用同一套协议（意图/槽位/cal/安全闸门/交付契约），改规则必须两边同步。</pre>
+
+<h2>知识库归档映射<span class="en">IMA MAPPING</span></h2>
+<table><tr><th>板块</th><th>建议归档</th><th>命名建议</th><th>优先级</th></tr>
+<tr><td>系统存档</td><td>资产沉淀总索引.md、shunshi-agent/SETUP.md、方案第 14 节增补记录</td><td>索引与记忆里加「顺时项目」分支</td><td>✅ 高</td></tr>
+<tr><td>Reference</td><td>学习笔记 / 国风模板设计说明 / 县级联动说明 / safety-boundary / source-policy</td><td>Ref-顺时-安全边界 等</td><td>✅ 高</td></tr>
+<tr><td>成品库</td><td>顺时对答智能体.html、Skill 包说明、身体日历 .md、9:16 卡定版 PNG</td><td>成品-顺时工作站-v1</td><td>✅ 高</td></tr>
+<tr><td>Stock</td><td>四类素材：金句 / 模型 / 案例 / 数据（见总索引第 5 节场景 E）</td><td>Stock-顺时-模型 等 4 条</td><td>📋 中</td></tr>
+<tr><td>Flow</td><td>踩坑与迭代：定位链路、去配图三轮、三段式规范化、双 PNG 导出</td><td>Flow-顺时-迭代记录-1108</td><td>📋 中</td></tr>
+<tr><td>公众号创作变现</td><td>3 张 9:16 使用图、用户使用流程图、内容 Skill 示例文</td><td>素材-顺时-使用图3张</td><td>📋 中</td></tr>
+</table>
+
+<div class="foot">本看板由脚本扫描 /workspace 真实文件生成，数据截至 2026-11-08。标记：✅ 基线（长期保留）· 📋 样例（留档参考）· 🔒 只读（外部来源）。配套：资产沉淀-顺时项目总索引.md</div>
+</div>
+<div class="toast" id="toast">已复制路径</div>
+<script>
+var DATA=[{"p": "资产沉淀-资产看板.html", "L": "S", "t": "html", "kb": 28.0, "dim": "", "n": "★ 本轮沉淀产出：本看板，可检索、零依赖、离线可用"}, {"p": "资产沉淀-顺时项目总索引.md", "L": "S", "t": "md", "kb": 20.2, "dim": "", "n": "★ 本轮沉淀产出：76 文件六层台账 / 速查 / 依赖图 / 复用 SOP / ima 归档映射 / 索引笔记"}, {"p": "jingxin-gzh-content-skill/SETUP.md", "L": "A", "t": "md", "kb": 2.4, "dim": "", "n": "安装与素材偏好接入说明"}, {"p": "jingxin-gzh-content-skill/SKILL.md", "L": "A", "t": "md", "kb": 5.6, "dim": "", "n": "公众号内容 Skill 主文件 · 六段反共识骨架"}, {"p": "jingxin-gzh-content-skill/agents/openai.yaml", "L": "A", "t": "yaml", "kb": 0.9, "dim": "", "n": "智能体配置"}, {"p": "jingxin-gzh-content-skill/assets/article-template.md", "L": "A", "t": "md", "kb": 1.9, "dim": "", "n": "文章模板"}, {"p": "jingxin-gzh-content-skill/assets/feedback-template.md", "L": "A", "t": "md", "kb": 0.9, "dim": "", "n": "反馈模板"}, {"p": "jingxin-gzh-content-skill/assets/user-profile.md", "L": "A", "t": "md", "kb": 1.1, "dim": "", "n": "素材偏好 / 用户画像（可接 ima 成品库）"}, {"p": "jingxin-gzh-content-skill/eval/forbidden-cases.md", "L": "A", "t": "md", "kb": 1.4, "dim": "", "n": "禁答用例"}, {"p": "jingxin-gzh-content-skill/eval/negative-cases.md", "L": "A", "t": "md", "kb": 1.1, "dim": "", "n": "负向用例"}, {"p": "jingxin-gzh-content-skill/eval/positive-cases.md", "L": "A", "t": "md", "kb": 1.4, "dim": "", "n": "正向用例"}, {"p": "jingxin-gzh-content-skill/references/source-policy.md", "L": "A", "t": "md", "kb": 2.4, "dim": "", "n": "来源策略"}, {"p": "jingxin-gzh-content-skill/references/style-boundary.md", "L": "A", "t": "md", "kb": 2.2, "dim": "", "n": "风格边界"}, {"p": "jingxin-gzh-content-skill/示例-为什么越努力越焦虑.md", "L": "A", "t": "md", "kb": 2.4, "dim": "", "n": "示例成文 · 反共识长文样板"}, {"p": "paiban-today-info/README.md", "L": "A", "t": "md", "kb": 4.4, "dim": "", "n": "三步集成 / 接口 / 定位链路（为什么改离线区划）"}, {"p": "paiban-today-info/today-info.html", "L": "A", "t": "html", "kb": 76.7, "dim": "", "n": "今日信息条模块页面（产品化封装版）"}, {"p": "paiban-today-info/today-info.snippet.js", "L": "A", "t": "js", "kb": 66.9, "dim": "", "n": "离线区划 / 历法代码片段（产品化封装版）"}, {"p": "shunshi-agent/SETUP.md", "L": "A", "t": "md", "kb": 5.3, "dim": "", "n": "安装与运行 · 知识源路径中枢（写死相对路径，移动文件会断链）· 记忆键 / 导出参数 / 验证命令"}, {"p": "shunshi-agent/SKILL.md", "L": "A", "t": "md", "kb": 11.6, "dim": "", "n": "L1 Skill 主文件：角色边界 / 状态机 / 槽位 / 工作流 / Gotchas G1–G8"}, {"p": "shunshi-agent/agents/openai.yaml", "L": "A", "t": "yaml", "kb": 2.1, "dim": "", "n": "display_name / default_prompt / policy"}, {"p": "shunshi-agent/assets/card-fields.md", "L": "A", "t": "md", "kb": 2.7, "dim": "", "n": "卡面 12 字段与长度上限"}, {"p": "shunshi-agent/assets/dialog-templates.md", "L": "A", "t": "md", "kb": 5.5, "dim": "", "n": "四套对话模板：首次追问 / 补区县卡 / 确认 / 拒答"}, {"p": "shunshi-agent/assets/long-template.md", "L": "A", "t": "md", "kb": 2.8, "dim": "", "n": "长页 10 字段模板"}, {"p": "shunshi-agent/assets/slot-schema.md", "L": "A", "t": "md", "kb": 4.0, "dim": "", "n": "槽位表 · 第②步三段式：年龄 + 身体状况 + 省市县"}, {"p": "shunshi-agent/eval/forbidden-cases.md", "L": "A", "t": "md", "kb": 2.8, "dim": "", "n": "禁答用例：诊断 / 方药 / 吉凶 / 红旗"}, {"p": "shunshi-agent/eval/negative-cases.md", "L": "A", "t": "md", "kb": 2.5, "dim": "", "n": "负向用例"}, {"p": "shunshi-agent/eval/positive-cases.md", "L": "A", "t": "md", "kb": 3.2, "dim": "", "n": "正向用例（含 P11 市级 / P12 完整县级）"}, {"p": "shunshi-agent/references/capability-map.md", "L": "A", "t": "md", "kb": 5.0, "dim": "", "n": "能力映射：文件 → 可调用工具（含双 PNG 导出）"}, {"p": "shunshi-agent/references/safety-boundary.md", "L": "A", "t": "md", "kb": 3.0, "dim": "", "n": "安全边界（最高优先级，先于一切生成）"}, {"p": "shunshi-agent/references/skin-weather-map.md", "L": "A", "t": "md", "kb": 3.0, "dim": "", "n": "10 套皮肤与天气自动匹配表"}, {"p": "shunshi-agent/references/source-policy.md", "L": "A", "t": "md", "kb": 4.7, "dim": "", "n": "来源策略：四层依据，不编引用 / 不编天气"}, {"p": "顺时对答智能体.html", "L": "A", "t": "html", "kb": 168.8, "dim": "", "n": "L2 单文件离线工作站 · 自包含，最抗迁移 · 左对答右双产物 · 导出双份 PNG"}, {"p": "today-info.html", "L": "B", "t": "html", "kb": 76.7, "dim": "", "n": "今日信息条页面 · 根目录工作副本"}, {"p": "today-info.snippet.js", "L": "B", "t": "js", "kb": 66.9, "dim": "", "n": "离线农历/太阳黄经/行政区划代码片段 · 被 SETUP.md 引用"}, {"p": "国风养生日历卡-西乡县.html", "L": "B", "t": "html", "kb": 29.6, "dim": "", "n": "定版 9:16 卡 · 零配图、字号放大、卡面只留依据 · 10 套 SKINS 与卡片 CSS 的抽取源"}, {"p": "国风养生日历卡.html", "L": "B", "t": "html", "kb": 25.1, "dim": "", "n": "10 套国风天气模板初版页"}, {"p": "身体日历-2026-11-08-立冬.html", "L": "B", "t": "html", "kb": 7.5, "dim": "", "n": "第③步首版身体日历（HTML）"}, {"p": "身体日历-2026-11-08-立冬.md", "L": "B", "t": "md", "kb": 4.2, "dim": "", "n": "第③步首版身体日历（Markdown）"}, {"p": "身体日历-县级联动.html", "L": "B", "t": "html", "kb": 101.8, "dim": "", "n": "规则引擎宿主：buildCalendar 三层叠加 + JXArea 离线区划（2995 县级）· 工作站的抽取源"}, {"p": "中医身体日历-2026-11-08-立冬-陕西汉中西乡县.html", "L": "C", "t": "html", "kb": 23.0, "dim": "", "n": "完整长页成品（HTML）"}, {"p": "中医身体日历-2026-11-08-立冬-陕西汉中西乡县.md", "L": "C", "t": "md", "kb": 13.0, "dim": "", "n": "完整长页成品（Markdown）· 48岁 西乡县实例"}, {"p": "中医身体日历-2026-11-08-立冬-陕西汉中西乡县.png", "L": "C", "t": "png", "kb": 2681.3, "dim": "2160×9076", "n": "完整长页成品（PNG 长图）"}, {"p": "中医身体日历-长页-2026-11-08.png", "L": "C", "t": "png", "kb": 1648.1, "dim": "2160×6940", "n": "工作站导出模式产出的长页 PNG"}, {"p": "养生日历卡-9x16-宣纸宿雨.png", "L": "C", "t": "png", "kb": 387.0, "dim": "1080×1920", "n": "第 1 套皮肤「宣纸宿雨」成品卡"}, {"p": "养生日历卡-9x16-赭石朔风-西乡县.png", "L": "C", "t": "png", "kb": 388.7, "dim": "1080×1920", "n": "第 3 套皮肤「赭石朔风」· 西乡县成品卡"}, {"p": "国风养生日历卡-9x16-2026-11-08.png", "L": "C", "t": "png", "kb": 1011.2, "dim": "2160×3840", "n": "工作站导出的 9:16 卡 PNG（2x 高清）"}, {"p": "顺时智能体-生成示例-9x16.png", "L": "C", "t": "png", "kb": 351.6, "dim": "1080×1920", "n": "工作站真实跑出的示例卡"}, {"p": "养生日历卡-使用流程图.html", "L": "D", "t": "html", "kb": 13.1, "dim": "", "n": "养生日历卡单品使用流程图"}, {"p": "养生日历卡-使用流程图.png", "L": "D", "t": "png", "kb": 931.9, "dim": "2240×4084", "n": "养生日历卡使用流程图长图"}, {"p": "国风天气模板-十套一览.png", "L": "D", "t": "png", "kb": 328.0, "dim": "1500×702", "n": "10 套皮肤横向对照图"}, {"p": "顺时对答智能体-流程图.html", "L": "D", "t": "html", "kb": 17.5, "dim": "", "n": "系统视角流程图（可离线改字/打印）"}, {"p": "顺时对答智能体-流程图.png", "L": "D", "t": "png", "kb": 1334.4, "dim": "2240×5472", "n": "系统视角流程图长图"}, {"p": "顺时对答智能体-用户使用图-9x16-1.png", "L": "D", "t": "png", "kb": 454.4, "dim": "1080×1920", "n": "9:16 用户使用图 ① 开口 + 对答"}, {"p": "顺时对答智能体-用户使用图-9x16-2.png", "L": "D", "t": "png", "kb": 423.2, "dim": "1080×1920", "n": "9:16 用户使用图 ② 确认 + 收成品"}, {"p": "顺时对答智能体-用户使用图-9x16-3.png", "L": "D", "t": "png", "kb": 418.2, "dim": "1080×1920", "n": "9:16 用户使用图 ③ 修订 + 用起来"}, {"p": "顺时对答智能体-用户使用图-9x16.html", "L": "D", "t": "html", "kb": 19.9, "dim": "", "n": "长图拆 3 张竖卡 · ?c=1/2/3 单张查看 · STEP 02 已改「三件事」"}, {"p": "顺时对答智能体-用户使用流程图.html", "L": "D", "t": "html", "kb": 20.0, "dim": "", "n": "用户视角 6 步旅程 · 朱砂「你说」/黛蓝「它答」话术气泡"}, {"p": "顺时对答智能体-用户使用流程图.png", "L": "D", "t": "png", "kb": 1441.0, "dim": "2240×6098", "n": "用户使用流程图长图"}, {"p": "国风天气模板-设计说明.md", "L": "E", "t": "md", "kb": 12.6, "dim": "", "n": "仓库核查 + 三轮迭代（去配图→放大→只留依据）+ 10 套模板 + 字号定标 + 验证结果"}, {"p": "学习笔记-黄帝内经身体日历.md", "L": "E", "t": "md", "kb": 9.8, "dim": "", "n": "上游仓库学习笔记：SKILL 骨架 / 安全边界 / 来源策略 / 修炼体系 / 可迁移点"}, {"p": "身体日历-县级联动-说明.md", "L": "E", "t": "md", "kb": 5.4, "dim": "", "n": "三层叠加规则 / 定位链路重构 / 安全护栏 / 接回排版助手 / 已知限制"}, {"p": "顺时对答智能体-方案.md", "L": "E", "t": "md", "kb": 33.0, "dim": "", "n": "14 节完整方案 · 第九节可直接复制的 System Prompt · 14.1–14.6 落地与增补记录"}, {"p": "huangdi-neijing-body-calendar/.gitignore", "L": "F", "t": "gitignore", "kb": 0.0, "dim": "", "n": "只读上游参考文件"}, {"p": "huangdi-neijing-body-calendar/LICENSE", "L": "F", "t": "other", "kb": 1.0, "dim": "", "n": "许可证"}, {"p": "huangdi-neijing-body-calendar/OPTIMIZATION-PLAN.md", "L": "F", "t": "md", "kb": 4.0, "dim": "", "n": "上游优化计划"}, {"p": "huangdi-neijing-body-calendar/README.md", "L": "F", "t": "md", "kb": 8.4, "dim": "", "n": "上游项目说明：用法 / 三种使用方式 / 修炼体系 / 证据体系"}, {"p": "huangdi-neijing-body-calendar/SKILL_CARD.md", "L": "F", "t": "md", "kb": 3.0, "dim": "", "n": "上游 Skill 卡片"}, {"p": "huangdi-neijing-body-calendar/skills/huangdi-neijing-body-calendar/SETUP.md", "L": "F", "t": "md", "kb": 3.7, "dim": "", "n": "上游安装说明"}, {"p": "huangdi-neijing-body-calendar/skills/huangdi-neijing-body-calendar/SKILL.md", "L": "F", "t": "md", "kb": 4.4, "dim": "", "n": "上游 Skill 主文件（工作流 / 生成逻辑）"}, {"p": "huangdi-neijing-body-calendar/skills/huangdi-neijing-body-calendar/agents/openai.yaml", "L": "F", "t": "yaml", "kb": 1.0, "dim": "", "n": "上游智能体配置"}, {"p": "huangdi-neijing-body-calendar/skills/huangdi-neijing-body-calendar/assets/daily-calendar-template.md", "L": "F", "t": "md", "kb": 2.5, "dim": "", "n": "上游每日模板（IMA 每日模板的原型）"}, {"p": "huangdi-neijing-body-calendar/skills/huangdi-neijing-body-calendar/assets/feedback-template.md", "L": "F", "t": "md", "kb": 0.8, "dim": "", "n": "上游反馈模板"}, {"p": "huangdi-neijing-body-calendar/skills/huangdi-neijing-body-calendar/assets/user-profile.md", "L": "F", "t": "md", "kb": 0.8, "dim": "", "n": "上游用户画像模板"}, {"p": "huangdi-neijing-body-calendar/skills/huangdi-neijing-body-calendar/eval/forbidden-cases.md", "L": "F", "t": "md", "kb": 1.7, "dim": "", "n": "上游禁答用例"}, {"p": "huangdi-neijing-body-calendar/skills/huangdi-neijing-body-calendar/eval/negative-cases.md", "L": "F", "t": "md", "kb": 1.0, "dim": "", "n": "上游负向用例"}, {"p": "huangdi-neijing-body-calendar/skills/huangdi-neijing-body-calendar/eval/positive-cases.md", "L": "F", "t": "md", "kb": 1.2, "dim": "", "n": "上游正向用例"}, {"p": "huangdi-neijing-body-calendar/skills/huangdi-neijing-body-calendar/references/safety-boundary.md", "L": "F", "t": "md", "kb": 3.0, "dim": "", "n": "★ 上游安全边界（L1 SETUP.md 直接引用此路径）"}, {"p": "huangdi-neijing-body-calendar/skills/huangdi-neijing-body-calendar/references/source-policy.md", "L": "F", "t": "md", "kb": 4.7, "dim": "", "n": "上游来源策略"}];
+var LAYER={"S": ["沉淀索引", "本轮产出，先读这个"], "A": ["核心可运行", "带走就能用，长期基线"], "B": ["能力内核", "抽取源，改动需同步 A"], "C": ["成品实例", "2026-11-08 西乡县真实产物"], "D": ["图示物料", "流程图 / 使用图 / 模板一览"], "E": ["方案文档", "设计决策与踩坑记录"], "F": ["外部参考", "上游 GitHub 仓库，只读不改"]};
+var COUNTS={"S": 2, "A": 30, "B": 7, "C": 8, "D": 11, "E": 4, "F": 16};
+var TOTAL=78;
+var fL='ALL',fT='ALL',q='';
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+// 六层卡片
+var lbox=document.getElementById('layers');
+['S','A','B','C','D','E','F'].forEach(function(L){
+  var d=document.createElement('div');d.className='lay';d.style.setProperty('--cc','var(--c'+L+')');
+  var info=LAYER[L],n=COUNTS[L]||0;
+  d.innerHTML='<div class="t">'+L+' · '+esc(info[0])+'</div><div class="d">'+esc(info[1])+'</div>'+
+    '<div class="bar"><i style="width:'+Math.max(3,Math.round(n/32*100))+'%"></i></div>'+
+    '<div class="num"><b>'+n+'</b> 个文件</div>';
+  lbox.appendChild(d);
+});
+// 筛选按钮
+var cl=document.getElementById('chipsL'),ct=document.getElementById('chipsT');
+function mkChips(box,arr,get,set,cur){
+  box.innerHTML='';
+  arr.forEach(function(o){
+    var b=document.createElement('button');b.className='chip'+(cur()===o.v?' on':'');
+    if(o.L)b.style.setProperty('--cc','var(--c'+o.L+')');
+    b.innerHTML=(o.L?'<span class="dot"></span>':'')+esc(o.label);
+    b.onclick=function(){set(o.v);render();};
+    box.appendChild(b);
+  });
+}
+var Larr=[{v:'ALL',label:'全部层级'}].concat(['S','A','B','C','D','E','F'].map(function(L){return {v:L,L:L,label:L+' '+LAYER[L][0]}}));
+var Tarr=[{v:'ALL',label:'全部类型'}].concat(['md','html','png','js','yaml','other'].map(function(t){return {v:t,label:t.toUpperCase()}}));
+function drawChips(){
+  mkChips(cl,Larr,null,function(v){fL=v},function(){return fL});
+  mkChips(ct,Tarr,null,function(v){fT=v},function(){return fT});
+}
+var list=document.getElementById('list'),cnt=document.getElementById('cnt');
+function render(){
+  drawChips();
+  var kw=q.trim().toLowerCase();
+  var hit=DATA.filter(function(r){
+    if(fL!=='ALL'&&r.L!==fL)return false;
+    if(fT!=='ALL'&&r.t!==fT)return false;
+    if(!kw)return true;
+    return (r.p+' '+r.n+' '+r.t+' '+r.dim).toLowerCase().indexOf(kw)>=0;
+  });
+  cnt.textContent=hit.length;
+  if(!hit.length){list.innerHTML='<div class="empty">没有匹配的资产，换个关键词或点「全部」</div>';return}
+  list.innerHTML=hit.map(function(r){
+    var tags='<span class="tag L">'+r.L+' '+esc(LAYER[r.L][0])+'</span>'+
+      '<span class="tag">'+esc(r.t.toUpperCase())+'</span>'+
+      (r.dim?'<span class="tag">'+esc(r.dim)+'</span>':'');
+    return '<div class="item" style="--cc:var(--c'+r.L+')">'+
+      '<div><div class="path">'+esc(r.p)+'</div><div class="tags">'+tags+'</div>'+
+      (r.n?'<div class="note">'+esc(r.n)+'</div>':'')+'</div>'+
+      '<div class="side"><div class="kb">'+(r.kb?r.kb+' KB':'')+'</div>'+
+      (r.dim?'<span class="dim">'+esc(r.dim)+'</span>':'')+
+      '<button class="copy" data-p="'+esc(r.p)+'">复制路径</button></div></div>';
+  }).join('');
+  Array.prototype.forEach.call(list.querySelectorAll('.copy'),function(b){
+    b.onclick=function(){copyText(b.getAttribute('data-p'))};
+  });
+}
+function copyText(t){
+  var done=function(){var el=document.getElementById('toast');el.classList.add('show');setTimeout(function(){el.classList.remove('show')},1400)};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fallback)}else fallback();
+  function fallback(){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();
+    try{document.execCommand('copy')}catch(e){}document.body.removeChild(a);done()}
+}
+document.getElementById('q').addEventListener('input',function(e){q=e.target.value;render()});
+render();
+</script></body></html>

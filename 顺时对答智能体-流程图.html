@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>顺时 · 对答智能体流程图</title>
+<style>
+/* ===== 宣纸宿雨配色（与第 1 套皮肤一致） ===== */
+:root{
+  --paper:#EFECE3; --card:#F8F6F0; --card2:#F2EFE6;
+  --ink:#2F4154; --ink2:#5A6675; --blue:#6E88A6;
+  --cinnabar:#9C4A3C; --line:#D6D0C0; --line2:#E4DFD2;
+  --gold:#A98543;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:"Noto Sans CJK SC","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  background-image:repeating-linear-gradient(90deg,rgba(120,110,90,.035) 0 1px,transparent 1px 4px),
+                   repeating-linear-gradient(0deg,rgba(120,110,90,.018) 0 1px,transparent 1px 7px);
+  padding:38px 0 30px;
+}
+.serif{font-family:"Noto Serif CJK SC","Noto Serif SC","Songti SC",serif}
+.flow{width:1120px;margin:0 auto;position:relative;padding-bottom:22px}
+.nw{white-space:nowrap}
+
+/* ===== 页眉 ===== */
+.head{position:relative;padding:0 46px 26px;border-bottom:2px solid var(--ink);}
+.head .kicker{font-size:13px;letter-spacing:6px;color:var(--cinnabar);margin-bottom:14px}
+.head h1{font-size:44px;font-weight:700;letter-spacing:3px;line-height:1.2}
+.head h1 .dot{color:var(--cinnabar);font-size:32px;vertical-align:6px;margin:0 6px}
+.head .sub{margin-top:14px;font-size:15.5px;color:var(--ink2);letter-spacing:.6px}
+.head .stamp{
+  position:absolute;right:50px;top:4px;width:88px;height:88px;
+  border:3px solid var(--cinnabar);border-radius:6px;color:var(--cinnabar);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-size:24px;line-height:1.15;letter-spacing:2px;font-weight:700;
+  transform:rotate(-6deg);opacity:.9;
+  box-shadow:inset 0 0 0 2px rgba(156,74,60,.25);
+}
+
+/* ===== 顶部主干条 ===== */
+.rail{display:flex;align-items:center;gap:0;margin:26px 46px 30px}
+.rail .step{
+  flex:1;text-align:center;padding:11px 3px;background:var(--card2);
+  border:1px solid var(--line);border-radius:4px;font-size:14px;font-weight:600;letter-spacing:.5px;
+  white-space:nowrap;
+}
+.rail .step b{display:block;font-size:10.5px;color:var(--cinnabar);font-weight:500;letter-spacing:1.6px;margin-bottom:3px}
+.rail .arw{width:26px;text-align:center;color:var(--blue);font-size:18px;flex:none}
+
+/* ===== 节点 ===== */
+.nodes{padding:0 46px}
+.node{
+  position:relative;background:var(--card);border:1px solid var(--line);
+  border-radius:6px;padding:20px 26px 20px 88px;
+  box-shadow:0 2px 0 rgba(47,65,84,.04);
+}
+.node.alt{background:var(--card2);border-style:dashed}
+.node.dec{background:#F6F2E8;border:1px dashed var(--gold)}
+.node.core{background:#F1F4F3;border:1px solid var(--blue)}
+.num{
+  position:absolute;left:24px;top:20px;width:46px;height:46px;border-radius:50%;
+  background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:700;
+}
+.node.dec .num{background:var(--gold)}
+.node.alt .num{background:var(--blue)}
+.node.core .num{background:var(--blue);font-size:18px}
+.tag{
+  display:inline-block;font-size:11px;letter-spacing:2.6px;color:var(--cinnabar);
+  border:1px solid var(--cinnabar);border-radius:2px;padding:2px 9px;margin-bottom:8px;vertical-align:4px;
+}
+.node.dec .tag{color:var(--gold);border-color:var(--gold)}
+.node.core .tag{color:#3C5670;border-color:var(--blue)}
+.node h2{font-size:22px;letter-spacing:1px;display:inline-block;margin-left:10px;font-weight:700}
+.node .desc{margin-top:9px;font-size:14.5px;line-height:1.85;color:var(--ink2)}
+.node .desc strong{color:var(--ink);font-weight:600}
+.node .desc code,.node .lead code,.split code,.foot code{
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;
+  background:rgba(110,136,166,.12);color:#3C5670;padding:1px 6px;border-radius:3px;
+  white-space:nowrap;
+}
+
+/* chip 组 */
+.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}
+.chip{
+  font-size:13px;padding:7px 12px;border-radius:3px;border:1px solid var(--line);
+  background:#fff;color:var(--ink);white-space:nowrap;
+}
+.chip.k1{border-color:var(--cinnabar);color:var(--cinnabar);background:rgba(156,74,60,.06)}
+.chip.k2{border-color:var(--blue);color:#3C5670;background:rgba(110,136,166,.09)}
+.chip b{font-weight:700}
+
+/* 支线 / 结果行 */
+.lead{
+  margin-top:13px;padding:9px 14px;border-left:3px solid var(--blue);
+  background:rgba(110,136,166,.07);font-size:13.8px;line-height:1.75;color:var(--ink);
+}
+.lead.warn{border-left-color:var(--cinnabar);background:rgba(156,74,60,.07)}
+.lead .mk{color:var(--cinnabar);font-weight:700;margin-right:6px}
+.lead .mk.b{color:var(--blue)}
+
+/* 双产物并排 */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:13px}
+.split .col{border:1px solid var(--line);border-radius:4px;padding:13px 15px;background:#fff}
+.split .col.b{background:rgba(110,136,166,.07);border-color:var(--blue)}
+.split .col .h{font-size:15px;font-weight:700;letter-spacing:.5px;color:var(--ink)}
+.split .col .h i{font-style:normal;font-size:10.5px;color:var(--cinnabar);letter-spacing:2px;display:block;margin-bottom:3px}
+.split .col ul{list-style:none;margin-top:8px;font-size:13px;line-height:1.8;color:var(--ink2)}
+.split .col li{padding-left:13px;position:relative}
+.split .col li::before{content:"·";position:absolute;left:1px;color:var(--cinnabar);font-weight:700}
+.split .col .out{margin-top:9px;padding-top:8px;border-top:1px dashed var(--line);font-size:12.5px;color:#3C5670;line-height:1.7}
+.split .col .out code{font-size:12px}
+
+/* 箭头连接 */
+.arrow{height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.arrow .ln{width:2px;height:19px;background:var(--line)}
+.arrow .tip{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:10px solid var(--blue)}
+.arrow .lbl{font-size:11px;color:var(--ink2);letter-spacing:2px;margin-top:3px}
+.arrow.soft .tip{border-top-color:var(--line)}
+
+/* 决策菱形徽标 */
+.dia{display:inline-block;width:12px;height:12px;background:var(--gold);transform:rotate(45deg);margin:0 8px 0 2px;vertical-align:1px}
+
+/* 底部 */
+.foot{margin:30px 46px 0;border-top:2px solid var(--ink);padding-top:18px;
+  display:grid;grid-template-columns:1fr 1.25fr .8fr;gap:26px}
+.foot .t{color:var(--ink);font-weight:700;letter-spacing:2px;font-size:12px;display:block;margin-bottom:6px}
+.foot .b{font-size:13px;line-height:1.9;color:var(--ink2)}
+.foot .b3{text-align:right}
+.foot .seal{
+  display:block;width:max-content;margin:14px 0 0 auto;border:2px solid var(--cinnabar);color:var(--cinnabar);
+  padding:5px 12px;font-size:14px;letter-spacing:4px;transform:rotate(-4deg);opacity:.85;
+}
+
+@media print{
+  body{padding:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .flow{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="flow" id="flow">
+
+  <!-- 页眉 -->
+  <div class="head">
+    <div class="kicker">静心 · 内容工具链 / AGENT FLOW</div>
+    <h1 class="serif">顺时<span class="dot">·</span>对答智能体流程图</h1>
+    <div class="sub">一次对答，两份成品 ｜ 中医身体日历长页 + 国风 9:16 养生日历卡 ｜ 单一数据源 <code>cal</code></div>
+    <div class="stamp serif">顺时<br>而养</div>
+  </div>
+
+  <!-- 主干条 -->
+  <div class="rail">
+    <div class="step"><b>01 · ROUTE</b>意图路由</div><div class="arw">→</div>
+    <div class="step"><b>02 · COLLECT</b>槽位对答</div><div class="arw">→</div>
+    <div class="step"><b>03 · GATE</b>安全闸门</div><div class="arw">→</div>
+    <div class="step"><b>04 · ASSEMBLE</b>数据装配</div><div class="arw">→</div>
+    <div class="step"><b>05 · GENERATE</b>双产物生成</div><div class="arw">→</div>
+    <div class="step"><b>06 · DELIVER</b>交付与告知</div>
+  </div>
+
+  <div class="nodes">
+
+    <!-- STEP 01 -->
+    <div class="node">
+      <div class="num">1</div>
+      <span class="tag">STEP 01 · 入口</span><h2 class="serif">听懂用户这一句</h2>
+      <div class="desc">
+        用户用大白话说需求 → 智能体先判<strong>意图</strong>，再决定要不要问、问什么。命中 <code>boundary</code> 直接转安全闸门，不进入生成。
+      </div>
+      <div class="chips">
+        <span class="chip k1"><b>both</b>　长页 + 卡（默认）</span>
+        <span class="chip"><b>calendar.only</b>　只要长页</span>
+        <span class="chip"><b>card.only</b>　只要 9:16 卡</span>
+        <span class="chip k2"><b>revise</b>　换城市 / 换皮肤 / 降强度</span>
+        <span class="chip k2"><b>explain</b>　这条建议依据是什么</span>
+        <span class="chip k1"><b>boundary</b>　求诊断 / 方药 / 吉凶 → 拦下</span>
+      </div>
+    </div>
+
+    <div class="arrow"><div class="ln"></div><div class="tip"></div></div>
+
+    <!-- STEP 02 -->
+    <div class="node">
+      <div class="num">2</div>
+      <span class="tag">STEP 02 · 对答</span><h2 class="serif">一次问齐，最多 2 轮</h2>
+      <div class="desc">
+        <strong>能推断就推断，绝不逐项追问</strong>。首次只问两句：① 省 / 市 / 区县　② 需要照顾的情况（年龄、肩颈、出汗、慢病孕期等）。
+        缺的用保守默认值，生成后说明用了哪些默认值；位置沿用 <code>jx_loc</code> 记忆。
+      </div>
+      <div class="chips">
+        <span class="chip"><b>date</b>　默认今天</span>
+        <span class="chip k1"><b>location</b>　首次必填，到县级</span>
+        <span class="chip"><b>health_notes</b>　自述，非诊断</span>
+        <span class="chip"><b>constraints</b>　慢病 / 孕期 → 保守模式</span>
+        <span class="chip k2"><b>intensity</b>　RPE 9–11 中低强度</span>
+        <span class="chip k2"><b>skin</b>　按天气自动匹配</span>
+      </div>
+      <div class="lead"><span class="mk b">↳</span>生成前一行确认：<strong>已收集槽位 + 将要调用的能力</strong>；用户回「生成」即执行。</div>
+    </div>
+
+    <div class="arrow"><div class="ln"></div><div class="tip"></div></div>
+
+    <!-- STEP 03 决策 -->
+    <div class="node dec">
+      <div class="num">3</div>
+      <span class="tag">STEP 03 · 决策</span><h2 class="serif"><span class="dia"></span>安全闸门过得了吗？</h2>
+      <div class="desc">前置且优先级最高：先声明「这不是诊断」→ 判红旗 → 建议就医 → 只给保守动作 → 只问会改变安全结论的问题。</div>
+      <div class="chips">
+        <span class="chip k1"><b>红旗</b>　胸痛胸闷 / 晕厥 / 急性损伤 / 高热</span>
+        <span class="chip k1"><b>求诊断 · 方药 · 吉凶</b>　明确拒答</span>
+        <span class="chip"><b>慢病 / 孕期 / 术后</b>　降一档 + 先问医生</span>
+        <span class="chip k2"><b>正常</b>　放行</span>
+      </div>
+      <div class="lead warn"><span class="mk">✕</span><strong>拒答分支</strong>：说明边界 → 给保守回应 → 回到入口；<strong>不生成运动建议</strong>。其余情况照常生成，但删除相关推断、不含任何方药。</div>
+    </div>
+
+    <div class="arrow soft"><div class="ln"></div><div class="tip"></div><div class="lbl">放行后装配上下文</div></div>
+
+    <!-- STEP 04 -->
+    <div class="node alt">
+      <div class="num">4</div>
+      <span class="tag">STEP 04 · 装配</span><h2 class="serif">把工作区资产调起来</h2>
+      <div class="desc">按「文件 → 工具」契约调度，<strong>不重写算法、不编造数据</strong>；产出 <code>ctx = {date, loc, weather, profile}</code>。</div>
+      <div class="chips">
+        <span class="chip"><b>JXArea</b>　31 省 / 341 市 / 2995 区县（离线）</span>
+        <span class="chip"><b>cal.lunar()</b>　农历 + 太阳黄经 24 节气</span>
+        <span class="chip k2"><b>weather.now()</b>　Open-Meteo 实况 / AQI / UV</span>
+        <span class="chip k2"><b>area.remember()</b>　jx_loc 县级记忆</span>
+      </div>
+      <div class="lead"><span class="mk b">↳</span>断网时历法、节气、区县气候画像照常可用，仅<strong>天气增量缺席</strong>并在交付时如实标注。</div>
+    </div>
+
+    <div class="arrow"><div class="ln"></div><div class="tip"></div></div>
+
+    <!-- 核心 -->
+    <div class="node core">
+      <div class="num">◆</div>
+      <span class="tag">核心 · 单一数据源</span><h2 class="serif">buildCalendar(ctx) → 一份 cal</h2>
+      <div class="desc">
+        <strong>身体日历-县级联动.html</strong> 的三层叠加规则引擎；输出的 <code>cal</code> 是长页与卡片<strong>唯一</strong>的数据源，两处只做字段映射，不各自改写文案。
+      </div>
+      <div class="chips">
+        <span class="chip k2">① 节气基调　TERM_DATA</span>
+        <span class="chip k2">② 区县气候画像　profileOf</span>
+        <span class="chip k2">③ 当日天气增量　weatherRules（每条带 why）</span>
+      </div>
+      <div class="lead"><span class="mk b">↳</span><code>explain</code> 意图直接读 <code>cal.why()</code> 回答「为什么今天不出大汗」，不必重新生成。</div>
+    </div>
+
+    <div class="arrow soft"><div class="ln"></div><div class="tip"></div><div class="lbl">皮肤只换配色，不改数据</div></div>
+
+    <!-- 支线 -->
+    <div class="node alt">
+      <div class="num">＋</div>
+      <span class="tag">可选支线 · 皮肤自动选择</span><h2 class="serif">按天气意象挑一套</h2>
+      <div class="desc">10 套国风皮肤按当日天气自动匹配；用户显式指定 <code>?skin=N</code> 或「换第 7 套」<strong>始终优先</strong>。</div>
+      <div class="chips">
+        <span class="chip k1"><b>大风 / 干燥</b>　3 赭石朔风</span>
+        <span class="chip"><b>低温 / 小雪</b>　4 朱砂初雪</span>
+        <span class="chip"><b>暑湿</b>　9 荷露溽暑</span>
+        <span class="chip"><b>雾霭 / AQI 高</b>　5 竹简烟霭</span>
+        <span class="chip k2"><b>晴夜</b>　7 鎏金夜漏（暗色）</span>
+        <span class="chip k2"><b>无匹配</b>　随机兜底</span>
+      </div>
+    </div>
+
+    <div class="arrow"><div class="ln"></div><div class="tip"></div></div>
+
+    <!-- STEP 05 -->
+    <div class="node">
+      <div class="num">5</div>
+      <span class="tag">STEP 05 · 分叉</span><h2 class="serif">同一份 cal，两条产物</h2>
+      <div class="desc">长页给全量信息，卡片给可发布的一屏重点；<strong>文案同源，不会打架</strong>。</div>
+      <div class="split">
+        <div class="col">
+          <div class="h"><i>分叉 A · 长页</i>中医身体日历</div>
+          <ul>
+            <li>10 字段全量 + 今日档案表</li>
+            <li>个人化说明（保守调整，非诊断）</li>
+            <li>四层依据 + 风险提醒表</li>
+            <li>作息带时间点、运动带热身—主项—收操—停止信号</li>
+          </ul>
+          <div class="out">→ <code>.md</code> / <code>.html</code> / 长图 <code>.png</code></div>
+        </div>
+        <div class="col b">
+          <div class="h"><i>分叉 B · 卡片</i>国风养生日历卡 9:16</div>
+          <ul>
+            <li>12 字段压缩，宜忌每条压到一行</li>
+            <li>1080×1920，无配图、重要信息大字</li>
+            <li><strong>卡面只留「依据」</strong>（左下，避开印章）</li>
+            <li>「复制文案」里保留留意与免责全文</li>
+          </ul>
+          <div class="out">→ <code>.html</code> + <code>?skin=N&amp;export=1</code> → <code>.png</code></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow"><div class="ln"></div><div class="tip"></div></div>
+
+    <!-- STEP 06 -->
+    <div class="node alt">
+      <div class="num">6</div>
+      <span class="tag">STEP 06 · 交付</span><h2 class="serif">出文件 + 卡外告知 + 可改</h2>
+      <div class="desc">
+        两份成品之外，<strong>「留意」与落款说明改由对话文字告知</strong>（红旗症状、当日天气专项、就医门槛、免责边界、数据行），不占卡面。
+      </div>
+      <div class="chips">
+        <span class="chip k1"><b>留意</b>　红旗 / 防风防滑 / 慢病孕期先问医生</span>
+        <span class="chip k1"><b>落款说明</b>　免责 + 日期 / 节气 / 区县 / 模板名</span>
+        <span class="chip"><b>可改</b>　换城市 · 换皮肤 · 降强度 · 只要某格式 · 解释依据</span>
+      </div>
+      <div class="lead warn"><span class="mk">↺</span><strong>修订回环</strong>：换城市只重跑装配与引擎；换皮肤只重渲染卡片；<strong>不重新问槽位</strong>，回到 STEP 05 局部重算。</div>
+    </div>
+
+  </div>
+
+  <!-- 页脚 -->
+  <div class="foot">
+    <div class="b">
+      <span class="t">安全边界 · 硬红线</span>
+      不诊断 · 不开方药 / 药膳 / 食疗 / 穴位 · 不判吉凶 · 不承诺疗效<br>
+      宜忌只写行为提醒；经典给框架、指南给剂量、气象历法给当日条件。
+    </div>
+    <div class="b">
+      <span class="t">主要文件 · 能力来源</span>
+      <code>today-info.snippet.js</code>　·　<code>身体日历-县级联动.html</code><br>
+      <code>中医身体日历-…西乡县.md</code>　·　<code>国风养生日历卡-西乡县.html</code><br>
+      <code>safety-boundary.md</code>　·　<code>国风天气模板-设计说明.md</code>
+    </div>
+    <div class="b b3">
+      <span class="t">落地形态</span>
+      L0 提示词 · 立即可用<br>
+      L1 Skill 包 · 半天<br>
+      L2 工作站 · 1–2 天
+      <div class="seal serif">顺时而养</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

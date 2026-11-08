@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>国风养生日历卡 · 十套天气模板</title>
+<style>
+/* ============================================================
+   国风天气养生日历卡 · 10 套皮肤 / 9:16 竖卡 / 单文件离线 / 无插图区 · 重要信息放大版
+   设计依据：AASJS/xiyouji DESIGN.md「古典宣纸风」+ shengwei-aidesign 赭石配色
+            + IMA《中医身体日历-每日模板.html》字段骨架
+   字段对齐：刊头 / 日期 / 节气进度 / 天时四格 / 主题 / 宜忌 /
+             四时调摄 / 内观 / 一句话 / 依据
+   留意与落款说明不在卡面显示，生成后由对话文字告知；卡面只留「依据」
+   本版数据：2026-11-08 陕西汉中西乡县实况 + 48岁/肩颈僵硬/喉咙有痰/运动后背部易大汗 的保守调整
+   ============================================================ */
+:root{
+  --serif:"Noto Serif CJK SC","Noto Serif SC","Songti SC","STSong","SimSun",serif;
+  --sans:"Noto Sans CJK SC","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  /* 皮肤变量（由 JS 覆盖） */
+  --paper:#EFECE3; --paper2:#E7E2D6; --ink:#2F4154; --ink2:#6E88A6;
+  --accent:#6E88A6; --seal:#9C4A3C; --line:#C9C2B3; --sub:#6C7580;
+  --scene1:#DCE3E6; --scene2:#EFECE3; --dark:0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#20262C;font-family:var(--sans);-webkit-font-smoothing:antialiased}
+
+/* ---------- 控制条 ---------- */
+.toolbar{
+  position:sticky;top:0;z-index:60;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:12px 18px;background:rgba(18,22,26,.92);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(8px);
+  transition:transform .28s ease;
+}
+/* 向下滚动看长卡时工具栏滑出，避免压住卡片文字；上滚或回到顶部自动滑回 */
+.toolbar.tb-hide{transform:translateY(-102%)}
+.toolbar .brand{font-family:var(--serif);color:#E8E2D4;font-size:15px;letter-spacing:.14em;margin-right:8px}
+.toolbar .brand small{display:block;font-family:var(--sans);font-size:10px;letter-spacing:.06em;color:#8C98A2;margin-top:2px}
+.toolbar button,.toolbar a{
+  background:rgba(255,255,255,.07);color:#DCE3E8;border:1px solid rgba(255,255,255,.16);
+  padding:8px 14px;font-size:12.5px;border-radius:2px;cursor:pointer;font-family:var(--sans);
+  letter-spacing:.04em;text-decoration:none;line-height:1.2;
+}
+.toolbar button:hover,.toolbar a:hover{background:rgba(255,255,255,.16)}
+.toolbar button.on{background:#9C4A3C;border-color:#B67A6E;color:#fff}
+.toolbar .hit{font-size:12px;color:#C9A24A;letter-spacing:.06em;margin-left:auto}
+.toolbar .hit b{font-family:var(--serif);font-size:14px;color:#E8D9B0}
+
+/* ---------- 预览缩放控件 ---------- */
+.zoom{display:flex;align-items:center;gap:4px;margin-left:6px}
+.zoom button{padding:6px 10px;font-size:12px}
+.zoom .zv{min-width:46px;text-align:center;font-size:12px;color:#C9A24A;font-variant-numeric:tabular-nums}
+.zoom .sp{width:1px;height:18px;background:rgba(255,255,255,.18);margin:0 4px}
+
+/* ---------- 舞台 ---------- */
+.stage{
+  position:relative;padding:26px 20px 64px;
+  display:flex;justify-content:center;align-items:flex-start;
+  background:
+    radial-gradient(1000px 1300px at 50% 6%, rgba(206,184,142,.065), transparent 72%),
+    linear-gradient(180deg,#262C32 0%,#1A1F24 100%);
+}
+/* 占位盒：宽高由 JS 按缩放倍率精确设置，卡片 transform 后视觉尺寸与之完全贴合 */
+.scaler{position:relative;flex:none}
+
+/* ---------- 卡片（9:16 = 1080×1920） ---------- */
+.card{
+  position:relative;width:1080px;height:1920px;overflow:hidden;
+  transform-origin:top left;
+  background:var(--paper);color:var(--ink);
+  box-shadow:0 34px 96px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.05);
+  font-family:var(--sans);
+}
+.card::before{ /* 宣纸帘纹：纯 CSS 渐变 */
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:1;opacity:.6;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.012) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.008) 0 1px, transparent 1px 26px);
+}
+.card::after{ /* 内框细线 */
+  content:"";position:absolute;inset:26px;border:1px solid var(--line);opacity:.55;pointer-events:none;z-index:2;
+}
+.z{position:relative;z-index:3}
+.pad{padding:0 76px}
+
+/* 刊头 */
+.mast{display:flex;align-items:flex-end;justify-content:space-between;padding-top:53.4px}
+.mast .left .t1{font-family:var(--serif);font-size:34px;letter-spacing:.34em;color:var(--ink)}
+.mast .left .t2{font-size:21px;letter-spacing:.22em;color:var(--sub);margin-top:10px}
+.mast .right{text-align:right}
+.mast .right .no{font-family:var(--serif);font-size:26px;color:var(--seal);letter-spacing:.1em}
+.mast .right .nm{font-size:19px;color:var(--sub);margin-top:6px;letter-spacing:.08em}
+.mast-rule{height:1px;background:var(--line);margin:16px 0 0;opacity:.8}
+
+/* 日期区 */
+.date{display:flex;align-items:flex-end;gap:26px;margin-top:32.9px}
+.date .dnum{font-family:var(--serif);font-size:233px;line-height:.82;font-weight:600;letter-spacing:-.03em;color:var(--ink)}
+.date .dmeta{padding-bottom:14px;display:flex;flex-direction:column;gap:8px}
+.date .dmeta .y{font-family:var(--serif);font-size:41.5px;letter-spacing:.1em;color:var(--ink)}
+.date .dmeta .m{font-size:30.5px;letter-spacing:.14em;color:var(--sub)}
+.date .dmeta .l{font-family:var(--serif);font-size:30.5px;letter-spacing:.08em;color:var(--seal);border-top:1px solid var(--line);padding-top:12px}
+.vseal{
+  margin-left:auto;margin-bottom:18px;width:99px;height:99px;flex:0 0 99px;
+  border:2px solid var(--seal);border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:39px;color:var(--seal);
+  writing-mode:vertical-rl;letter-spacing:.02em;line-height:1.05;text-align:center;
+  opacity:.9;transform:rotate(-2deg);
+}
+
+/* 节气条 */
+.term{display:flex;align-items:baseline;gap:20px;margin-top:28.9px;flex-wrap:wrap}
+.term .b{font-family:var(--serif);font-size:38.5px;font-weight:600;color:var(--ink);letter-spacing:.06em}
+.term .s{font-size:26px;color:var(--sub);letter-spacing:.06em}
+.term .sg{margin-left:auto;font-size:24.5px;color:var(--seal);letter-spacing:.06em}
+.tbar{height:3px;background:var(--line);margin-top:12px;position:relative;opacity:.75}
+.tbar i{position:absolute;left:0;top:0;height:3px;background:var(--accent);display:block;width:13%}
+.tbar .dots{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center}
+.tbar .dots span{width:5px;height:5px;border-radius:50%;background:var(--paper);border:1px solid var(--line)}
+
+/* 天时四格 */
+.sky{display:grid;grid-template-columns:repeat(4,1fr);margin-top:40.9px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sky .cell{padding:14.5px 8.5px 12.5px;border-right:1px solid var(--line)}
+.sky .cell:last-child{border-right:none}
+.sky .cell .k{font-size:22px;letter-spacing:.16em;color:var(--sub)}
+.sky .cell .v{font-family:var(--serif);font-size:33.5px;font-weight:600;color:var(--ink);margin-top:6px;white-space:nowrap}
+.sky .cell .u{font-family:var(--sans);font-size:19px;color:var(--sub);font-weight:400;margin-left:3px}
+.sky-note{font-size:19px;color:var(--sub);letter-spacing:.04em;margin-top:10.5px;text-align:right}
+
+/* 主题 */
+.theme{margin-top:24.4px}
+.theme .label{font-size:21px;letter-spacing:.3em;color:var(--sub)}
+.theme h1{font-family:var(--serif);font-size:50px;font-weight:600;line-height:1.45;letter-spacing:.02em;margin-top:10.5px;color:var(--ink)}
+.theme p{font-size:26px;line-height:1.65;color:var(--sub);margin-top:10.5px}
+
+/* 宜忌 */
+.yb{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:26.4px}
+.blk .hd{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.blk .hd .ch{font-family:var(--serif);font-size:47px;font-weight:600;line-height:1}
+.blk.yi .hd .ch{color:var(--seal)}
+.blk.bu .hd .ch{color:var(--sub)}
+.blk .hd .tx{font-size:22px;letter-spacing:.2em;color:var(--sub)}
+.blk ul{list-style:none;margin-top:12.5px}
+.blk li{display:flex;gap:12px;font-size:24.5px;line-height:1.6;margin-bottom:10.9px;color:var(--ink)}
+.blk li .dot{flex:0 0 7px;width:7px;height:7px;border-radius:50%;margin-top:13px}
+.blk.yi li .dot{background:var(--seal)}
+.blk.bu li .dot{background:var(--sub);opacity:.6}
+
+/* 四时调摄 */
+.rows{margin-top:24.4px;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:84px 1fr;gap:16px;padding:11.4px 0;border-bottom:1px dotted var(--line)}
+.row .rk{font-family:var(--serif);font-size:26px;letter-spacing:.16em;color:var(--accent)}
+.row .rv{font-size:24.5px;line-height:1.6;color:var(--ink)}
+
+/* 内观 + 一句话 */
+.ask{margin-top:20.4px;display:flex;align-items:center;gap:18px}
+.ask .tag{font-family:var(--serif);font-size:24.5px;letter-spacing:.14em;color:var(--seal);white-space:nowrap}
+.ask .q{font-size:24.5px;color:var(--sub);line-height:1.6}
+.sealblk{text-align:center;margin-top:20.4px;padding:6px 0 4px}
+.sealblk .r{height:1px;width:64px;background:var(--seal);opacity:.5;margin:0 auto 15.8px}
+.sealblk p{font-family:var(--serif);font-size:34.5px;line-height:1.65;color:var(--ink);letter-spacing:.02em}
+.sealblk .r2{height:1px;width:64px;background:var(--seal);opacity:.5;margin:15.8px auto 0}
+
+/* 依据 */
+.basis{position:absolute;left:76px;right:236px;bottom:40px;border-top:1px solid var(--line);padding-top:10.5px}
+.basis .label{font-size:18.5px;letter-spacing:.26em;color:var(--sub)}
+.basis p{font-size:17.5px;line-height:1.5;color:var(--sub);margin-top:6px}
+
+/* 落款 */
+.foot{position:absolute;left:64px;right:64px;bottom:26px;display:flex;align-items:flex-end;justify-content:flex-end;z-index:3}
+.foot .stamp{
+  width:121px;height:121px;border:2px solid var(--seal);border-radius:4px;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-family:var(--serif);font-size:26.5px;line-height:1.1;letter-spacing:0;color:var(--seal);
+  writing-mode:vertical-rl;white-space:nowrap;opacity:.82;transform:rotate(-3deg);flex:0 0 121px;
+}
+
+/* ---------- 十套一览 ---------- */
+.gallery{display:none;padding:28px 30px 60px;grid-template-columns:repeat(5,1fr);gap:20px;max-width:1500px;margin:0 auto}
+body.gallery-on .stage{display:none}
+body.gallery-on .gallery{display:grid}
+.mini{background:#151A1F;border:1px solid rgba(255,255,255,.1);border-radius:3px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s}
+.mini:hover{transform:translateY(-4px);border-color:#C9A24A}
+.mini .pv{height:180px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.mini .pv .pn{font-family:var(--serif);font-size:60px;opacity:.78}
+.mini .meta{padding:12px 14px 15px}
+.mini .meta .n{font-family:var(--serif);font-size:16px;color:#EDE4D2;letter-spacing:.06em}
+.mini .meta .w{font-size:12px;color:#9AA6B0;margin-top:5px;letter-spacing:.06em}
+.mini .sw{display:flex;gap:0;margin-top:10px;height:8px;border-radius:2px;overflow:hidden}
+.mini .sw i{flex:1}
+
+/* ---------- 窄屏适配 ---------- */
+@media (max-width:900px){
+  .gallery{grid-template-columns:repeat(3,1fr);gap:12px;padding:20px 16px 40px}
+}
+@media (max-width:620px){
+  .toolbar{padding:10px 12px;gap:7px}
+  .toolbar .brand{font-size:13px;letter-spacing:.08em;margin-right:0}
+  .toolbar .brand small{display:none}
+  .toolbar button,.toolbar a{padding:7px 10px;font-size:11.5px}
+  .toolbar .hit{font-size:11px;margin-left:auto}
+  .toolbar .hit b{font-size:12.5px}
+  .zoom{margin-left:0;flex:1 1 100%;justify-content:flex-start;overflow-x:auto}
+  .zoom button{padding:6px 9px;font-size:11.5px}
+  .stage{padding:18px 12px 48px}
+  .gallery{grid-template-columns:repeat(2,1fr);gap:10px;padding:16px 12px 36px}
+}
+
+/* ---------- 导出模式（?export=1）：精确 1080×1920 ---------- */
+body.export-on .toolbar,body.export-on .gallery{display:none!important}
+body.export-on .stage{padding:0!important;height:auto!important;display:block;background:none}
+body.export-on .scaler{width:auto!important;height:auto!important}
+body.export-on .card{transform:none!important;box-shadow:none}
+body.export-on{background:var(--paper)}
+
+@media print{
+  .toolbar,.gallery{display:none!important}
+  .stage{padding:0;display:block;background:none}
+  .scaler{width:auto!important;height:auto!important}
+  .card{transform:none!important;box-shadow:none}
+  html,body{background:#fff}
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar" id="toolbar">
+  <div class="brand">国风养生日历卡<small>十套天气模板 · 9:16 竖卡 · 重点放大 · 卡面仅留依据</small></div>
+  <button id="btnAnother">↻ 换一套（随机）</button>
+  <button id="btnGallery">▦ 十套一览</button>
+  <button id="btnCopy">⧉ 复制文案</button>
+  <button id="btnPrint">⎙ 打印 / 存 PDF</button>
+  <div class="zoom" id="zoom" aria-label="显示缩放">
+    <button data-z="out" title="缩小">－</button>
+    <span class="zv" id="zoomVal">—</span>
+    <button data-z="in" title="放大">＋</button>
+    <i class="sp"></i>
+    <button data-z="width" class="on" title="按窗口宽度铺满（默认，卡片更大更清晰）">适应</button>
+    <button data-z="page" title="整张卡片放入一屏">整卡</button>
+    <button data-z="actual" title="原始 1:1 尺寸">1:1</button>
+  </div>
+  <span class="hit">本次命中：<b id="hitName">—</b></span>
+</div>
+
+<div class="stage" id="stage">
+  <div class="scaler" id="scaler">
+    <div class="card" id="card">
+      <!-- 刊头 -->
+      <div class="z pad mast">
+        <div class="left">
+          <div class="t1">中医身体日历</div>
+          <div class="t2">日 签 · 顺 时 而 养</div>
+        </div>
+        <div class="right">
+          <div class="no" id="skinNo">第 一 套</div>
+          <div class="nm" id="skinName">宣纸宿雨</div>
+        </div>
+      </div>
+      <div class="z pad"><div class="mast-rule"></div></div>
+
+      <!-- 日期 -->
+      <div class="z pad date">
+        <div class="dnum">08</div>
+        <div class="dmeta">
+          <div class="y">2026 · 冬</div>
+          <div class="m">11 月 · 星期日</div>
+          <div class="l">农历丙午年 九月三十</div>
+        </div>
+        <div class="vseal" id="vseal">立冬</div>
+      </div>
+
+      <!-- 节气 -->
+      <div class="z pad term">
+        <span class="b">立冬</span>
+        <span class="s">第 2 天 · 距小雪 14 天</span>
+        <span class="sg" id="locTag">陕西 · 汉中 · 西乡县</span>
+      </div>
+      <div class="z pad"><div class="tbar"><i></i><div class="dots"><span></span><span></span><span></span><span></span><span></span></div></div></div>
+
+      <!-- 天时四格 -->
+      <div class="z pad">
+        <div class="sky">
+          <div class="cell"><div class="k">天气</div><div class="v">阴天</div></div>
+          <div class="cell"><div class="k">气温</div><div class="v">15.2<span class="u">℃</span></div></div>
+          <div class="cell"><div class="k">湿度</div><div class="v">43<span class="u">%</span></div></div>
+          <div class="cell"><div class="k">阵风</div><div class="v">22.0<span class="u">km/h</span></div></div>
+        </div>
+        <div class="sky-note" id="skyNote">实况 15.2℃ · 今日 9.7–17.1℃ · 无雨 · 07:12 / 17:52 · Open-Meteo 11:15</div>
+      </div>
+
+      <!-- 主题 -->
+      <div class="z pad theme">
+        <div class="label">今 日 主 题</div>
+        <h1>防风就温，勿令大汗</h1>
+        <p>立冬第 2 天，西乡县干冷有风、昼夜温差 7.4℃。今日只守一条：暖得起来，却不出大汗；万一出汗，立刻擦干避风。</p>
+      </div>
+
+      <!-- 宜忌 -->
+      <div class="z pad yb">
+        <div class="blk yi">
+          <div class="hd"><span class="ch">宜</span><span class="tx">今 天 做 这 些</span></div>
+          <ul>
+            <li><span class="dot"></span>分层穿衣，外出挡风护后颈</li>
+            <li><span class="dot"></span>中低强度 20–30 分钟，热身 10 分钟做足</li>
+            <li><span class="dot"></span>上午见光 15 分钟，多温水</li>
+          </ul>
+        </div>
+        <div class="blk bu">
+          <div class="hd"><span class="ch">忌</span><span class="tx">今 天 少 这 些</span></div>
+          <ul>
+            <li><span class="dot"></span>练到背部冒大汗，一开始出汗就降速停</li>
+            <li><span class="dot"></span>迎风久站、风口运动</li>
+            <li><span class="dot"></span>汗后冲冷水、湿衣久穿</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 四时调摄 -->
+      <div class="z pad rows">
+        <div class="row"><div class="rk">作息</div><div class="rv">早卧晚起、必待日光；07:10 后起，22:30 前卧床。</div></div>
+        <div class="row"><div class="rk">饮食</div><div class="rv">温热熟食、七分饱；偏干多汤水，温水少量多次。</div></div>
+        <div class="row"><div class="rk">运动</div><div class="rv">RPE 9–11，不出大汗为上限；热身 10 分钟，汗后擦干避风。</div></div>
+        <div class="row"><div class="rk">情志</div><div class="rv">使志若伏若匿；吸 4 呼 6 五轮，允许自己留白。</div></div>
+      </div>
+
+      <!-- 内观 -->
+      <div class="z pad ask">
+        <div class="tag">今日一问</div>
+        <div class="q">今天活动到第几分钟、哪个动作时背部开始出汗？（内观五问之一）</div>
+      </div>
+
+      <!-- 一句话 -->
+      <div class="z pad sealblk">
+        <div class="r"></div>
+        <p>暖得起来，却不出大汗，<br>汗后避风，把「藏」做足。</p>
+        <div class="r2"></div>
+      </div>
+
+      <!-- 依据 -->
+      <div class="z basis">
+        <div class="label">依 据</div>
+        <p>《素问·四气调神大论》「去寒就温，无泄皮肤」为养生取向，非诊疗 · WHO/ACSM 身体活动建议与强度分级 · 国家中医药管理局《中医养生保健服务规范（试行）》 · Open-Meteo 西乡县当日实况与离线节气历法。</p>
+      </div>
+
+      <!-- 落款 -->
+      <div class="z foot">
+        <div class="stamp" id="stamp">顺时而养</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 十套一览 -->
+<div class="gallery" id="gallery"></div>
+
+<script>
+/* ============================================================
+   10 套国风天气模板
+   每套：名称 / 天气意象 / 配色 / 题句 / 印章字
+   说明：题句与印章字为模板元数据，仅用于十套一览缩略标识；卡面不渲染任何插图区
+   ============================================================ */
+var SKINS = [
+  { name:"宣纸宿雨", weather:"阴 · 毛毛雨", poem:"宿雨初收　山色空濛",
+    cap:"阴雨 · 宜收宜藏", seal:"藏", dark:0,
+    paper:"#EFECE3", paper2:"#E7E2D6", ink:"#2F4154", ink2:"#6E88A6",
+    accent:"#6E88A6", sealC:"#9C4A3C", line:"#C9C2B3", sub:"#6C7580",
+    scene1:"#C7D2D8", scene2:"#E4E7E4" },
+
+  { name:"天青雨过", weather:"雨霁 · 转晴", poem:"雨过天青　云开见色",
+    cap:"雨霁 · 阳气渐舒", seal:"霁", dark:0,
+    paper:"#E6EFEB", paper2:"#D9E8E3", ink:"#26484A", ink2:"#4E8C86",
+    accent:"#4E8C86", sealC:"#A85B3C", line:"#B8CFC8", sub:"#5F7B76",
+    scene1:"#BFD8D2", scene2:"#E7F0EC" },
+
+  { name:"赭石朔风", weather:"大风 · 干燥", poem:"朔风卷野　去寒就温",
+    cap:"风燥 · 避风温润", seal:"温", dark:0,
+    paper:"#F1E2CA", paper2:"#E9D7B9", ink:"#5A3A26", ink2:"#B5793C",
+    accent:"#B5793C", sealC:"#9C3E2E", line:"#D8C19C", sub:"#8A6C4A",
+    scene1:"#E5C79A", scene2:"#F0DEBE" },
+
+  { name:"朱砂初雪", weather:"小雪 · 骤寒", poem:"初雪点枝　闭藏勿泄",
+    cap:"初雪 · 早卧保暖", seal:"闭", dark:0,
+    paper:"#F7EEEA", paper2:"#EFE0DA", ink:"#3A2B2B", ink2:"#9C4A3C",
+    accent:"#9C4A3C", sealC:"#9C2E22", line:"#DCC4BE", sub:"#7E625C",
+    scene1:"#EFDCD8", scene2:"#F7EFEC" },
+
+  { name:"竹简烟霭", weather:"晨雾 · 霾霭", poem:"烟霭层山　缓行深息",
+    cap:"雾霭 · 缓行深息", seal:"缓", dark:0,
+    paper:"#EADFC4", paper2:"#E0D2B0", ink:"#3E3A2C", ink2:"#7A6A44",
+    accent:"#7A6A44", sealC:"#8C4A32", line:"#CFBE98", sub:"#7B7052",
+    scene1:"#D6C9A6", scene2:"#E9DEBE" },
+
+  { name:"青花细雨", weather:"小雨 · 湿润", poem:"细雨润物　瓷色生烟",
+    cap:"细雨 · 清淡温养", seal:"润", dark:0,
+    paper:"#EEF3F7", paper2:"#DEE9F1", ink:"#213C60", ink2:"#3E6FA8",
+    accent:"#3E6FA8", sealC:"#9C4A3C", line:"#C2D2E0", sub:"#5C6E82",
+    scene1:"#D3E0EC", scene2:"#EAF1F7" },
+
+  { name:"鎏金夜漏", weather:"晴夜 · 寒凉", poem:"夜漏沈沈　早卧安寐",
+    cap:"晴夜 · 收心归舍", seal:"寐", dark:1,
+    paper:"#1E2A38", paper2:"#26364A", ink:"#EDE0BE", ink2:"#C9A24A",
+    accent:"#C9A24A", sealC:"#B5654A", line:"#41566E", sub:"#9DAEC0",
+    scene1:"#16233A", scene2:"#22344C" },
+
+  { name:"丹枫清霜", weather:"霜晨 · 秋燥", poem:"清霜染枫　雁字南回",
+    cap:"霜晨 · 去寒就温", seal:"敛", dark:0,
+    paper:"#F4E7D9", paper2:"#EBD9C5", ink:"#4A2E28", ink2:"#B04A32",
+    accent:"#B04A32", sealC:"#8C2E22", line:"#DCC3AE", sub:"#86685A",
+    scene1:"#E8C6AE", scene2:"#F3E2D2" },
+
+  { name:"荷露溽暑", weather:"暑湿 · 闷热", poem:"荷风送香　露凝清晓",
+    cap:"溽暑 · 清补勿腻", seal:"清", dark:0,
+    paper:"#E6F0E5", paper2:"#D8E9D8", ink:"#22483C", ink2:"#3E8A68",
+    accent:"#3E8A68", sealC:"#A8563C", line:"#C0D6C2", sub:"#5E7A6A",
+    scene1:"#C4DFC6", scene2:"#E7F1E4" },
+
+  { name:"松烟雪霁", weather:"雪霁 · 冬晴", poem:"雪霁松青　日轮初上",
+    cap:"雪霁 · 就日温阳", seal:"养", dark:0,
+    paper:"#F3F2ED", paper2:"#E9E8E1", ink:"#2B2B2B", ink2:"#5A6B66",
+    accent:"#5A6B66", sealC:"#9C4A3C", line:"#CFCFC6", sub:"#6C6C63",
+    scene1:"#DDE2DD", scene2:"#F1F1EB" }
+];
+
+var CN = ["一","二","三","四","五","六","七","八","九","十"];
+
+/* ---------- 皮肤只作用于配色与文字，卡片不渲染任何插图区 ---------- */
+
+/* ---------- 应用皮肤 ---------- */
+var card=document.getElementById("card");
+function applySkin(idx){
+  var s=SKINS[idx], r=card.style;
+  r.setProperty("--paper",s.paper); r.setProperty("--paper2",s.paper2);
+  r.setProperty("--ink",s.ink);     r.setProperty("--ink2",s.ink2);
+  r.setProperty("--accent",s.accent);r.setProperty("--seal",s.sealC);
+  r.setProperty("--line",s.line);   r.setProperty("--sub",s.sub);
+  r.setProperty("--scene1",s.scene1);r.setProperty("--scene2",s.scene2);
+  document.getElementById("skinNo").textContent="第 "+CN[idx]+" 套";
+  document.getElementById("skinName").textContent=s.name;
+  document.getElementById("vseal").textContent=s.seal;
+  // 深色皮肤：纸感噪点与内框微调
+  card.style.setProperty("--dark",s.dark);
+  document.getElementById("hitName").textContent="第"+CN[idx]+"套 · "+s.name;
+  window.__SKIN__=idx; window.__SKIN_NAME__=s.name;
+  document.title="国风养生日历卡 · "+s.name;
+}
+
+/* ---------- 随机 / 指定 / 换一套 ---------- */
+function pickIdx(){
+  var q=new URLSearchParams(location.search);
+  if(q.has("skin")){var n=parseInt(q.get("skin"),10);if(!isNaN(n))return ((n-1)%10+10)%10;} // 1-10 → 0-9
+  return Math.floor(Math.random()*10);
+}
+var cur=-1;
+function render(idx){cur=idx;applySkin(idx);}
+function another(){var n=cur;while(n===cur||n<0){n=Math.floor(Math.random()*10);}render(n);}
+
+document.getElementById("btnAnother").onclick=another;
+document.getElementById("btnPrint").onclick=function(){window.print();};
+document.getElementById("btnCopy").onclick=function(){
+  var s=SKINS[cur];
+  var txt=["【中医身体日历 · "+s.name+"】","2026-11-08 星期日 · 农历丙午年九月三十 · 立冬第2天（距小雪14天）",
+    "地点：陕西汉中西乡县 · 阴天无雨 15.2℃（体感12.4）· 今日9.7–17.1℃ · 湿度43% · 阵风22km/h · AQI 51",
+    "个人化：48岁 · 肩颈僵硬 · 喉咙有痰 · 运动后背部易大汗（据此做保守调整，非诊断）",
+    "","今日主题：防风就温，勿令大汗",
+    "立冬第2天，西乡县干冷有风、昼夜温差7.4℃。今日只守一条：暖得起来，却不出大汗；万一出汗，立刻擦干避风。",
+    "","宜：分层穿衣先脱外层、外出挡风护后颈 / 中低强度20–30分钟、热身10分钟 / 上午见光15–20分钟、温水少量多次",
+    "忌：练到背部冒大汗 / 迎风久站与风口运动 / 汗后冲冷水、湿衣久穿、久坐超60分钟",
+    "","作息 早卧晚起必待日光｜饮食 温热熟食七分饱｜运动 RPE 9–11以不出大汗为上限｜情志 使志若伏若匿",
+    "","一句话：暖得起来，却不出大汗，汗后避风，把「藏」做足。",
+    "","留意：若运动后持续胸痛胸闷、头晕黑朦、明显气短、心悸不缓解或关节急性肿痛，请停止并就医；阵风22km/h不迎风久站，汗后避风换干衣；肩颈不适伴上肢麻木/放射痛/头晕，或咽喉不适持续超过2周、伴发热气短血痰，请就医评估；慢性病、孕期、术后或服药中，调整运动前先咨询医生。",
+    "依据：《素问·四气调神大论》/ WHO 2020 身体活动指南 / ACSM 强度分级 / 国家中医药管理局《中医养生保健服务规范（试行）》/ Open-Meteo 西乡县当日实况 / 离线节气历法。",
+    "本日历为日常养生科普，不替代诊疗；不诊断、不开方药、不判吉凶、不承诺疗效。",
+    "数据：2026-11-08 · 立冬第2天 · 陕西汉中西乡县 · 模板「"+s.name+"」。"].join("\n");
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){toast("文案已复制");},function(){fallbackCopy(txt);});
+  }else fallbackCopy(txt);
+};
+function fallbackCopy(t){
+  var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();
+  try{document.execCommand("copy");toast("文案已复制");}catch(e){toast("复制失败，请手动选择");}
+  document.body.removeChild(ta);
+}
+function toast(m){
+  var d=document.createElement("div");d.textContent=m;
+  d.style.cssText="position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:rgba(20,28,36,.94);color:#EFECE3;padding:12px 20px;font-size:14px;border-radius:2px;z-index:99;border:1px solid rgba(255,255,255,.2)";
+  document.body.appendChild(d);setTimeout(function(){d.remove();},1600);
+}
+
+/* ---------- 十套一览 ---------- */
+var gallery=document.getElementById("gallery");
+function buildGallery(){
+  gallery.innerHTML="";
+  SKINS.forEach(function(s,i){
+    var d=document.createElement("div");d.className="mini";
+    d.innerHTML='<div class="pv" style="background:linear-gradient(158deg,'+s.scene1+','+s.scene2+');color:'+s.sealC+'"><div class="pn">'+s.seal+'</div></div>'
+      +'<div class="meta"><div class="n">第'+CN[i]+'套 · '+s.name+'</div>'
+      +'<div class="w">'+s.weather+' ｜ '+s.cap+'</div>'
+      +'<div class="sw"><i style="background:'+s.paper+'"></i><i style="background:'+s.ink+'"></i><i style="background:'+s.ink2+'"></i><i style="background:'+s.sealC+'"></i></div></div>';
+    d.onclick=function(){document.body.classList.remove("gallery-on");document.getElementById("btnGallery").classList.remove("on");render(i);fit();window.scrollTo(0,0);};
+    gallery.appendChild(d);
+  });
+}
+var gBtn=document.getElementById("btnGallery");
+gBtn.onclick=function(){
+  var on=document.body.classList.toggle("gallery-on");
+  gBtn.classList.toggle("on",on);
+  gBtn.textContent=on?"▦ 返回卡片":"▦ 十套一览";
+  if(!on)fit();
+};
+
+/* ---------- 预览缩放：占位盒 + 卡片 transform，布局随倍率精确贴合 ----------
+   默认「适应」按窗口宽度铺满（卡片更大、字更清晰，纵向滚动查看）；
+   「整卡」把全卡放进一屏；「1:1」原始尺寸；＋/－ 手动微调。
+   导出/打印模式一律不缩放，保持精确 1080×1920。                        */
+var ZOOM_MODE="width", curScale=1;
+function applyScale(sc){
+  sc=Math.max(0.2,Math.min(sc,1));curScale=sc;
+  var holder=document.getElementById("scaler");
+  holder.style.width=(1080*sc)+"px";
+  holder.style.height=(1920*sc)+"px";
+  card.style.transform="scale("+sc+")";
+  var zv=document.getElementById("zoomVal");if(zv)zv.textContent=Math.round(sc*100)+"%";
+}
+function fit(){
+  if(document.body.classList.contains("export-on"))return;
+  if(ZOOM_MODE==="manual"){applyScale(curScale);return;}
+  var st=document.getElementById("stage"),cs=getComputedStyle(st);
+  var padX=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight);
+  var availW=Math.min(window.innerWidth-padX-8,1040);
+  var sc;
+  if(ZOOM_MODE==="actual")sc=1;
+  else if(ZOOM_MODE==="page"){
+    var tb=document.getElementById("toolbar");
+    var availH=Math.max(260,window.innerHeight-(tb?tb.offsetHeight:0)-56);
+    sc=Math.min(availW/1080,availH/1920);
+  }else sc=availW/1080;
+  applyScale(sc);
+}
+window.addEventListener("resize",fit);
+
+/* ---------- 缩放控件交互 ---------- */
+document.getElementById("zoom").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;
+  var z=b.getAttribute("data-z");
+  if(z==="in"||z==="out"){
+    ZOOM_MODE="manual";
+    document.querySelectorAll("#zoom button").forEach(function(x){x.classList.remove("on");});
+    applyScale(curScale+(z==="in"?0.1:-0.1));
+    return;
+  }
+  ZOOM_MODE=z;
+  document.querySelectorAll("#zoom button").forEach(function(x){x.classList.toggle("on",x===b);});
+  fit();
+});
+
+/* ---------- 滚动时工具栏自动让位（transform 不占布局，卡片不跳动） ---------- */
+var lastScroll=0;
+window.addEventListener("scroll",function(){
+  var y=window.scrollY||window.pageYOffset||0;
+  var tb=document.getElementById("toolbar");
+  if(y>90 && y>lastScroll+2)tb.classList.add("tb-hide");
+  else if(y<lastScroll-2 || y<=90)tb.classList.remove("tb-hide");
+  lastScroll=y;
+},{passive:true});
+
+/* ---------- 启动 ---------- */
+if(new URLSearchParams(location.search).has("export"))document.body.classList.add("export-on");
+buildGallery();
+render(pickIdx());
+fit();
+</script>
+</body>
+</html>

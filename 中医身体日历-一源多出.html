@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>中医身体日历 · 一源多出（长图 / 3×9:16 / 详细文字报告）</title>
+<style>
+
+:root{--bg:#F6F3EB;--panel:#FFFDF8;--ink:#2F4154;--ink2:#6B7686;--cin:#9C4A3C;
+      --blue:#6E88A6;--line:#E4DDCC;--gold:#A98543;
+      --sans:"Noto Sans CJK SC","PingFang SC","Microsoft YaHei",sans-serif;
+      --serif:"Noto Serif CJK SC","Songti SC",serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;
+  overflow:hidden;display:flex;flex-direction:column}
+.topbar{flex:none;height:64px;display:flex;align-items:center;gap:12px;padding:0 20px;background:rgba(255,253,248,.96);
+  border-bottom:1px solid var(--line);position:relative;z-index:30}
+.brand{font-family:var(--serif);font-size:17px;letter-spacing:2px;margin-right:6px;white-space:nowrap}
+.brand small{display:block;font-family:var(--sans);font-size:11px;letter-spacing:1px;color:var(--ink2);margin-top:2px}
+.tabs{display:flex;gap:5px;background:#F0ECE0;padding:4px;border-radius:9px}
+.tabs button{border:none;background:transparent;color:var(--ink2);font-family:var(--sans);font-size:14px;
+  padding:8px 16px;border-radius:6px;cursor:pointer;letter-spacing:.5px;white-space:nowrap;transition:.18s}
+.tabs button:hover{color:var(--ink)}
+.tabs button.on{background:var(--panel);color:var(--ink);font-weight:700;box-shadow:0 1px 5px rgba(47,65,84,.1)}
+.spacer{flex:1}
+.stat{font-size:12.5px;color:var(--ink2);white-space:nowrap}
+.stat b{color:var(--cin);font-family:var(--serif);font-size:14px}
+.tb-btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);font-family:var(--sans);
+  font-size:13.5px;padding:9px 15px;border-radius:7px;cursor:pointer;white-space:nowrap;transition:.18s}
+.tb-btn:hover{border-color:var(--blue);background:#F4F7FA}
+.tb-btn.primary{background:var(--cin);border-color:var(--cin);color:#FFF8EE;font-weight:700}
+.tb-btn.primary:hover{background:#8A3F33}
+.more-wrap{position:relative}
+.more-pop{display:none;position:absolute;right:0;top:44px;background:var(--panel);border:1px solid var(--line);
+  border-radius:9px;box-shadow:0 10px 30px rgba(47,65,84,.16);padding:7px;min-width:196px;z-index:50}
+.more-pop.open{display:block}
+.more-pop button{display:block;width:100%;text-align:left;border:none;background:transparent;color:var(--ink);
+  font-family:var(--sans);font-size:13.5px;padding:9px 12px;border-radius:6px;cursor:pointer}
+.more-pop button:hover{background:#F2EFE5}
+.flow{flex:none;height:38px;display:flex;align-items:center;justify-content:center;gap:10px;background:#FBF8EF;
+  border-bottom:1px solid var(--line);font-size:12.5px;color:var(--ink2);letter-spacing:.5px;white-space:nowrap}
+.flow b{color:var(--ink);font-weight:700}
+.flow .ar{color:var(--cin);font-weight:700}
+.flow .or{color:var(--gold);font-weight:700}
+.app{flex:1;min-height:0;overflow:auto;padding:26px 20px 60px}
+.view{display:none}
+.view.on{display:block}
+.stage{width:100%;display:flex;flex-direction:column;align-items:center;gap:34px;margin:0 auto}
+.zoomnote{text-align:center;font-size:12.5px;color:var(--ink2);margin-bottom:14px}
+.zoomnote b{color:var(--cin)}
+#vLong .lv{width:1080px;margin:0 auto}
+#vCards .stage{gap:30px}
+#vReport .rp-wrap{width:860px;max-width:100%;margin:0 auto}
+.toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(16px);background:var(--ink);
+  color:#FFF8EE;padding:12px 22px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;
+  transition:.24s;z-index:80;box-shadow:0 8px 24px rgba(47,65,84,.24)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:900px){.brand small,.stat{display:none}.flow{font-size:11px}}
+
+
+.lv{
+  --paper:#EFECE3; --card:#F8F6F0; --card2:#F2EFE6;
+  --ink:#2F4154; --ink2:#5A6675; --blue:#6E88A6; --blueBg:rgba(110,136,166,.10);
+  --cin:#9C4A3C; --cinBg:rgba(156,74,60,.075); --gold:#A98543;
+  --line:#D6D0C0; --line2:#E4DFD2;
+}
+.lv *{box-sizing:border-box;margin:0;padding:0}
+.lv{
+  background:var(--paper);color:var(--ink);
+  font-family:"Noto Sans CJK SC","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  background-image:repeating-linear-gradient(90deg,rgba(120,110,90,.035) 0 1px,transparent 1px 4px),
+                   repeating-linear-gradient(0deg,rgba(120,110,90,.018) 0 1px,transparent 1px 7px);
+  padding:34px 0 28px;
+}
+.lv .sf{font-family:"Noto Serif CJK SC","Noto Serif SC","Songti SC",serif}
+.lv .page{width:1080px;margin:0 auto;padding-bottom:20px}
+.lv code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em;
+  background:var(--blueBg);color:#3C5670;padding:1px 5px;border-radius:3px;white-space:nowrap}
+.lv .nw{white-space:nowrap}
+.lv /* 页眉 */
+.head{position:relative;padding:0 48px 22px;border-bottom:2px solid var(--ink)}
+.lv .kicker{font-size:12px;letter-spacing:6px;color:var(--cin);margin-bottom:12px}
+.lv h1{font-size:42px;letter-spacing:3px;line-height:1.25;font-weight:700}
+.lv h1 .dot{color:var(--cin);font-size:28px;vertical-align:5px;margin:0 8px}
+.lv .head .sub{margin-top:12px;font-size:15px;color:var(--ink2);letter-spacing:.5px}
+.lv .stamp{position:absolute;right:52px;top:2px;width:82px;height:82px;border:3px solid var(--cin);
+  border-radius:6px;color:var(--cin);display:flex;align-items:center;justify-content:center;
+  font-size:38px;font-weight:700;transform:rotate(-6deg);opacity:.9;
+  box-shadow:inset 0 0 0 2px rgba(156,74,60,.25)}
+.lv /* 档案网格 */
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);margin:24px 48px 0}
+.lv .meta .m{background:var(--card);padding:11px 14px}
+.lv .meta .m .k{font-size:11px;letter-spacing:2px;color:var(--ink2);margin-bottom:4px}
+.lv .meta .m .v{font-size:15px;font-weight:600;line-height:1.4}
+.lv .meta .m .v small{font-weight:400;font-size:12px;color:var(--ink2)}
+.lv /* 通用区块 */
+.sec{margin:28px 48px 0}
+.lv .sec > h2{font-size:21px;letter-spacing:1px;padding-bottom:9px;border-bottom:1px solid var(--line);
+  margin-bottom:14px;display:flex;align-items:baseline;gap:12px}
+.lv .sec > h2 .no{font-size:12px;letter-spacing:2px;color:var(--cin);border:1px solid var(--cin);
+  padding:2px 8px;border-radius:2px;font-weight:500}
+.lv p{font-size:14.5px;line-height:1.85;color:var(--ink2);margin:8px 0}
+.lv p strong, .lv li strong{color:var(--ink);font-weight:600}
+.lv .hl{background:var(--cinBg);border-left:3px solid var(--cin);padding:10px 14px;font-size:14px;
+  line-height:1.8;margin:12px 0;color:var(--ink)}
+.lv .hl.b{background:var(--blueBg);border-left-color:var(--blue)}
+.lv /* 个人化说明 */
+.notice{margin:24px 48px 0;background:#F6F2E8;border:1px dashed var(--gold);padding:18px 22px}
+.lv .notice h3{font-size:16px;letter-spacing:1px;color:var(--gold);margin-bottom:8px}
+.lv .notice .rows{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin:10px 0}
+.lv .notice .rows div{font-size:13.5px;line-height:1.7;color:var(--ink2)}
+.lv .notice .rows b{color:var(--ink)}
+.lv .notice .edge{font-size:13px;color:var(--cin);line-height:1.7;border-top:1px dashed var(--gold);padding-top:9px;margin-top:6px}
+.lv /* 主题 */
+.theme{margin:24px 48px 0;background:var(--card);border:1px solid var(--line);padding:22px 26px;
+  border-left:5px solid var(--cin)}
+.lv .theme .t{font-size:27px;letter-spacing:2px;font-weight:700;margin-bottom:10px}
+.lv .theme q{font-size:14px;color:var(--ink2);line-height:1.9;display:block;quotes:"「" "」"}
+.lv .theme p{margin-top:10px}
+.lv /* 宜忌双栏 */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lv .box{background:var(--card);border:1px solid var(--line);padding:16px 20px}
+.lv .box.no{background:#FBF4F1;border-color:rgba(156,74,60,.3)}
+.lv .box h3{font-size:17px;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line2)}
+.lv .box.yes h3{color:#3C5670}
+.lv .box.no h3{color:var(--cin)}
+.lv .box ol{margin:0;padding-left:20px}
+.lv .box li{font-size:13.5px;line-height:1.75;margin:6px 0;color:var(--ink2)}
+.lv /* 表格 */
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+.lv th, .lv td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;line-height:1.65}
+.lv th{background:var(--card2);font-weight:600;color:var(--ink);white-space:nowrap}
+.lv td{color:var(--ink2);background:var(--card)}
+.lv td strong{color:var(--ink)}
+.lv table.tight th, .lv table.tight td{padding:7px 11px}
+.lv /* 列表 */
+ul.dot{padding-left:20px;margin:8px 0}
+.lv ul.dot li{font-size:14px;line-height:1.8;margin:5px 0;color:var(--ink2)}
+.lv .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.lv .chip{font-size:13px;padding:6px 11px;border:1px solid var(--line);border-radius:3px;background:#fff;color:var(--ink)}
+.lv .chip.k{border-color:var(--cin);color:var(--cin);background:var(--cinBg)}
+.lv .chip.b{border-color:var(--blue);color:#3C5670;background:var(--blueBg)}
+.lv /* 五问 */
+.asks{counter-reset:q;display:grid;gap:7px}
+.lv .asks .a{counter-increment:q;background:var(--card);border:1px solid var(--line);padding:10px 14px 10px 46px;
+  position:relative;font-size:14px;line-height:1.7;color:var(--ink2)}
+.lv .asks .a::before{content:counter(q);position:absolute;left:13px;top:9px;width:23px;height:23px;
+  border-radius:50%;background:var(--blue);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center}
+.lv /* 页脚 */
+.foot{margin:30px 48px 0;border-top:2px solid var(--ink);padding-top:16px;
+  display:flex;justify-content:space-between;align-items:flex-start;gap:26px}
+.lv .foot .l{font-size:12.5px;line-height:1.85;color:var(--ink2)}
+.lv .foot .l b{color:var(--ink);letter-spacing:2px;font-size:11.5px;display:block;margin-bottom:4px}
+.lv .foot .r{text-align:right;font-size:12.5px;color:var(--ink2);line-height:1.85;flex:none}
+.lv .foot .seal{display:inline-block;margin-top:8px;border:2px solid var(--cin);color:var(--cin);
+  padding:4px 11px;font-size:13px;letter-spacing:4px;transform:rotate(-4deg);opacity:.85}
+.lv .tagline{text-align:center;font-size:12px;color:var(--ink2);letter-spacing:1px;margin-top:18px}
+.lv{box-sizing:border-box}
+
+:root{--k:1.12}
+/* 作用域内重置：导出到 foreignObject 时外壳 reset 不会带过去，必须自带 */
+.c9,.c9 *{box-sizing:border-box;margin:0;padding:0}
+.c9{--k:1.12;width:1080px;height:1920px;flex:none;position:relative;overflow:hidden;
+  background:#F3EFE5;
+  background-image:repeating-linear-gradient(90deg,rgba(120,110,90,.03) 0 1px,transparent 1px 4px),
+                   repeating-linear-gradient(0deg,rgba(120,110,90,.015) 0 1px,transparent 1px 7px);
+  display:flex;flex-direction:column;padding:60px 64px 46px;
+  font-family:"Noto Sans CJK SC","PingFang SC","Microsoft YaHei",sans-serif;color:#2F4154;
+  border:1px solid #E4DDCC;border-radius:6px;box-shadow:0 8px 26px rgba(47,65,84,.08)}
+.c9::before{content:"";position:absolute;inset:20px;border:1px solid rgba(156,74,60,.16);pointer-events:none}
+.c9 .serif,.c9 h1,.c9 .tt,.c9 q,.c9 .stamp,.c9 .seal{font-family:"Noto Serif CJK SC","Songti SC",serif}
+.hd{position:relative;border-bottom:2px solid #2F4154;padding-bottom:22px;flex:none}
+.hd .kick{font-size:calc(18px*var(--k));letter-spacing:5px;color:#9C4A3C;margin-bottom:14px}
+.hd h1{font-size:calc(56px*var(--k));font-weight:700;letter-spacing:2px;line-height:1.2;padding-right:130px}
+.hd h1 .dot{color:#9C4A3C;font-size:.7em;margin:0 6px}
+.hd .sub{margin-top:13px;font-size:calc(23px*var(--k));color:#5F6B7A;line-height:1.65}
+.hd .stamp{position:absolute;right:8px;top:-8px;width:100px;height:100px;border:3px solid #9C4A3C;
+  border-radius:6px;color:#9C4A3C;display:flex;align-items:center;justify-content:center;
+  font-size:calc(46px*var(--k));font-weight:700;transform:rotate(-6deg);opacity:.9;
+  box-shadow:inset 0 0 0 2px rgba(156,74,60,.22)}
+.bd{flex:1;display:flex;flex-direction:column;justify-content:space-between;min-height:0;padding:8px 0 4px;gap:calc(16px*var(--k))}
+.blk{flex:none}
+.cap{font-size:calc(19px*var(--k));letter-spacing:2px;color:#2F4154;font-weight:700;
+  border-bottom:1px solid #DDD5C2;padding-bottom:9px;margin-bottom:14px;display:flex;align-items:baseline;gap:12px}
+.cap i{font-style:normal;font-size:calc(14px*var(--k));letter-spacing:2px;color:#9C4A3C;font-weight:500}
+.lead{background:#FBF3E7;border-left:6px solid #9C4A3C;border-radius:0 8px 8px 0;
+  padding:calc(20px*var(--k)) calc(24px*var(--k));font-size:calc(28px*var(--k));line-height:1.6;color:#2F4154}
+.lead span{display:block;font-size:calc(17px*var(--k));letter-spacing:3px;color:#9C4A3C;margin-bottom:8px;font-weight:700}
+.lead b{font-size:calc(38px*var(--k));color:#9C4A3C;font-weight:700}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.facts .g{background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:13px 14px}
+.facts .g .k{font-size:calc(16px*var(--k));letter-spacing:1px;color:#6B7686;margin-bottom:7px}
+.facts .g .v{font-size:calc(26px*var(--k));font-weight:700;line-height:1.3;white-space:nowrap}
+.facts .g .v .sub{display:block;font-size:calc(15px*var(--k));font-weight:400;color:#6B7686;letter-spacing:0;margin-top:3px;white-space:normal}
+.theme{background:#FFFDF8;border:1px solid #E4DDCC;border-left:6px solid #6E88A6;border-radius:0 8px 8px 0;padding:calc(20px*var(--k)) calc(26px*var(--k))}
+.theme .tt{font-size:calc(36px*var(--k));font-weight:700;letter-spacing:1px;margin-bottom:12px}
+.theme q{display:block;font-size:calc(22px*var(--k));line-height:1.75;color:#5F6B7A;quotes:"「" "」"}
+.theme .qs{font-size:calc(17px*var(--k));color:#6E88A6;margin-top:8px;text-align:right}
+.adj{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.adj .a{background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:calc(13px*var(--k)) calc(17px*var(--k))}
+.adj .a b{display:block;font-size:calc(23px*var(--k));color:#9C4A3C;margin-bottom:5px}
+.adj .a span{font-size:calc(19px*var(--k));line-height:1.6;color:#5F6B7A}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:none}
+.two .box{border:1px solid #E4DDCC;border-radius:8px;padding:calc(18px*var(--k)) calc(20px*var(--k));background:#FFFDF8}
+.two .box.yes{border-top:5px solid #6E88A6}
+.two .box.no{border-top:5px solid #9C4A3C;background:#FDF6F2}
+.two h3{font-size:calc(27px*var(--k));margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #E8E0CE}
+.two .box.yes h3{color:#3C5670} .two .box.no h3{color:#9C4A3C}
+.two ol{padding-left:calc(24px*var(--k));margin:0}
+.two li{font-size:calc(20px*var(--k));line-height:1.62;margin:calc(7px*var(--k)) 0;color:#5F6B7A}
+.tl{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.tl .t{background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:calc(11px*var(--k)) calc(15px*var(--k));display:flex;gap:12px;align-items:baseline}
+.tl .t b{font-size:calc(20px*var(--k));color:#9C4A3C;white-space:nowrap;flex:none}
+.tl .t span{font-size:calc(18px*var(--k));line-height:1.5;color:#5F6B7A}
+.diet{display:grid;gap:8px}
+.diet span{background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:calc(10px*var(--k)) calc(16px*var(--k));
+  font-size:calc(19px*var(--k));color:#5F6B7A;line-height:1.5}
+.hard{background:#9C4A3C;color:#FFF8EE;border-radius:8px;padding:calc(17px*var(--k)) calc(24px*var(--k));
+  display:flex;align-items:center;gap:18px;flex:none}
+.hard i{font-style:normal;font-size:calc(18px*var(--k));letter-spacing:3px;background:rgba(255,255,255,.18);
+  padding:6px 12px;border-radius:4px;white-space:nowrap}
+.hard b{font-size:calc(31px*var(--k));letter-spacing:1px}
+.ex{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.ex .e{background:#FFFDF8;border:1px solid #E4DDCC;border-left:5px solid #6E88A6;border-radius:0 6px 6px 0;padding:calc(12px*var(--k)) calc(16px*var(--k))}
+.ex .e b{display:block;font-size:calc(22px*var(--k));color:#3C5670;margin-bottom:5px}
+.ex .e span{font-size:calc(18px*var(--k));line-height:1.55;color:#5F6B7A}
+.steps{display:grid;gap:8px;flex:none}
+.steps .s{background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:calc(11px*var(--k)) calc(16px*var(--k));display:flex;gap:14px;align-items:baseline}
+.steps .s b{font-size:calc(20px*var(--k));color:#A98543;white-space:nowrap;flex:none}
+.steps .s span{font-size:calc(18px*var(--k));line-height:1.55;color:#5F6B7A}
+.mind{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mind>div{background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:calc(12px*var(--k)) calc(16px*var(--k))}
+.mind b{display:block;font-size:calc(21px*var(--k));color:#2F4154;margin-bottom:6px}
+.mind span{font-size:calc(17.5px*var(--k));line-height:1.6;color:#5F6B7A}
+.red{background:#FBEDE9;border:2px solid #9C4A3C;border-radius:8px;padding:calc(14px*var(--k)) calc(20px*var(--k));flex:none}
+.red i{display:block;font-style:normal;font-size:calc(19px*var(--k));letter-spacing:2px;color:#9C4A3C;font-weight:700;margin-bottom:7px}
+.red span{font-size:calc(20px*var(--k));line-height:1.6;color:#8A3F33}
+.basis{display:grid;gap:7px}
+.basis .b{display:flex;gap:14px;align-items:baseline;background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:calc(9px*var(--k)) calc(15px*var(--k))}
+.basis .b b{font-size:calc(19px*var(--k));color:#9C4A3C;white-space:nowrap;flex:none;min-width:calc(112px*var(--k))}
+.basis .b span{font-size:calc(18px*var(--k));line-height:1.5;color:#5F6B7A}
+.edge{display:flex;justify-content:space-between;align-items:center;gap:20px;border-top:2px solid #2F4154;padding-top:calc(14px*var(--k));flex:none}
+.edge b{display:block;font-size:calc(21px*var(--k));letter-spacing:2px;color:#2F4154;margin-bottom:5px}
+.edge span{font-size:calc(18px*var(--k));line-height:1.6;color:#5F6B7A}
+.edge .seal{border:2px solid #9C4A3C;color:#9C4A3C;padding:calc(8px*var(--k)) calc(14px*var(--k));
+  font-size:calc(25px*var(--k));letter-spacing:4px;transform:rotate(-4deg);opacity:.85;white-space:nowrap}
+.ft{display:flex;justify-content:space-between;align-items:center;gap:18px;border-top:1px solid #DDD5C2;padding-top:calc(14px*var(--k));flex:none}
+.ft .src{font-size:calc(15.5px*var(--k));line-height:1.5;color:#6B7686}
+.ft .pg{font-size:calc(19px*var(--k));letter-spacing:2px;color:#9C4A3C;border:1px solid #9C4A3C;
+  border-radius:4px;padding:5px 12px;white-space:nowrap;font-weight:700}
+
+
+:root{--paper:#F7F4EC;--card:#FFFDF8;--ink:#2F4154;--ink2:#5F6B7A;--cin:#9C4A3C;
+      --blue:#6E88A6;--gold:#A98543;--line:#E4DDCC;--serif:"Noto Serif CJK SC","Songti SC",serif;
+      --sans:"Noto Sans CJK SC","PingFang SC","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+#vReport .rp-body{background:var(--paper);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;padding:38px 20px}
+#vReport .rp{width:860px;max-width:100%;margin:0 auto;background:var(--card);border:1px solid var(--line);
+    border-radius:10px;padding:56px 62px;box-shadow:0 6px 30px rgba(47,65,84,.07)}
+#vReport .rp h1{font-family:var(--serif);font-size:34px;letter-spacing:2px;padding-bottom:18px;border-bottom:2px solid var(--ink);margin-bottom:22px}
+#vReport .rp h2{font-family:var(--serif);font-size:24px;letter-spacing:1px;margin:38px 0 14px;padding-left:13px;border-left:5px solid var(--cin)}
+#vReport .rp h3{font-size:18px;margin:22px 0 10px;color:var(--ink)}
+#vReport .rp p{font-size:15px;line-height:1.9;color:var(--ink2);margin:10px 0}
+#vReport .rp strong{color:var(--ink);font-weight:700}
+#vReport .rp blockquote{background:#FBF6EC;border-left:4px solid var(--gold);padding:14px 20px;margin:16px 0;border-radius:0 6px 6px 0}
+#vReport #vReport .rp blockquote p{margin:4px 0;color:#6B5B3E}
+#vReport .rp hr{border:none;border-top:1px solid var(--line);margin:30px 0}
+#vReport .rp ul,#vReport .rp ol{padding-left:24px;margin:10px 0}
+#vReport .rp li{font-size:15px;line-height:1.9;color:var(--ink2);margin:5px 0}
+#vReport .rp table{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0}
+#vReport .rp th,#vReport .rp td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;line-height:1.75}
+#vReport .rp th{background:#F4EFE2;color:var(--ink);font-weight:700;white-space:nowrap}
+#vReport .rp td{color:var(--ink2)}
+#vReport .rp em{color:var(--ink2)}
+#vReport .rp code{background:rgba(110,136,166,.12);color:#3C5670;padding:1px 5px;border-radius:3px;font-size:.9em}
+@media print{#vReport .rp-body{background:#fff;padding:0}#vReport .rp{box-shadow:none;border:none;width:100%}}
+
+/* 窄屏（手机竖屏）：顶栏两行、流程条换行、产物按视口宽度等比缩放；桌面端完全不受影响 */
+@media(max-width:760px){
+  .brand small,.stat,.spacer{display:none}
+  .topbar{height:auto;min-height:54px;flex-wrap:wrap;align-content:center;gap:8px;padding:8px 12px}
+  .brand{font-size:15px;letter-spacing:1px;margin-right:auto}
+  .tabs{order:3;width:100%;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tabs button{flex:1;min-width:0;font-size:13px;padding:9px 4px;letter-spacing:0}
+  .tb-btn{font-size:12.5px;padding:8px 12px}
+  .more-pop{top:38px;min-width:180px}
+  .flow{height:auto;min-height:34px;flex-wrap:wrap;gap:5px 8px;padding:7px 12px;font-size:11px;line-height:1.55;white-space:normal;text-align:center}
+  .flow .sep,.flow .minor{display:none}
+  .app{padding:14px 10px 44px}
+  .zoomnote{font-size:11.5px;line-height:1.65;padding:0 4px;margin-bottom:12px}
+  #vLong .zoomnote::after,#vCards .zoomnote::after{content:"· 点预览可放大 / 复原";display:block;margin-top:4px;color:var(--cin);font-weight:700}
+  #vCards .stage{gap:18px}
+  .stage.raw{align-items:flex-start;width:1080px;max-width:none}
+  #vReport .rp-wrap{width:100%;max-width:100%}
+  #vReport .rp{padding:20px 16px;border-radius:8px}
+  #vReport .rp h1{font-size:24px;letter-spacing:1px}
+  #vReport .rp h2{font-size:19px;margin:26px 0 12px}
+  #vReport .rp h3{font-size:16px}
+  #vReport .rp p,#vReport .rp li{font-size:14px}
+  #vReport .rp table{table-layout:fixed;width:100%}
+  #vReport .rp th,#vReport .rp td{white-space:normal;word-break:break-word;padding:7px 9px;font-size:13.5px}
+  #vReport .rp th:first-child,#vReport .rp td:first-child{width:30%}
+}
+#vReport .rp-wrap{background:#F7F4EC;padding:0}
+#vReport .rp{background:#FFFDF8}
+@media print{.topbar,.flow,.toast{display:none!important}body{overflow:visible;display:block}.app{display:block;flex:none;height:auto;min-height:0;overflow:visible;padding:0}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">中医身体日历 · 一源多出<small>长图 → 3 张 9:16 / 详细文字报告</small></div>
+  <div class="tabs">
+    <button data-v="long" class="on">长图</button>
+    <button data-v="cards">3 张 9:16</button>
+    <button data-v="report">详细文字报告</button>
+  </div>
+  <div class="spacer"></div>
+  <div class="stat">立冬第 2 天 · <b>陕西汉中西乡县</b></div>
+  <button class="tb-btn primary" id="btnMain">导出长图 PNG</button>
+  <div class="more-wrap">
+    <button class="tb-btn" id="btnMore">更多 ▾</button>
+    <div class="more-pop" id="morePop">
+      <button id="mCard1">下载第 1 张 9:16</button>
+      <button id="mCard2">下载第 2 张 9:16</button>
+      <button id="mCard3">下载第 3 张 9:16</button>
+      <button id="mScale">PNG 2x 高清</button>
+      <button id="mMD">下载报告 Markdown</button>
+      <button id="mHTML">下载报告 HTML</button>
+      <button id="mPrint">打印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+<div class="flow">
+  <b>长图母版</b><span class="ar">→</span><span>3 张 9:16 竖图</span><span class="or">或</span><span>详细文字报告</span>
+  <span class="sep" style="color:#B6AC98">｜</span><span class="minor">同一份内容 · 三种详略</span>
+</div>
+
+<div class="app">
+  <div class="view on" id="vLong">
+    <div class="zoomnote">长图母版 · 1080 px 宽 · 导出为 <b>2x 高清 PNG</b>（当前视图已缩放预览，不影响导出尺寸）</div>
+    <div class="stage"><div class="lv"><div class="page" id="page">
+<div class="head">
+    <div class="kicker">静心 · 中医身体日历 / DAILY BODY CALENDAR</div>
+    <h1 class="sf">中医身体日历<span class="dot">·</span>立冬</h1>
+    <div class="sub">2026 年 11 月 8 日 星期日 ｜ 农历丙午年九月三十 ｜ 立冬第 2 天 · 距小雪 14 天 ｜ 陕西 · 汉中 · 西乡县</div>
+    <div class="stamp sf">藏</div>
+  </div>
+
+  <!-- 今日档案 -->
+  <div class="meta">
+    <div class="m"><div class="k">天气</div><div class="v">阴 · 全日无雨</div></div>
+    <div class="m"><div class="k">实况气温</div><div class="v">15.2 ℃ <small>体感 12.4</small></div></div>
+    <div class="m"><div class="k">今日区间</div><div class="v">9.7–17.1 ℃ <small>温差 7.4</small></div></div>
+    <div class="m"><div class="k">湿度</div><div class="v">43 % <small>偏干</small></div></div>
+    <div class="m"><div class="k">风</div><div class="v">7.8 <small>阵风 22.0 km/h</small></div></div>
+    <div class="m"><div class="k">日出 / 日落</div><div class="v">07:12 / 17:52</div></div>
+    <div class="m"><div class="k">空气</div><div class="v">AQI 51 <small>良 · UV 2.1</small></div></div>
+    <div class="m"><div class="k">区划</div><div class="v">西乡县 <small>code 610724</small></div></div>
+  </div>
+
+  <!-- 个人化说明 -->
+  <div class="notice">
+    <h3>⚠ 个人化说明 · 先读这一段</h3>
+    <p style="margin-top:2px">你提供的是：<strong>48 岁 · 肩颈僵硬 · 喉咙有痰 · 运动后背部冒大汗 · 陕西汉中西乡县</strong>。本版据此做了 4 处保守调整：</p>
+    <div class="rows">
+      <div><b>背部易大汗</b> → 强度再降一档（RPE 9–11），<b>以不出大汗为硬上限</b>，分层穿衣、汗后擦干避风</div>
+      <div><b>肩颈僵硬</b> → 热身与工间加温和肩颈动作，缓慢、不痛为准；不做扳动建议</div>
+      <div><b>喉咙有痰</b> → 只给通用舒适护理（温水 / 湿度 / 挡风 / 减刺激），<b class="nw">不含药膳、食疗或化痰方</b></div>
+      <div><b>48 岁</b> → 给粗略心率参考但仍以谈话测试为准；保留每周 2 天力量活动</div>
+    </div>
+    <div class="edge">以上自述仅作为<strong>调整作息与运动强度的依据</strong>，不构成对任何疾病的判断 —— 不辨体质证型、不诊断、不开方药、不判吉凶、不承诺疗效。相关感受若持续或加重，请就医评估（见「风险提醒」）。</div>
+  </div>
+
+  <!-- 主题 -->
+  <div class="theme">
+    <div class="t sf">闭藏之始 · 防风就温，勿令大汗</div>
+    <q>冬三月，此谓闭藏。水冰地坼，无扰乎阳。早卧晚起，必待日光……去寒就温，无泄皮肤，使气亟夺。</q>
+    <p>——《素问·四气调神大论》。立冬刚过两天，西乡县今日阴而不雨、湿度仅 43 %、阵风 22 km·h⁻¹、体感 12.4 ℃ 低于气温，早晚最低 9.7 ℃。中医讲「藏」，现代运动科学讲「中低强度 + 环境与汗后管理」，今天指向同一件事：<strong>暖得起来，却不出大汗；万一出汗，立刻擦干避风</strong>。这不是玄学宜忌，是给身体留余量。</p>
+  </div>
+
+  <!-- 宜忌 -->
+  <div class="sec">
+    <h2 class="sf"><span class="no">二 / 三</span>今日宜 · 今日不宜</h2>
+    <div class="two">
+      <div class="box yes">
+        <h3 class="sf">✓ 今日宜（行为提醒）</h3>
+        <ol>
+          <li><strong>早卧晚起，必待日光</strong>：22:30 前睡、07:10 后起（日出 07:12）</li>
+          <li><strong>低—中低强度 20–30 分钟</strong>，热身做足 10 分钟；背部一开始冒汗即降速或结束</li>
+          <li><strong>分层穿衣</strong>：内层贴身 + 外层防风，热了先脱外层</li>
+          <li><strong>少量多次温水</strong>；偏干时室内适度加湿</li>
+          <li><strong>护三处</strong>：后颈、腰腹、脚踝；外出挡风</li>
+          <li><strong>上午见光 15–20 分钟</strong>（UV 2.1）</li>
+          <li>每 45–60 分钟起身，收下巴 + 肩胛后缩各 10 次</li>
+        </ol>
+      </div>
+      <div class="box no">
+        <h3 class="sf">✕ 今日不宜（行为提醒）</h3>
+        <ol>
+          <li>不追求大汗、不做力竭 / 冲刺 / 高强度间歇</li>
+          <li>不在日出前、日落后外出运动（17:52 日落，降温快）</li>
+          <li>不在风口久站或迎风运动（阵风 22 km·h⁻¹）</li>
+          <li>不久坐连续超 60 分钟、不长时间低头</li>
+          <li>不冰饮、不生冷、不过量辛辣；不烟尘刺激、不过度用嗓</li>
+          <li>汗后不冲冷水、不吹风、不湿衣久穿</li>
+          <li><strong>不把「宜 / 不宜」当吉凶判断</strong> —— 全是行为与生理提醒</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- 作息 -->
+  <div class="sec">
+    <h2 class="sf"><span class="no">四</span>作息 · 照着做即可</h2>
+    <table class="tight">
+      <tr><th style="width:130px">时间</th><th>做什么</th></tr>
+      <tr><td>07:10–07:20</td><td>醒后「三个 1 分钟」：躺 1 分钟 → 坐起 1 分钟 → 床边站 1 分钟再下地（防体位性头晕）；等天亮再活动</td></tr>
+      <tr><td>07:20</td><td>温水 200 ml；开窗见光 5 分钟</td></tr>
+      <tr><td>09:00–11:00</td><td>每 45–60 分钟起身 2–3 分钟：<strong>收下巴 10 次 + 肩胛后缩 10 次 + 踝泵</strong></td></tr>
+      <tr><td>10:00–16:00</td><td><strong>今日运动推荐窗口</strong>：气温较高、有日光，避开早晚最冷时段；选背风处</td></tr>
+      <tr><td>12:30</td><td>午餐七分饱，饭后慢走 / 靠墙站 10 分钟，不立刻躺</td></tr>
+      <tr><td>15:00</td><td>见光 15–20 分钟 + 3 分钟呼吸练习</td></tr>
+      <tr><td>17:52 后</td><td>日落收户外活动改室内；加一件外套，风口不逗留</td></tr>
+      <tr><td>21:20</td><td>泡脚（可选）：水温 ≤40 ℃、10–15 分钟，<strong>微微暖即停，不出汗</strong></td></tr>
+      <tr><td>22:30 前</td><td>熄灯入睡；睡前 30 分钟放下屏幕</td></tr>
+    </table>
+    <div class="hl b">泡脚限定：糖尿病足 / 周围血管病 / 皮肤破损 / 感觉减退者不做，或先咨询医生；易大汗者尤其别泡到出汗。</div>
+  </div>
+
+  <!-- 饮食 -->
+  <div class="sec">
+    <h2 class="sf"><span class="no">五</span>饮食</h2>
+    <ul class="dot">
+      <li><strong>结构</strong>：温热熟食为主；每餐一掌心优质蛋白（蛋 / 豆制品 / 鱼 / 瘦肉）；主食粗细搭配；蔬菜占半盘。48 岁配合每周 2 天力量活动，有助于维持肌肉量。</li>
+      <li><strong>今日顺手可做</strong>：早上一碗热粥 / 热汤面；午餐炖煮类（白萝卜、莲藕、山药、南瓜、白菜）；下午一杯温水。湿度 43 % 偏干，可适度增加汤水。</li>
+      <li><strong>喝水</strong>：全天约 1200–1500 ml，少量多次；风大偏干别等口渴猛灌（心 / 肾功能异常者遵医嘱调整）。</li>
+      <li><strong>少一点</strong>：冰饮、生冷、甜腻、过量辛辣与烟尘刺激。</li>
+    </ul>
+    <div class="hl">以上只是日常饮食结构，<strong>不含药膳、食疗方、药材或任何「化痰」偏方</strong>；有慢性病、过敏或忌口请按医生 / 营养师方案。喉咙的舒适护理见「个人化说明」与「风险提醒」。</div>
+  </div>
+
+  <!-- 运动 -->
+  <div class="sec">
+    <h2 class="sf"><span class="no">六</span>运动 · 今日重点</h2>
+    <p style="margin-top:0"><strong style="font-size:16px">定调：低—中低强度 · 以不出大汗为硬上限 · 室内或背风处</strong></p>
+    <table>
+      <tr><th style="width:118px">要素</th><th>具体做法</th></tr>
+      <tr><td>强度自测</td><td><strong>谈话测试</strong>：能轻松完整说话 = 刚好；<strong>RPE 9–11</strong>（6–20 量表），自觉「很轻松、略有点活动感」</td></tr>
+      <tr><td>心率参考</td><td>48 岁按 220−年龄估算上限约 172，中低强度 50–60 % ≈ <strong>86–103 次/分</strong>。仅粗略参考：年龄公式误差大，<strong>一律以谈话测试 + RPE 为准</strong>；服降心率类药物者不用心率法</td></tr>
+      <tr><td>硬上限</td><td><strong>背部一开始冒汗，就降速或结束</strong> —— 今天最重要的规则。宁可少做 5 分钟，不要练到大汗后受风</td></tr>
+      <tr><td>总量</td><td>一次 20–30 分钟（含热身收操）；本周往 WHO 成人 <strong>150–300 分钟中等强度 / 周</strong> 靠拢，不必一天补完</td></tr>
+      <tr><td>热身 10 分钟</td><td>干冷有风关节更僵：原地踏步 2 分钟 → <strong>收下巴 8 次</strong> → 肩 / 髋 / 膝 / 踝绕环各 8 次 → 靠墙天使 6 次 → 猫牛式 6 次</td></tr>
+      <tr><td>主项（三选一）</td><td><strong>A</strong> 室内或背风处快走 15–20 分钟　<strong>B</strong> 八段锦 / 太极 1–2 遍　<strong>C</strong> 徒手力量（ACSM 每周 ≥2 天）：靠墙静蹲 2×8、坐姿提踵 2×12、墙壁俯卧撑 2×8、臀桥 2×10，组间休息 60–90 秒</td></tr>
+      <tr><td>收操 3–5 分钟</td><td>慢走 + <strong>胸大肌靠墙拉伸</strong> / 小腿 / 大腿后侧静态拉伸，各 15–20 秒，<strong>不痛为准</strong></td></tr>
+      <tr><td>汗后</td><td>立刻到背风处擦干、换干衣、加回外层；不冲冷水、不迎风站</td></tr>
+    </table>
+    <div class="chips">
+      <span class="chip k">立即停止：胸痛胸闷 · 头晕黑朦 · 明显气短 · 心悸不缓解 · 关节急性肿痛 · 上肢麻木放射痛</span>
+    </div>
+    <div class="hl b"><strong>肩颈温和动作</strong>（针对「肩颈僵硬」这一自觉感受，非治疗）：收下巴、肩绕环、肩胛后缩、靠墙天使、胸大肌拉伸，全程缓慢、不痛为准。<strong>不做</strong>快速甩头、大幅度扭颈、暴力扳动，不做长时间低头。<br>
+    <strong>为什么今天更保守</strong>：干冷 + 阵风 22 km·h⁻¹ + 温差 7.4 ℃，汗后受凉风险比湿冷盆地更突出；加上你自述背部易大汗，故把上限压到「不出大汗」。AQI 51（良）、无雨，户外条件本身尚可，只是<strong>风与汗</strong>要管住。</div>
+    <p>《内经》「无泄皮肤」与现代运动科学「控制强度、重视环境与汗后管理」是同一条建议的两种说法，不是互相印证疗效，只是都主张<strong>留余量</strong>。</p>
+  </div>
+
+  <!-- 情志 -->
+  <div class="sec">
+    <h2 class="sf"><span class="no">七</span>情志</h2>
+    <p style="margin-top:0"><q style="quotes:'「' '」'">使志若伏若匿，若有私意，若已有得。</q> ——《素问·四气调神大论》</p>
+    <ul class="dot">
+      <li>冬主藏，情绪宜<strong>收</strong>不宜<strong>泄</strong>：不必逼自己亢奋、高效、满满当当。</li>
+      <li>今日两件小事：① <strong>3 分钟呼吸</strong>，吸 4 秒 / 呼 6 秒、5 轮，呼气比吸气长（顺带放松肩颈）；② 写下一句「<strong>今天这样已经够了</strong>」。</li>
+      <li>今日有日光（UV 2.1），上午见光 15–20 分钟比阴雨天更容易做到；陪伴优于社交，低强度不耗能的相处就好。</li>
+      <li>若情绪低落 / 兴趣减退<strong>持续 2 周以上</strong>，或明显影响睡眠进食 → 建议找专业医生评估（此处不做判断）。</li>
+    </ul>
+  </div>
+
+  <!-- 内观五问 -->
+  <div class="sec">
+    <h2 class="sf"><span class="no">八</span>内观五问 · 只记录事实，不自我诊断</h2>
+    <div class="asks">
+      <div class="a">今天肩颈的紧，是<strong>起床时</strong>最明显，还是<strong>久坐后</strong>更明显？左右有差别吗？</div>
+      <div class="a">喉咙的不适，喝温水后有没有缓和？一天里哪个时段明显？</div>
+      <div class="a">今天活动到<strong>第几分钟、做了哪个动作</strong>时背部开始出汗？</div>
+      <div class="a">到下午手脚还凉吗？在风口待过后有没有更不舒服？</div>
+      <div class="a">睡前脑子静下来了吗，还在转明天的事吗？</div>
+    </div>
+    <p style="font-size:13px;color:var(--cin)">记录方式：只写事实与感受，不给自己下结论、不拿症状对号入座、不据此调整用药。</p>
+  </div>
+
+  <!-- 风险 -->
+  <div class="sec">
+    <h2 class="sf"><span class="no">九</span>风险提醒</h2>
+    <table class="tight">
+      <tr><th style="width:150px">类别</th><th>提醒</th></tr>
+      <tr><td>天气</td><td>阵风 22 km·h⁻¹ → 不迎风久站 / 不在风口运动；温差 7.4 ℃ → 分层穿衣、早晚加衣；湿度 43 % → 少量多次温水；AQI 51（良）→ 户外条件尚可</td></tr>
+      <tr><td>红旗（停止并就医）</td><td>运动后持续胸痛 / 胸闷、头晕黑朦、明显气短、心悸不缓解、关节急性肿痛、上肢麻木或放射痛</td></tr>
+      <tr><td>40 岁以上 + 出汗明显</td><td>若出汗同时伴胸闷 / 胸痛 / 头晕 / 明显气短，先就医评估，再恢复规律运动</td></tr>
+      <tr><td>先问医生再调整运动</td><td>高血压 / 心脏病 / 糖尿病 / 呼吸系统疾病等慢性病史、孕期、术后恢复期、正在服药、近两周有发热或急性感染</td></tr>
+      <tr><td>肩颈 / 咽喉</td><td>肩颈不适若伴上肢麻木、放射痛或头晕，或持续加重 → 就医评估；咽喉不适若<strong>持续超过 2 周</strong>，或伴发热、气短、血痰、明显咽痛 → 就医评估。<strong>本日历不提供任何药物、药膳或化痰方</strong></td></tr>
+      <tr><td>泡脚限定</td><td>水温 ≤40 ℃、10–15 分钟、不出汗；糖尿病足 / 周围血管病 / 皮肤破损 / 感觉减退者不做</td></tr>
+      <tr><td>边界</td><td>本日历为<strong>日常养生教育</strong>，不诊断、不开方药、不判吉凶、不承诺疗效，不替代医疗诊断与治疗</td></tr>
+    </table>
+  </div>
+
+  <!-- 依据 -->
+  <div class="sec">
+    <h2 class="sf"><span class="no">十</span>依据 · 四层可查</h2>
+    <table class="tight">
+      <tr><th style="width:96px">层</th><th style="width:38%">来源</th><th>用于本日哪些结论</th></tr>
+      <tr><td><strong>经典</strong></td><td>《素问·四气调神大论》冬三月章：「早卧晚起，必待日光」「去寒就温，无泄皮肤」「使志若伏若匿」；《素问·上古天真论》「法于阴阳，和于术数」</td><td>待日光而作、护阳不泄、情志收敛、<strong>不出大汗</strong>这一硬上限</td></tr>
+      <tr><td><strong>现代规范</strong></td><td><strong>WHO</strong>《Guidelines on physical activity and sedentary behaviour》(2020)：成人每周 150–300 min 中等强度有氧 + ≥2 天肌肉强化、减少久坐；<strong>ACSM</strong> 强度分级（RPE / 谈话测试）、热身渐进、年龄预测心率公式的局限、环境与汗后管理属通用运动安全建议</td><td>RPE 9–11、20–30 min/次、热身加倍、每周力量 2 天、每 45–60 分钟起身、心率仅作参考</td></tr>
+      <tr><td><strong>气象</strong></td><td><strong>Open-Meteo</strong> Forecast + Air Quality API，2026-11-08 11:15，西乡县 32.98 / 107.76</td><td>阴、15.2 ℃（体感 12.4）、湿度 43 %、风 7.8（阵风 22）、无降水、9.7–17.1 ℃、07:12 / 17:52、US AQI 51、UV 2.1、海拔 429 m</td></tr>
+      <tr><td><strong>历法 / 区划</strong></td><td>本项目离线农历 + 太阳黄经 24 节气算法（1900–2100；已用 2026 春节＝丙午年正月初一、1984 甲子年、2033 闰冬月校验）；离线行政区划表命中「陕西省 / 汉中市 / 西乡县」code 610724（同名候选：广西南宁西乡塘区）</td><td>丙午年九月三十、立冬第 2 天、距小雪 14 天；县级位置可离线定位</td></tr>
+    </table>
+    <div class="hl b">经典提供<strong>思想框架</strong>，现代指南提供<strong>剂量与安全阈值</strong>，气象与历法提供<strong>当日条件</strong>；四者均不构成医疗建议。</div>
+  </div>
+
+  <div class="foot">
+    <div class="l">
+      <b>守住的边界</b>
+      不诊断 · 不开方药 · 不判吉凶 · 不承诺疗效；「宜 / 忌」是行为提醒，非玄学禁忌。<br>
+      本日历为日常养生科普，不替代医疗诊断与治疗。
+    </div>
+    <div class="r">
+      生成于 2026-11-08<br>依据你提供的个人情况做保守调整<br>
+      <div class="seal sf">静心</div>
+    </div>
+  </div>
+  <div class="tagline">— 中医身体日历 · 立冬 · 陕西汉中西乡县 —</div>
+</div></div></div>
+  </div>
+  <div class="view" id="vCards">
+    <div class="zoomnote">3 张 1080 × 1920 竖图 · 点击「导出三张 PNG」依次下载 <b>2x 高清</b>成品</div>
+    <div class="stage">
+<div class="c9" id="c1">
+  <div class="hd">
+    <div class="kick">静心 · 中医身体日历 / DAILY BODY CALENDAR</div>
+    <h1>今日天时<span class="dot">·</span>总纲</h1>
+    <div class="sub">2026 年 11 月 8 日 星期日 ｜ 农历丙午年九月三十<br>立冬第 2 天 · 距小雪 14 天 ｜ 陕西 · 汉中 · 西乡县</div>
+    <div class="stamp">藏</div>
+  </div>
+  <div class="bd">
+    <div class="lead"><span>今日一句</span><b>暖得起来，却不出大汗</b>；万一出汗，立刻擦干避风。</div>
+
+    <div class="blk">
+      <div class="cap">今日档案 <i>DAILY FACTS</i></div>
+      <div class="facts">
+        <div class="g"><div class="k">天气</div><div class="v">阴 · 全日无雨</div></div>
+<div class="g"><div class="k">实况气温</div><div class="v">15.2 ℃<span class="sub">体感 12.4</span></div></div>
+<div class="g"><div class="k">今日区间</div><div class="v">9.7–17.1 ℃<span class="sub">温差 7.4</span></div></div>
+<div class="g"><div class="k">湿度</div><div class="v">43 %<span class="sub">偏干</span></div></div>
+<div class="g"><div class="k">风</div><div class="v">7.8<span class="sub">阵风 22.0 km/h</span></div></div>
+<div class="g"><div class="k">日出 / 日落</div><div class="v">07:12 / 17:52</div></div>
+<div class="g"><div class="k">空气</div><div class="v">AQI 51<span class="sub">良 · UV 2.1</span></div></div>
+<div class="g"><div class="k">区划</div><div class="v">西乡县<span class="sub">code 610724</span></div></div>
+      </div>
+    </div>
+
+    <div class="blk theme">
+      <div class="cap">今日基调 <i>THEME</i></div>
+      <div class="tt">闭藏之始 · 防风就温，勿令大汗</div>
+      <q>冬三月，此谓闭藏。水冰地坼，无扰乎阳。早卧晚起，必待日光……去寒就温，无泄皮肤。</q>
+      <div class="qs">——《素问·四气调神大论》</div>
+    </div>
+
+    <div class="blk">
+      <div class="cap">为你做的 4 处保守调整 <i>FOR YOU</i></div>
+      <div class="adj">
+        <div class="a"><b>背部易大汗</b><span>强度再降一档 RPE 9–11，以不出大汗为硬上限</span></div>
+        <div class="a"><b>肩颈僵硬</b><span>加温和肩颈动作，缓慢、不痛为准；不做扳动</span></div>
+        <div class="a"><b>喉咙有痰</b><span>仅通用舒适护理：温水 / 湿度 / 挡风 / 减刺激</span></div>
+        <div class="a"><b>48 岁</b><span>心率只作粗略参考，以谈话测试为准</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="ft"><div class="src">依据：《素问·四气调神大论》 · Open-Meteo 11:15 · WHO / ACSM · 离线历法与区划 610724</div><div class="pg">1 / 3</div></div>
+</div>
+
+
+<div class="c9" id="c2">
+  <div class="hd">
+    <div class="kick">中医身体日历 · 立冬第 2 天 / 2026-11-08</div>
+    <h1>今日宜<span class="dot">·</span>今日不宜</h1>
+    <div class="sub">行为与生理提醒，不是吉凶判断 ｜ 陕西 · 汉中 · 西乡县</div>
+    <div class="stamp">宜</div>
+  </div>
+  <div class="bd">
+    <div class="two">
+      <div class="box yes">
+        <h3>✓ 今日宜</h3>
+        <ol>
+          <li>早卧晚起，必待日光（22:30 前睡 / 07:10 后起）</li>
+          <li>低—中低强度 20–30 分钟，热身做足 10 分钟</li>
+          <li>分层穿衣，热了先脱外层</li>
+          <li>少量多次温水；偏干时适度加湿</li>
+          <li>护三处：后颈、腰腹、脚踝</li>
+          <li>上午见光 15–20 分钟</li>
+          <li>每 45–60 分钟起身，收下巴 + 肩胛后缩各 10 次</li>
+        </ol>
+      </div>
+      <div class="box no">
+        <h3>✕ 今日不宜</h3>
+        <ol>
+          <li>不追求大汗、不做力竭 / 冲刺 / 高强度间歇</li>
+          <li>不在日出前、日落后外出运动（17:52 日落）</li>
+          <li>不在风口久站或迎风运动（阵风 22）</li>
+          <li>不久坐连续超 60 分钟、不长时间低头</li>
+          <li>不冰饮生冷、不过量辛辣、不过度用嗓</li>
+          <li>汗后不冲冷水、不吹风、不湿衣久穿</li>
+          <li>不把「宜 / 不宜」当吉凶判断</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="cap">作息 · 6 个关键节点 <i>ROUTINE</i></div>
+      <div class="tl">
+        <div class="t"><b>07:10</b><span>醒后「三个 1 分钟」再下地，等天亮</span></div>
+        <div class="t"><b>07:20</b><span>温水 200 ml，开窗见光 5 分钟</span></div>
+        <div class="t"><b>10:00–16:00</b><span>今日运动窗口，气温较高有日光，选背风处</span></div>
+        <div class="t"><b>15:00</b><span>见光 15–20 分钟 + 3 分钟呼吸练习</span></div>
+        <div class="t"><b>17:52 后</b><span>日落收户外活动改室内，加外套</span></div>
+        <div class="t"><b>22:30 前</b><span>熄灯入睡，睡前 30 分钟放下屏幕</span></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <div class="cap">饮食 <i>DIET</i></div>
+      <div class="diet"><span>温热熟食 · 蔬菜半盘 · 每餐一掌心优质蛋白</span><span>全天温水 1200–1500 ml，少量多次</span><span>少冰饮生冷甜腻；不含药膳、食疗与化痰方</span></div>
+    </div>
+
+    <div class="hard"><i>硬上限</i><b>背部一开始冒汗，就降速或结束</b></div>
+  </div>
+  <div class="ft"><div class="src">依据：《素问·四气调神大论》 · WHO 2020 / ACSM · Open-Meteo 气象 · 作息饮食为通用日常建议</div><div class="pg">2 / 3</div></div>
+</div>
+
+
+<div class="c9" id="c3">
+  <div class="hd">
+    <div class="kick">中医身体日历 · 今日重点 / 守住边界</div>
+    <h1>运动<span class="dot">·</span>内观<span class="dot">·</span>边界</h1>
+    <div class="sub">低—中低强度 · 以不出大汗为硬上限 · 室内或背风处</div>
+    <div class="stamp">守</div>
+  </div>
+  <div class="bd">
+    <div class="blk">
+      <div class="cap">运动 · 4 个关键格 <i>EXERCISE</i></div>
+      <div class="ex">
+        <div class="e"><b>强度自测</b><span>谈话测试：能轻松完整说话＝刚好；RPE 9–11</span></div>
+        <div class="e"><b>心率参考</b><span>86–103 次/分（48 岁估算），误差大，仅粗略参考</span></div>
+        <div class="e"><b>总量</b><span>一次 20–30 分钟；本周向 WHO 150–300 分钟靠拢</span></div>
+        <div class="e"><b>汗后</b><span>立刻擦干、换干衣、加回外层；不冲冷水、不迎风站</span></div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="s"><b>热身 10′</b><span>原地踏步 → 收下巴 8 次 → 关节绕环 → 靠墙天使 → 猫牛式</span></div>
+      <div class="s"><b>主项三选一</b><span>A 快走 15–20′　B 八段锦 / 太极 1–2 遍　C 徒手力量（靠墙静蹲 / 提踵 / 墙壁俯卧撑 / 臀桥）</span></div>
+      <div class="s"><b>收操 3–5′</b><span>慢走 + 胸大肌 / 小腿 / 大腿后侧静态拉伸各 15–20 秒，不痛为准</span></div>
+    </div>
+
+    <div class="blk half">
+      <div class="cap">情志与内观 <i>MIND</i></div>
+      <div class="mind">
+        <div><b>情志两件小事</b><span>冬主藏，情绪宜收不宜泄 · 3 分钟呼吸（吸 4 呼 6，5 轮）· 写一句「今天这样已经够了」</span></div>
+        <div><b>内观五问</b><span>① 肩颈紧在起床时还是久坐后？② 温水后喉咙有缓和吗？③ 第几分钟 / 哪个动作开始出汗？④ 下午手脚还凉吗？⑤ 睡前脑子静下来了吗？</span></div>
+      </div>
+    </div>
+
+    <div class="red"><i>红旗 · 立即停止并就医</i><span>胸痛胸闷 · 头晕黑朦 · 明显气短 · 心悸不缓解 · 关节急性肿痛 · 上肢麻木或放射痛</span></div>
+
+    <div class="blk">
+      <div class="cap">依据 · 四层可查 <i>SOURCES</i></div>
+      <div class="basis">
+        <div class="b"><b>经典</b><span>《素问》→ 待日光、护阳不泄、情志收敛、不出大汗</span></div>
+        <div class="b"><b>现代规范</b><span>WHO 2020 / ACSM → RPE、150–300 分/周、热身与汗后管理</span></div>
+        <div class="b"><b>气象</b><span>Open-Meteo 11:15 → 阴 15.2 ℃、湿度 43 %、阵风 22、无雨</span></div>
+        <div class="b"><b>历法 / 区划</b><span>离线节气算法 · 西乡县 code 610724</span></div>
+      </div>
+    </div>
+
+    <div class="edge"><div><b>守住的边界</b><span>不诊断 · 不开方药 · 不判吉凶 · 不承诺疗效<br>本日历为日常养生科普，不替代医疗诊断与治疗</span></div><div class="seal">静心</div></div>
+  </div>
+  <div class="ft"><div class="src">生成于 2026-11-08 · 依据个人情况做保守调整 · 完整版见长图与详细文字报告</div><div class="pg">3 / 3</div></div>
+</div>
+</div>
+  </div>
+  <div class="view" id="vReport">
+    <div class="zoomnote">完整文字版 · 含目录 / 十章正文 / 四项附录 · 可复制全文或下载 MD / HTML</div>
+    <div class="stage"><div class="rp-wrap"><div class="rp"><h1>中医身体日历 · 详细文字报告</h1>
+<blockquote>
+<p><strong>立冬第 2 天 · 2026 年 11 月 8 日（星期日） · 农历丙午年九月三十 · 陕西 · 汉中 · 西乡县</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>报告项</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>报告名称</td>
+<td>中医身体日历 · 详细文字报告</td>
+</tr>
+<tr>
+<td>报告日期</td>
+<td>2026-11-08（立冬第 2 天，距小雪 14 天）</td>
+</tr>
+<tr>
+<td>适用对象</td>
+<td>48 岁 · 肩颈僵硬 · 喉咙有痰 · 运动后背部冒大汗 · 陕西汉中西乡县</td>
+</tr>
+<tr>
+<td>数据基准</td>
+<td>《中医身体日历》长图母版（同源派生）</td>
+</tr>
+<tr>
+<td>气象来源</td>
+<td>Open-Meteo Forecast + Air Quality API，2026-11-08 11:15，西乡县 32.98 / 107.76</td>
+</tr>
+<tr>
+<td>版本</td>
+<td>v1.0 · 保守版（中低强度、不出大汗为硬上限）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>今日一句</h2>
+<blockquote>
+<p><strong>暖得起来，却不出大汗；万一出汗，立刻擦干避风。</strong></p>
+</blockquote>
+<p>今日西乡县阴而不雨、湿度仅 43 %、阵风 22 km·h⁻¹、体感 12.4 ℃ 低于气温，早晚最低 9.7 ℃。《素问》讲「藏」，现代运动科学讲「中低强度 + 环境与汗后管理」，两者今天指向同一件事：<strong>给身体留余量</strong>。这不是玄学宜忌。</p>
+<hr />
+<h2>目录</h2>
+<ol>
+<li>今日档案</li>
+<li>个人化说明（先读这一段）</li>
+<li>今日主题</li>
+<li>今日宜 / 今日不宜</li>
+<li>作息</li>
+<li>饮食</li>
+<li>运动（今日重点）</li>
+<li>情志</li>
+<li>内观五问</li>
+<li>风险提醒</li>
+<li>依据（四层可查）</li>
+<li>附录 A · 数据来源与算法校验</li>
+<li>附录 B · 安全边界（完整）</li>
+<li>附录 C · 术语速查</li>
+<li>附录 D · 本报告与派生产物</li>
+</ol>
+<hr />
+<blockquote>
+<p><strong>闭藏之始 · 防风就温，勿令大汗</strong>
+立冬第 2 天。西乡县今日干冷有风、昼夜温差 7.4 ℃。《四气调神大论》讲「去寒就温，无泄皮肤」，落到今天和你自述的「运动后背部冒大汗」，重点只有一句：<strong>暖得起来，却不出大汗；万一出汗，立刻擦干避风</strong>。</p>
+</blockquote>
+<hr />
+<h2>今日档案</h2>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>公历</td>
+<td>2026-11-08 · 星期日</td>
+</tr>
+<tr>
+<td>农历</td>
+<td>丙午年 九月三十</td>
+</tr>
+<tr>
+<td>节气</td>
+<td><strong>立冬第 2 天</strong> · 距小雪 14 天</td>
+</tr>
+<tr>
+<td>位置</td>
+<td>陕西 · 汉中 · <strong>西乡县</strong>（离线行政区划表命中，code 610724）</td>
+</tr>
+<tr>
+<td>天气</td>
+<td>阴（WMO 3），<strong>全日无降水</strong></td>
+</tr>
+<tr>
+<td>气温</td>
+<td>实况 <strong>15.2 ℃</strong>（体感 12.4 ℃）；今日 <strong>9.7–17.1 ℃</strong>，温差 7.4 ℃</td>
+</tr>
+<tr>
+<td>湿度 / 风</td>
+<td><strong>43 %</strong>（偏干）／ 7.8 km·h⁻¹，<strong>阵风 22.0</strong></td>
+</tr>
+<tr>
+<td>日出 / 日落</td>
+<td>07:12 / 17:52</td>
+</tr>
+<tr>
+<td>空气</td>
+<td>US AQI <strong>51（良）</strong>，PM2.5 17.5 μg·m⁻³，UV 2.1</td>
+</tr>
+<tr>
+<td>海拔</td>
+<td>429 m（Open-Meteo 网格）</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>与之前示例用的成都双流区相比：这里<strong>更干、风更大、温差更大、无雨、空气更好</strong>。所以「去寒就温」的重点从「防湿滑」转为「<strong>防风 + 分层穿衣 + 汗后避风</strong>」。</p>
+</blockquote>
+<hr />
+<h2>⚠️ 个人化说明（先读这一段）</h2>
+<p>你提供的是：<strong>48 岁 · 肩颈僵硬 · 喉咙有痰 · 运动后背部冒大汗 · 陕西汉中西乡县</strong>。</p>
+<p>本版据此做了 4 处<strong>保守调整</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>你的自述</th>
+<th>本版怎么处理</th>
+<th>不做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>运动后背部冒大汗</td>
+<td>强度再降一档（RPE 9–11），<strong>以不出大汗为硬上限</strong>；分层穿衣，汗后立即擦干换衣、避风</td>
+<td>不判断这是什么体质 / 证型</td>
+</tr>
+<tr>
+<td>肩颈僵硬</td>
+<td>热身与工间加温和肩颈动作，缓慢、不痛为准</td>
+<td>不诊断颈椎问题、不做手法扳动建议</td>
+</tr>
+<tr>
+<td>喉咙有痰</td>
+<td>只给通用舒适护理：温水、适宜室内湿度、挡风、减少刺激</td>
+<td><strong>不开药方、不给食疗/化痰方、不判断病因</strong></td>
+</tr>
+<tr>
+<td>48 岁</td>
+<td>给一个粗略心率参考，但仍以谈话测试为准；保留每周力量 2 天</td>
+<td>不做健康评估、不替代体检</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>以上自述仅作为<strong>调整作息与运动强度的依据</strong>，不构成对任何疾病的判断。本日历为养生教育，不诊断、不开方药、不判吉凶、不承诺疗效。相关感受若持续或加重，请就医评估（见「风险提醒」）。</p>
+</blockquote>
+<hr />
+<h2>一、今日主题</h2>
+<p><strong>闭藏之始 · 防风就温，勿令大汗</strong></p>
+<p>《素问·四气调神大论》：「冬三月，此谓闭藏。水冰地坼，无扰乎阳。早卧晚起，必待日光……去寒就温，无泄皮肤，使气亟夺。」</p>
+<p>立冬刚过两天。西乡县今日阴而不雨、湿度仅 43%、阵风 22 km·h⁻¹、体感 12.4 ℃ 明显低于气温 15.2 ℃，早晚最低 9.7 ℃。中医讲「藏」，现代运动科学讲「中低强度、注意环境与汗后管理」，两者今天指向同一件事：<strong>微微暖、不出大汗、汗后别受风</strong>。这不是玄学宜忌，是给身体留余量。</p>
+<hr />
+<h2>二、今日宜（行为提醒，非吉凶）</h2>
+<ol>
+<li><strong>早卧晚起，必待日光</strong> —— 22:30 前睡、07:10 后起（日出 07:12），不摸黑晨练。</li>
+<li><strong>低—中低强度活动 20–30 分钟</strong>，热身做足 10 分钟；<strong>一旦背部开始冒汗，即降速或结束</strong>。</li>
+<li><strong>分层穿衣</strong>：内层贴身、外层防风；热了先脱外层，别一次脱到单衣。</li>
+<li><strong>少量多次温水</strong>；室内湿度偏干时适当加湿到舒适区间。</li>
+<li><strong>护三处</strong>：后颈、腰腹、脚踝；外出挡风（薄口罩 / 围巾）。</li>
+<li><strong>上午见光 15–20 分钟</strong>（UV 2.1，比阴雨盆地条件好）。</li>
+<li><strong>每 45–60 分钟起身</strong>，做收下巴 + 肩胛后缩 10 次。</li>
+</ol>
+<h2>三、今日不宜（行为提醒，非吉凶）</h2>
+<ol>
+<li>不追求大汗、不做力竭 / 冲刺 / 高强度间歇（「无泄皮肤」，也是你自述的出汗反应所限）。</li>
+<li>不在日出前、日落后外出运动（17:52 日落，降温快）。</li>
+<li>不在风口久站或迎风运动（阵风 22 km·h⁻¹）。</li>
+<li>不久坐连续超过 60 分钟、不长时间低头。</li>
+<li>不冰饮、不生冷、不过量辛辣；不烟尘刺激、不过度用嗓。</li>
+<li>汗后不冲冷水、不吹风、不湿衣久穿。</li>
+<li><strong>不把「宜 / 不宜」当吉凶判断</strong> —— 这里全是行为与生理提醒。</li>
+</ol>
+<hr />
+<h2>四、作息（照着做即可）</h2>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>07:10–07:20</td>
+<td>醒后「三个 1 分钟」：躺 1 分钟 → 坐起 1 分钟 → 床边站 1 分钟，再下地（防体位性头晕）；等天亮再活动</td>
+</tr>
+<tr>
+<td>07:20</td>
+<td>温水 200 ml；开窗见光 5 分钟</td>
+</tr>
+<tr>
+<td>09:00–11:00</td>
+<td>每 45–60 分钟起身 2–3 分钟：<strong>收下巴 10 次 + 肩胛后缩 10 次 + 踝泵</strong></td>
+</tr>
+<tr>
+<td>10:00–16:00</td>
+<td>今日运动的推荐窗口：气温较高、有日光、避开早晚最冷时段；选背风处</td>
+</tr>
+<tr>
+<td>12:30</td>
+<td>午餐七分饱，饭后慢走 / 靠墙站 10 分钟，不立刻躺</td>
+</tr>
+<tr>
+<td>15:00</td>
+<td>见光 15–20 分钟 + 3 分钟呼吸练习</td>
+</tr>
+<tr>
+<td>17:52 后</td>
+<td>日落收户外活动，改室内；加一件外套，风口不逗留</td>
+</tr>
+<tr>
+<td>21:20</td>
+<td>泡脚（可选）：水温 ≤40 ℃、10–15 分钟，<strong>微微暖即停，不出汗</strong></td>
+</tr>
+<tr>
+<td>22:30 前</td>
+<td>熄灯入睡；睡前 30 分钟放下屏幕</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>泡脚限定：糖尿病足 / 周围血管病 / 皮肤破损 / 感觉减退者不做，或先咨询医生；易大汗者尤其别泡到出汗。</p>
+</blockquote>
+<hr />
+<h2>五、饮食</h2>
+<ul>
+<li><strong>结构</strong>：温热熟食为主；每餐一掌心优质蛋白（蛋 / 豆制品 / 鱼 / 瘦肉）；主食粗细搭配；蔬菜占半盘。48 岁配合每周 2 天力量活动，有助于维持肌肉量。</li>
+<li><strong>今日顺手可做</strong>：早上一碗热粥 / 热汤面；午餐炖煮类（白萝卜、莲藕、山药、南瓜、白菜）；下午一杯温水。<strong>干燥（湿度 43 %）可适度增加汤水。</strong></li>
+<li><strong>喝水</strong>：全天约 1200–1500 ml，少量多次；风大、偏干时别等口渴猛灌（心 / 肾功能异常者遵医嘱调整）。</li>
+<li><strong>少一点</strong>：冰饮、生冷、甜腻、过量辛辣与烟尘刺激。</li>
+<li><strong>边界</strong>：以上只是日常饮食结构，<strong>不含药膳、食疗方、药材或任何「化痰」偏方</strong>；有慢性病、过敏或忌口，请按医生 / 营养师方案。喉咙的舒适护理见「个人化说明」与「风险提醒」。</li>
+</ul>
+<hr />
+<h2>六、运动（今日重点）</h2>
+<p><strong>定调：低—中低强度 · 以不出大汗为硬上限 · 室内或背风处</strong></p>
+<table>
+<thead>
+<tr>
+<th>要素</th>
+<th>具体做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>强度自测</td>
+<td><strong>谈话测试</strong>：能轻松完整说话 = 刚好；<strong>RPE 9–11</strong>（6–20 量表），自觉「很轻松、略有点活动感」</td>
+</tr>
+<tr>
+<td>心率参考</td>
+<td>48 岁按 220−年龄估算上限约 172，中低强度 50–60 % ≈ <strong>86–103 次/分</strong>。仅为粗略参考：年龄公式误差大，<strong>一律以谈话测试 + RPE 为准</strong>；服降心率类药物者不用心率法，只用 RPE</td>
+</tr>
+<tr>
+<td>硬上限</td>
+<td><strong>背部一开始冒汗，就降速或结束</strong>——这是今天最重要的规则。宁可少做 5 分钟，不要练到大汗后受风</td>
+</tr>
+<tr>
+<td>总量</td>
+<td>一次 20–30 分钟（含热身与收操）；本周往 WHO 成人 <strong>150–300 分钟中等强度 / 周</strong> 靠拢，不必一天补完</td>
+</tr>
+<tr>
+<td>热身 10 分钟</td>
+<td>干冷有风，关节更僵，比平时做足：原地踏步 2 分钟 → <strong>收下巴（颈深屈肌）8 次</strong> → 肩 / 髋 / 膝 / 踝绕环各 8 次 → 靠墙天使 6 次 → 猫牛式 6 次</td>
+</tr>
+<tr>
+<td>主项（三选一）</td>
+<td><strong>A</strong> 室内或背风处快走 15–20 分钟　<strong>B</strong> 八段锦或太极 1–2 遍（低冲击、配合呼吸）　<strong>C</strong> 徒手力量（ACSM 每周 ≥2 天）：靠墙静蹲 2×8、坐姿提踵 2×12、墙壁俯卧撑 2×8、臀桥 2×10，组间休息 60–90 秒</td>
+</tr>
+<tr>
+<td>收操 3–5 分钟</td>
+<td>慢走 + <strong>胸大肌靠墙拉伸</strong> / 小腿 / 大腿后侧静态拉伸，各 15–20 秒，<strong>不痛为准</strong></td>
+</tr>
+<tr>
+<td>汗后</td>
+<td>立刻到背风处擦干、换干衣、加回外层；不冲冷水、不迎风站</td>
+</tr>
+</tbody>
+</table>
+<p><strong>肩颈温和动作</strong>（针对「肩颈僵硬」这一自觉感受，非治疗）：收下巴、肩绕环、肩胛后缩、靠墙天使、胸大肌拉伸，全程缓慢、不痛为准。<strong>不做</strong>快速甩头、大幅度扭颈、暴力扳动；不做长时间低头。</p>
+<p><strong>为什么今天更保守</strong>：干冷 + 阵风 22 km·h⁻¹ + 昼夜温差 7.4 ℃，汗后受凉风险比湿冷盆地更突出；加上你自述运动后背部易大汗，因此把上限压到「不出大汗」。AQI 51（良）、无雨，户外条件本身尚可，只是<strong>风与汗</strong>要管住。</p>
+<p><strong>立即停止的信号</strong>：胸痛 / 胸闷、头晕或眼前发黑、明显气短、心悸不缓解、关节急性肿痛、上肢麻木或放射痛。</p>
+<blockquote>
+<p>《内经》「无泄皮肤」与现代运动科学「控制强度、重视环境与汗后管理」在这里是同一条建议的两种说法，不是互相印证疗效，只是都主张<strong>留余量</strong>。</p>
+</blockquote>
+<hr />
+<h2>七、情志</h2>
+<p>《素问·四气调神大论》：「使志若伏若匿，若有私意，若已有得。」</p>
+<ul>
+<li>冬主藏，情绪宜<strong>收</strong>不宜<strong>泄</strong>：不必逼自己亢奋、高效、满满当当。</li>
+<li>今日两件小事：
+  1. <strong>3 分钟呼吸</strong>：吸 4 秒 / 呼 6 秒，5 轮，呼气比吸气长（顺带放松肩颈）。
+  2. 写下一句「<strong>今天这样已经够了</strong>」，允许自己留白。</li>
+<li>今日有日光（UV 2.1），上午见光 15–20 分钟比阴雨天更容易做到。</li>
+<li>陪伴优于社交：低强度、不耗能的相处就好。</li>
+<li>若情绪低落 / 兴趣减退<strong>持续 2 周以上</strong>，或明显影响睡眠进食 → 建议找专业医生评估（此处不做判断）。</li>
+</ul>
+<hr />
+<h2>八、内观五问（只记录事实，不自我诊断）</h2>
+<ol>
+<li>今天肩颈的紧，是<strong>起床时</strong>最明显，还是<strong>久坐后</strong>更明显？左右有差别吗？</li>
+<li>喉咙的不适，喝温水后有没有缓和？一天里哪个时段明显？</li>
+<li>今天活动到<strong>第几分钟、做了哪个动作</strong>时背部开始出汗？</li>
+<li>到下午手脚还凉吗？在风口待过后有没有更不舒服？</li>
+<li>睡前脑子静下来了吗，还在转明天的事吗？</li>
+</ol>
+<blockquote>
+<p>记录方式：只写事实与感受，不给自己下结论、不拿症状对号入座、不据此调整用药。</p>
+</blockquote>
+<hr />
+<h2>九、风险提醒</h2>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>提醒</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>天气</td>
+<td>阵风 22 km·h⁻¹ → 不迎风久站 / 不在风口运动；温差 7.4 ℃ → 分层穿衣、早晚加衣；湿度 43 % → 少量多次温水；AQI 51（良）→ 户外条件尚可</td>
+</tr>
+<tr>
+<td>红旗（出现即停止并就医）</td>
+<td>运动后持续胸痛 / 胸闷、头晕黑朦、明显气短、心悸不缓解、关节急性肿痛、上肢麻木或放射痛</td>
+</tr>
+<tr>
+<td>40 岁以上 + 出汗明显</td>
+<td>若出汗同时伴胸闷 / 胸痛 / 头晕 / 明显气短，先就医评估，再恢复规律运动</td>
+</tr>
+<tr>
+<td>先问医生再调整运动</td>
+<td>高血压 / 心脏病 / 糖尿病 / 呼吸系统疾病等慢性病史、孕期、术后恢复期、正在服药、近两周有发热或急性感染</td>
+</tr>
+<tr>
+<td>肩颈 / 咽喉</td>
+<td>肩颈不适若伴上肢麻木、放射痛或头晕，或持续加重 → 就医评估；咽喉不适若<strong>持续超过 2 周</strong>，或伴发热、气短、血痰、明显咽痛 → 就医评估。<strong>本日历不提供任何药物、药膳或化痰方</strong></td>
+</tr>
+<tr>
+<td>泡脚限定</td>
+<td>水温 ≤40 ℃、10–15 分钟、不出汗；糖尿病足 / 周围血管病 / 皮肤破损 / 感觉减退者不做</td>
+</tr>
+<tr>
+<td>边界</td>
+<td>本日历为<strong>日常养生教育</strong>，不诊断、不开方药、不判吉凶、不承诺疗效，不替代医疗诊断与治疗</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>十、依据（四层，可查）</h2>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>来源</th>
+<th>用于本日哪些结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>经典</td>
+<td>《素问·四气调神大论》冬三月章：「早卧晚起，必待日光」「去寒就温，无泄皮肤」「使志若伏若匿」；《素问·上古天真论》「法于阴阳，和于术数」</td>
+<td>待日光而作、护阳不泄、情志收敛、<strong>不出大汗</strong>这一硬上限</td>
+</tr>
+<tr>
+<td>现代规范</td>
+<td><strong>WHO</strong>《Guidelines on physical activity and sedentary behaviour》(2020)：成人每周 150–300 min 中等强度有氧 + ≥2 天肌肉强化、减少久坐；<strong>ACSM</strong> 强度分级（RPE / 谈话测试）、热身与渐进原则、年龄预测心率公式的局限性、环境与汗后管理属通用运动安全建议</td>
+<td>RPE 9–11、20–30 min/次、热身加倍、每周力量 2 天、每 45–60 分钟起身、心率仅作参考</td>
+</tr>
+<tr>
+<td>气象</td>
+<td><strong>Open-Meteo</strong> Forecast + Air Quality API，2026-11-08 11:15，西乡县 32.98 / 107.76</td>
+<td>阴、15.2 ℃（体感 12.4）、湿度 43 %、风 7.8（阵风 22）、无降水、9.7–17.1 ℃、07:12 / 17:52、US AQI 51、UV 2.1、海拔 429 m</td>
+</tr>
+<tr>
+<td>历法 / 区划</td>
+<td>本项目离线农历 + 太阳黄经 24 节气算法（1900–2100；已用 2026 春节＝丙午年正月初一、1984 甲子年、2033 闰冬月校验）；离线行政区划表命中「陕西省 / 汉中市 / 西乡县」code 610724（同名候选：广西南宁西乡塘区）</td>
+<td>丙午年九月三十、立冬第 2 天、距小雪 14 天；县级位置可离线定位</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>经典提供<strong>思想框架</strong>，现代指南提供<strong>剂量与安全阈值</strong>，气象与历法提供<strong>当日条件</strong>；四者均不构成医疗建议。</p>
+</blockquote>
+<hr />
+<p><em>本日历为日常养生科普，不替代医疗诊断与治疗。生成于 2026-11-08 · 依据你提供的个人情况做了保守调整。</em></p>
+<hr />
+<h2>12. 附录 A · 数据来源与算法校验</h2>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>明细</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>历法</td>
+<td>本项目离线农历 + 太阳黄经 24 节气算法（1900–2100）。已用 2026 春节＝丙午年正月初一、1984 甲子年、2033 闰冬月三处校验</td>
+</tr>
+<tr>
+<td>节气</td>
+<td>立冬第 2 天 · 距小雪 14 天；以太阳黄经到达 225° / 240° 时刻定节气日</td>
+</tr>
+<tr>
+<td>区划</td>
+<td>离线行政区划表 31 省 / 341 市 / 2995 县级；命中「陕西省 / 汉中市 / 西乡县」code 610724，同名候选为广西南宁西乡塘区</td>
+</tr>
+<tr>
+<td>气象</td>
+<td>Open-Meteo Forecast API + Air Quality API，取数时间 2026-11-08 11:15，网格坐标 32.98 / 107.76，海拔 429 m</td>
+</tr>
+<tr>
+<td>天气实况</td>
+<td>阴（WMO 3）、全日无降水、15.2 ℃ / 体感 12.4 ℃、区间 9.7–17.1 ℃（温差 7.4 ℃）、湿度 43 %、风 7.8（阵风 22.0 km·h⁻¹）、日出 07:12 / 日落 17:52、US AQI 51（良）、PM2.5 17.5 μg·m⁻³、UV 2.1</td>
+</tr>
+<tr>
+<td>现代规范</td>
+<td>WHO《Guidelines on physical activity and sedentary behaviour》(2020)；ACSM 强度分级与运动测试原则</td>
+</tr>
+<tr>
+<td>经典</td>
+<td>《素问·四气调神大论》冬三月章、《素问·上古天真论》</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>与成都双流区示例相比：西乡县<strong>更干、风更大、温差更大、无雨、空气更好</strong>。因此「去寒就温」的重点从「防湿滑」转为「<strong>防风 + 分层穿衣 + 汗后避风</strong>」。</p>
+</blockquote>
+<h2>13. 附录 B · 安全边界（完整）</h2>
+<ol>
+<li><strong>不诊断</strong>：不辨体质证型，不判断任何疾病或病因。</li>
+<li><strong>不开方药</strong>：不含药膳、食疗方、药材、化痰偏方、穴位处方。</li>
+<li><strong>不判吉凶</strong>：「宜 / 不宜」是行为与生理提醒，不是黄历禁忌。</li>
+<li><strong>不承诺疗效</strong>：不宣称任何调理、动作或作息能治疗或改善病症。</li>
+<li><strong>保守强度</strong>：默认中低强度，以谈话测试 + RPE 为准；年龄预测心率公式仅作粗略参考。</li>
+<li><strong>红旗处置</strong>：出现持续胸痛 / 胸闷、头晕黑朦、明显气短、心悸不缓解、关节急性肿痛、上肢麻木或放射痛，立即停止并就医。</li>
+<li><strong>先问医生</strong>：高血压 / 心脏病 / 糖尿病 / 呼吸系统疾病等慢性病史、孕期、术后恢复期、正在服药、近两周有发热或急性感染，先咨询医生再调整运动。</li>
+<li><strong>不替代医疗</strong>：本日历为日常养生科普，不替代医疗诊断与治疗；相关感受若持续或加重，请就医评估。</li>
+</ol>
+<h2>14. 附录 C · 术语速查</h2>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>含义与今日用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>谈话测试</td>
+<td>运动时能轻松完整说一句话＝强度刚好；说不成句＝偏强。今日优先以此判定</td>
+</tr>
+<tr>
+<td>RPE</td>
+<td>主观用力程度（6–20 量表）。今日目标 <strong>9–11</strong>，自觉「很轻松、略有点活动感」</td>
+</tr>
+<tr>
+<td>220−年龄</td>
+<td>年龄预测最大心率公式，误差大。48 岁估算上限约 172，中低强度 50–60 % ≈ 86–103 次/分，仅粗略参考</td>
+</tr>
+<tr>
+<td>WHO 2020</td>
+<td>成人每周 150–300 分钟中等强度有氧 + ≥2 天肌肉强化，减少久坐</td>
+</tr>
+<tr>
+<td>ACSM</td>
+<td>美国运动医学会；强度分级、热身渐进、环境与汗后管理属通用运动安全建议</td>
+</tr>
+<tr>
+<td>体感温度</td>
+<td>综合气温、湿度、风速的人体感受温度；今日 12.4 ℃ 低于气温 15.2 ℃，主因阵风</td>
+</tr>
+<tr>
+<td>WMO 天气码</td>
+<td>世界气象组织天气现象编码；3 ≈ 阴</td>
+</tr>
+<tr>
+<td>US AQI / UV</td>
+<td>美标空气质量指数 51（良）；紫外线指数 2.1（低）</td>
+</tr>
+<tr>
+<td>三个 1 分钟</td>
+<td>醒后躺 1 分钟 → 坐起 1 分钟 → 床边站 1 分钟再下地，防体位性头晕</td>
+</tr>
+</tbody>
+</table>
+<h2>15. 附录 D · 本报告与派生产物</h2>
+<p>本报告与下列产物<strong>同源</strong>，均来自《中医身体日历》长图母版：</p>
+<table>
+<thead>
+<tr>
+<th>产物</th>
+<th>形态</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中医身体日历 · 长图</td>
+<td>1080 px 宽长页 / PNG</td>
+<td>完整存档、打印、单图发布</td>
+</tr>
+<tr>
+<td>3 张 9:16 竖图</td>
+<td>1080 × 1920 × 3 / PNG</td>
+<td>分篇分发（天时总纲 / 宜忌作息 / 运动边界）</td>
+</tr>
+<tr>
+<td>详细文字报告（本文件）</td>
+<td>Markdown / HTML</td>
+<td>公众号正文、知识库存档、二次编辑</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>长图是母版；3 张竖图是要点提炼，文字报告是完整展开。三者内容一致、详略不同。修改内容请<strong>以长图母版为准</strong>，再同步派生，避免口径漂移。</p>
+</blockquote>
+<hr />
+<p><em>本日历为日常养生科普，不替代医疗诊断与治疗。生成于 2026-11-08 · 依据提供的个人情况做了保守调整。</em></p></div></div></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+var LONG_CSS = ".lv{\n  --paper:#EFECE3; --card:#F8F6F0; --card2:#F2EFE6;\n  --ink:#2F4154; --ink2:#5A6675; --blue:#6E88A6; --blueBg:rgba(110,136,166,.10);\n  --cin:#9C4A3C; --cinBg:rgba(156,74,60,.075); --gold:#A98543;\n  --line:#D6D0C0; --line2:#E4DFD2;\n}\n.lv *{box-sizing:border-box;margin:0;padding:0}\n.lv{\n  background:var(--paper);color:var(--ink);\n  font-family:\"Noto Sans CJK SC\",\"Noto Sans SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif;\n  -webkit-font-smoothing:antialiased;\n  background-image:repeating-linear-gradient(90deg,rgba(120,110,90,.035) 0 1px,transparent 1px 4px),\n                   repeating-linear-gradient(0deg,rgba(120,110,90,.018) 0 1px,transparent 1px 7px);\n  padding:34px 0 28px;\n}\n.lv .sf{font-family:\"Noto Serif CJK SC\",\"Noto Serif SC\",\"Songti SC\",serif}\n.lv .page{width:1080px;margin:0 auto;padding-bottom:20px}\n.lv code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9em;\n  background:var(--blueBg);color:#3C5670;padding:1px 5px;border-radius:3px;white-space:nowrap}\n.lv .nw{white-space:nowrap}\n.lv /* 页眉 */\n.head{position:relative;padding:0 48px 22px;border-bottom:2px solid var(--ink)}\n.lv .kicker{font-size:12px;letter-spacing:6px;color:var(--cin);margin-bottom:12px}\n.lv h1{font-size:42px;letter-spacing:3px;line-height:1.25;font-weight:700}\n.lv h1 .dot{color:var(--cin);font-size:28px;vertical-align:5px;margin:0 8px}\n.lv .head .sub{margin-top:12px;font-size:15px;color:var(--ink2);letter-spacing:.5px}\n.lv .stamp{position:absolute;right:52px;top:2px;width:82px;height:82px;border:3px solid var(--cin);\n  border-radius:6px;color:var(--cin);display:flex;align-items:center;justify-content:center;\n  font-size:38px;font-weight:700;transform:rotate(-6deg);opacity:.9;\n  box-shadow:inset 0 0 0 2px rgba(156,74,60,.25)}\n.lv /* 档案网格 */\n.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);\n  border:1px solid var(--line);margin:24px 48px 0}\n.lv .meta .m{background:var(--card);padding:11px 14px}\n.lv .meta .m .k{font-size:11px;letter-spacing:2px;color:var(--ink2);margin-bottom:4px}\n.lv .meta .m .v{font-size:15px;font-weight:600;line-height:1.4}\n.lv .meta .m .v small{font-weight:400;font-size:12px;color:var(--ink2)}\n.lv /* 通用区块 */\n.sec{margin:28px 48px 0}\n.lv .sec > h2{font-size:21px;letter-spacing:1px;padding-bottom:9px;border-bottom:1px solid var(--line);\n  margin-bottom:14px;display:flex;align-items:baseline;gap:12px}\n.lv .sec > h2 .no{font-size:12px;letter-spacing:2px;color:var(--cin);border:1px solid var(--cin);\n  padding:2px 8px;border-radius:2px;font-weight:500}\n.lv p{font-size:14.5px;line-height:1.85;color:var(--ink2);margin:8px 0}\n.lv p strong, .lv li strong{color:var(--ink);font-weight:600}\n.lv .hl{background:var(--cinBg);border-left:3px solid var(--cin);padding:10px 14px;font-size:14px;\n  line-height:1.8;margin:12px 0;color:var(--ink)}\n.lv .hl.b{background:var(--blueBg);border-left-color:var(--blue)}\n.lv /* 个人化说明 */\n.notice{margin:24px 48px 0;background:#F6F2E8;border:1px dashed var(--gold);padding:18px 22px}\n.lv .notice h3{font-size:16px;letter-spacing:1px;color:var(--gold);margin-bottom:8px}\n.lv .notice .rows{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin:10px 0}\n.lv .notice .rows div{font-size:13.5px;line-height:1.7;color:var(--ink2)}\n.lv .notice .rows b{color:var(--ink)}\n.lv .notice .edge{font-size:13px;color:var(--cin);line-height:1.7;border-top:1px dashed var(--gold);padding-top:9px;margin-top:6px}\n.lv /* 主题 */\n.theme{margin:24px 48px 0;background:var(--card);border:1px solid var(--line);padding:22px 26px;\n  border-left:5px solid var(--cin)}\n.lv .theme .t{font-size:27px;letter-spacing:2px;font-weight:700;margin-bottom:10px}\n.lv .theme q{font-size:14px;color:var(--ink2);line-height:1.9;display:block;quotes:\"「\" \"」\"}\n.lv .theme p{margin-top:10px}\n.lv /* 宜忌双栏 */\n.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}\n.lv .box{background:var(--card);border:1px solid var(--line);padding:16px 20px}\n.lv .box.no{background:#FBF4F1;border-color:rgba(156,74,60,.3)}\n.lv .box h3{font-size:17px;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line2)}\n.lv .box.yes h3{color:#3C5670}\n.lv .box.no h3{color:var(--cin)}\n.lv .box ol{margin:0;padding-left:20px}\n.lv .box li{font-size:13.5px;line-height:1.75;margin:6px 0;color:var(--ink2)}\n.lv /* 表格 */\ntable{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}\n.lv th, .lv td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;line-height:1.65}\n.lv th{background:var(--card2);font-weight:600;color:var(--ink);white-space:nowrap}\n.lv td{color:var(--ink2);background:var(--card)}\n.lv td strong{color:var(--ink)}\n.lv table.tight th, .lv table.tight td{padding:7px 11px}\n.lv /* 列表 */\nul.dot{padding-left:20px;margin:8px 0}\n.lv ul.dot li{font-size:14px;line-height:1.8;margin:5px 0;color:var(--ink2)}\n.lv .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}\n.lv .chip{font-size:13px;padding:6px 11px;border:1px solid var(--line);border-radius:3px;background:#fff;color:var(--ink)}\n.lv .chip.k{border-color:var(--cin);color:var(--cin);background:var(--cinBg)}\n.lv .chip.b{border-color:var(--blue);color:#3C5670;background:var(--blueBg)}\n.lv /* 五问 */\n.asks{counter-reset:q;display:grid;gap:7px}\n.lv .asks .a{counter-increment:q;background:var(--card);border:1px solid var(--line);padding:10px 14px 10px 46px;\n  position:relative;font-size:14px;line-height:1.7;color:var(--ink2)}\n.lv .asks .a::before{content:counter(q);position:absolute;left:13px;top:9px;width:23px;height:23px;\n  border-radius:50%;background:var(--blue);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center}\n.lv /* 页脚 */\n.foot{margin:30px 48px 0;border-top:2px solid var(--ink);padding-top:16px;\n  display:flex;justify-content:space-between;align-items:flex-start;gap:26px}\n.lv .foot .l{font-size:12.5px;line-height:1.85;color:var(--ink2)}\n.lv .foot .l b{color:var(--ink);letter-spacing:2px;font-size:11.5px;display:block;margin-bottom:4px}\n.lv .foot .r{text-align:right;font-size:12.5px;color:var(--ink2);line-height:1.85;flex:none}\n.lv .foot .seal{display:inline-block;margin-top:8px;border:2px solid var(--cin);color:var(--cin);\n  padding:4px 11px;font-size:13px;letter-spacing:4px;transform:rotate(-4deg);opacity:.85}\n.lv .tagline{text-align:center;font-size:12px;color:var(--ink2);letter-spacing:1px;margin-top:18px}\n.lv{box-sizing:border-box}";
+var CARD_CSS = "\n:root{--k:1.12}\n/* 作用域内重置：导出到 foreignObject 时外壳 reset 不会带过去，必须自带 */\n.c9,.c9 *{box-sizing:border-box;margin:0;padding:0}\n.c9{--k:1.12;width:1080px;height:1920px;flex:none;position:relative;overflow:hidden;\n  background:#F3EFE5;\n  background-image:repeating-linear-gradient(90deg,rgba(120,110,90,.03) 0 1px,transparent 1px 4px),\n                   repeating-linear-gradient(0deg,rgba(120,110,90,.015) 0 1px,transparent 1px 7px);\n  display:flex;flex-direction:column;padding:60px 64px 46px;\n  font-family:\"Noto Sans CJK SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif;color:#2F4154;\n  border:1px solid #E4DDCC;border-radius:6px;box-shadow:0 8px 26px rgba(47,65,84,.08)}\n.c9::before{content:\"\";position:absolute;inset:20px;border:1px solid rgba(156,74,60,.16);pointer-events:none}\n.c9 .serif,.c9 h1,.c9 .tt,.c9 q,.c9 .stamp,.c9 .seal{font-family:\"Noto Serif CJK SC\",\"Songti SC\",serif}\n.hd{position:relative;border-bottom:2px solid #2F4154;padding-bottom:22px;flex:none}\n.hd .kick{font-size:calc(18px*var(--k));letter-spacing:5px;color:#9C4A3C;margin-bottom:14px}\n.hd h1{font-size:calc(56px*var(--k));font-weight:700;letter-spacing:2px;line-height:1.2;padding-right:130px}\n.hd h1 .dot{color:#9C4A3C;font-size:.7em;margin:0 6px}\n.hd .sub{margin-top:13px;font-size:calc(23px*var(--k));color:#5F6B7A;line-height:1.65}\n.hd .stamp{position:absolute;right:8px;top:-8px;width:100px;height:100px;border:3px solid #9C4A3C;\n  border-radius:6px;color:#9C4A3C;display:flex;align-items:center;justify-content:center;\n  font-size:calc(46px*var(--k));font-weight:700;transform:rotate(-6deg);opacity:.9;\n  box-shadow:inset 0 0 0 2px rgba(156,74,60,.22)}\n.bd{flex:1;display:flex;flex-direction:column;justify-content:space-between;min-height:0;padding:8px 0 4px;gap:calc(16px*var(--k))}\n.blk{flex:none}\n.cap{font-size:calc(19px*var(--k));letter-spacing:2px;color:#2F4154;font-weight:700;\n  border-bottom:1px solid #DDD5C2;padding-bottom:9px;margin-bottom:14px;display:flex;align-items:baseline;gap:12px}\n.cap i{font-style:normal;font-size:calc(14px*var(--k));letter-spacing:2px;color:#9C4A3C;font-weight:500}\n.lead{background:#FBF3E7;border-left:6px solid #9C4A3C;border-radius:0 8px 8px 0;\n  padding:calc(20px*var(--k)) calc(24px*var(--k));font-size:calc(28px*var(--k));line-height:1.6;color:#2F4154}\n.lead span{display:block;font-size:calc(17px*var(--k));letter-spacing:3px;color:#9C4A3C;margin-bottom:8px;font-weight:700}\n.lead b{font-size:calc(38px*var(--k));color:#9C4A3C;font-weight:700}\n.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}\n.facts .g{background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:13px 14px}\n.facts .g .k{font-size:calc(16px*var(--k));letter-spacing:1px;color:#6B7686;margin-bottom:7px}\n.facts .g .v{font-size:calc(26px*var(--k));font-weight:700;line-height:1.3;white-space:nowrap}\n.facts .g .v .sub{display:block;font-size:calc(15px*var(--k));font-weight:400;color:#6B7686;letter-spacing:0;margin-top:3px;white-space:normal}\n.theme{background:#FFFDF8;border:1px solid #E4DDCC;border-left:6px solid #6E88A6;border-radius:0 8px 8px 0;padding:calc(20px*var(--k)) calc(26px*var(--k))}\n.theme .tt{font-size:calc(36px*var(--k));font-weight:700;letter-spacing:1px;margin-bottom:12px}\n.theme q{display:block;font-size:calc(22px*var(--k));line-height:1.75;color:#5F6B7A;quotes:\"「\" \"」\"}\n.theme .qs{font-size:calc(17px*var(--k));color:#6E88A6;margin-top:8px;text-align:right}\n.adj{display:grid;grid-template-columns:1fr 1fr;gap:11px}\n.adj .a{background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:calc(13px*var(--k)) calc(17px*var(--k))}\n.adj .a b{display:block;font-size:calc(23px*var(--k));color:#9C4A3C;margin-bottom:5px}\n.adj .a span{font-size:calc(19px*var(--k));line-height:1.6;color:#5F6B7A}\n.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:none}\n.two .box{border:1px solid #E4DDCC;border-radius:8px;padding:calc(18px*var(--k)) calc(20px*var(--k));background:#FFFDF8}\n.two .box.yes{border-top:5px solid #6E88A6}\n.two .box.no{border-top:5px solid #9C4A3C;background:#FDF6F2}\n.two h3{font-size:calc(27px*var(--k));margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #E8E0CE}\n.two .box.yes h3{color:#3C5670} .two .box.no h3{color:#9C4A3C}\n.two ol{padding-left:calc(24px*var(--k));margin:0}\n.two li{font-size:calc(20px*var(--k));line-height:1.62;margin:calc(7px*var(--k)) 0;color:#5F6B7A}\n.tl{display:grid;grid-template-columns:1fr 1fr;gap:9px}\n.tl .t{background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:calc(11px*var(--k)) calc(15px*var(--k));display:flex;gap:12px;align-items:baseline}\n.tl .t b{font-size:calc(20px*var(--k));color:#9C4A3C;white-space:nowrap;flex:none}\n.tl .t span{font-size:calc(18px*var(--k));line-height:1.5;color:#5F6B7A}\n.diet{display:grid;gap:8px}\n.diet span{background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:calc(10px*var(--k)) calc(16px*var(--k));\n  font-size:calc(19px*var(--k));color:#5F6B7A;line-height:1.5}\n.hard{background:#9C4A3C;color:#FFF8EE;border-radius:8px;padding:calc(17px*var(--k)) calc(24px*var(--k));\n  display:flex;align-items:center;gap:18px;flex:none}\n.hard i{font-style:normal;font-size:calc(18px*var(--k));letter-spacing:3px;background:rgba(255,255,255,.18);\n  padding:6px 12px;border-radius:4px;white-space:nowrap}\n.hard b{font-size:calc(31px*var(--k));letter-spacing:1px}\n.ex{display:grid;grid-template-columns:1fr 1fr;gap:11px}\n.ex .e{background:#FFFDF8;border:1px solid #E4DDCC;border-left:5px solid #6E88A6;border-radius:0 6px 6px 0;padding:calc(12px*var(--k)) calc(16px*var(--k))}\n.ex .e b{display:block;font-size:calc(22px*var(--k));color:#3C5670;margin-bottom:5px}\n.ex .e span{font-size:calc(18px*var(--k));line-height:1.55;color:#5F6B7A}\n.steps{display:grid;gap:8px;flex:none}\n.steps .s{background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:calc(11px*var(--k)) calc(16px*var(--k));display:flex;gap:14px;align-items:baseline}\n.steps .s b{font-size:calc(20px*var(--k));color:#A98543;white-space:nowrap;flex:none}\n.steps .s span{font-size:calc(18px*var(--k));line-height:1.55;color:#5F6B7A}\n.mind{display:grid;grid-template-columns:1fr 1fr;gap:12px}\n.mind>div{background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:calc(12px*var(--k)) calc(16px*var(--k))}\n.mind b{display:block;font-size:calc(21px*var(--k));color:#2F4154;margin-bottom:6px}\n.mind span{font-size:calc(17.5px*var(--k));line-height:1.6;color:#5F6B7A}\n.red{background:#FBEDE9;border:2px solid #9C4A3C;border-radius:8px;padding:calc(14px*var(--k)) calc(20px*var(--k));flex:none}\n.red i{display:block;font-style:normal;font-size:calc(19px*var(--k));letter-spacing:2px;color:#9C4A3C;font-weight:700;margin-bottom:7px}\n.red span{font-size:calc(20px*var(--k));line-height:1.6;color:#8A3F33}\n.basis{display:grid;gap:7px}\n.basis .b{display:flex;gap:14px;align-items:baseline;background:#FFFDF8;border:1px solid #E4DDCC;border-radius:6px;padding:calc(9px*var(--k)) calc(15px*var(--k))}\n.basis .b b{font-size:calc(19px*var(--k));color:#9C4A3C;white-space:nowrap;flex:none;min-width:calc(112px*var(--k))}\n.basis .b span{font-size:calc(18px*var(--k));line-height:1.5;color:#5F6B7A}\n.edge{display:flex;justify-content:space-between;align-items:center;gap:20px;border-top:2px solid #2F4154;padding-top:calc(14px*var(--k));flex:none}\n.edge b{display:block;font-size:calc(21px*var(--k));letter-spacing:2px;color:#2F4154;margin-bottom:5px}\n.edge span{font-size:calc(18px*var(--k));line-height:1.6;color:#5F6B7A}\n.edge .seal{border:2px solid #9C4A3C;color:#9C4A3C;padding:calc(8px*var(--k)) calc(14px*var(--k));\n  font-size:calc(25px*var(--k));letter-spacing:4px;transform:rotate(-4deg);opacity:.85;white-space:nowrap}\n.ft{display:flex;justify-content:space-between;align-items:center;gap:18px;border-top:1px solid #DDD5C2;padding-top:calc(14px*var(--k));flex:none}\n.ft .src{font-size:calc(15.5px*var(--k));line-height:1.5;color:#6B7686}\n.ft .pg{font-size:calc(19px*var(--k));letter-spacing:2px;color:#9C4A3C;border:1px solid #9C4A3C;\n  border-radius:4px;padding:5px 12px;white-space:nowrap;font-weight:700}\n";
+var REPORT_MD = "# 中医身体日历 · 详细文字报告\n\n> **立冬第 2 天 · 2026 年 11 月 8 日（星期日） · 农历丙午年九月三十 · 陕西 · 汉中 · 西乡县**\n\n| 报告项 | 内容 |\n|---|---|\n| 报告名称 | 中医身体日历 · 详细文字报告 |\n| 报告日期 | 2026-11-08（立冬第 2 天，距小雪 14 天） |\n| 适用对象 | 48 岁 · 肩颈僵硬 · 喉咙有痰 · 运动后背部冒大汗 · 陕西汉中西乡县 |\n| 数据基准 | 《中医身体日历》长图母版（同源派生） |\n| 气象来源 | Open-Meteo Forecast + Air Quality API，2026-11-08 11:15，西乡县 32.98 / 107.76 |\n| 版本 | v1.0 · 保守版（中低强度、不出大汗为硬上限） |\n\n---\n\n## 今日一句\n\n> **暖得起来，却不出大汗；万一出汗，立刻擦干避风。**\n\n今日西乡县阴而不雨、湿度仅 43 %、阵风 22 km·h⁻¹、体感 12.4 ℃ 低于气温，早晚最低 9.7 ℃。《素问》讲「藏」，现代运动科学讲「中低强度 + 环境与汗后管理」，两者今天指向同一件事：**给身体留余量**。这不是玄学宜忌。\n\n---\n\n## 目录\n\n1. 今日档案\n2. 个人化说明（先读这一段）\n3. 今日主题\n4. 今日宜 / 今日不宜\n5. 作息\n6. 饮食\n7. 运动（今日重点）\n8. 情志\n9. 内观五问\n10. 风险提醒\n11. 依据（四层可查）\n12. 附录 A · 数据来源与算法校验\n13. 附录 B · 安全边界（完整）\n14. 附录 C · 术语速查\n15. 附录 D · 本报告与派生产物\n\n---\n\n> **闭藏之始 · 防风就温，勿令大汗**\n> 立冬第 2 天。西乡县今日干冷有风、昼夜温差 7.4 ℃。《四气调神大论》讲「去寒就温，无泄皮肤」，落到今天和你自述的「运动后背部冒大汗」，重点只有一句：**暖得起来，却不出大汗；万一出汗，立刻擦干避风**。\n\n---\n\n## 今日档案\n\n| 项目 | 值 |\n|------|-----|\n| 公历 | 2026-11-08 · 星期日 |\n| 农历 | 丙午年 九月三十 |\n| 节气 | **立冬第 2 天** · 距小雪 14 天 |\n| 位置 | 陕西 · 汉中 · **西乡县**（离线行政区划表命中，code 610724） |\n| 天气 | 阴（WMO 3），**全日无降水** |\n| 气温 | 实况 **15.2 ℃**（体感 12.4 ℃）；今日 **9.7–17.1 ℃**，温差 7.4 ℃ |\n| 湿度 / 风 | **43 %**（偏干）／ 7.8 km·h⁻¹，**阵风 22.0** |\n| 日出 / 日落 | 07:12 / 17:52 |\n| 空气 | US AQI **51（良）**，PM2.5 17.5 μg·m⁻³，UV 2.1 |\n| 海拔 | 429 m（Open-Meteo 网格） |\n\n> 与之前示例用的成都双流区相比：这里**更干、风更大、温差更大、无雨、空气更好**。所以「去寒就温」的重点从「防湿滑」转为「**防风 + 分层穿衣 + 汗后避风**」。\n\n---\n\n## ⚠️ 个人化说明（先读这一段）\n\n你提供的是：**48 岁 · 肩颈僵硬 · 喉咙有痰 · 运动后背部冒大汗 · 陕西汉中西乡县**。\n\n本版据此做了 4 处**保守调整**：\n\n| 你的自述 | 本版怎么处理 | 不做什么 |\n|---------|-------------|---------|\n| 运动后背部冒大汗 | 强度再降一档（RPE 9–11），**以不出大汗为硬上限**；分层穿衣，汗后立即擦干换衣、避风 | 不判断这是什么体质 / 证型 |\n| 肩颈僵硬 | 热身与工间加温和肩颈动作，缓慢、不痛为准 | 不诊断颈椎问题、不做手法扳动建议 |\n| 喉咙有痰 | 只给通用舒适护理：温水、适宜室内湿度、挡风、减少刺激 | **不开药方、不给食疗/化痰方、不判断病因** |\n| 48 岁 | 给一个粗略心率参考，但仍以谈话测试为准；保留每周力量 2 天 | 不做健康评估、不替代体检 |\n\n> 以上自述仅作为**调整作息与运动强度的依据**，不构成对任何疾病的判断。本日历为养生教育，不诊断、不开方药、不判吉凶、不承诺疗效。相关感受若持续或加重，请就医评估（见「风险提醒」）。\n\n---\n\n## 一、今日主题\n\n**闭藏之始 · 防风就温，勿令大汗**\n\n《素问·四气调神大论》：「冬三月，此谓闭藏。水冰地坼，无扰乎阳。早卧晚起，必待日光……去寒就温，无泄皮肤，使气亟夺。」\n\n立冬刚过两天。西乡县今日阴而不雨、湿度仅 43%、阵风 22 km·h⁻¹、体感 12.4 ℃ 明显低于气温 15.2 ℃，早晚最低 9.7 ℃。中医讲「藏」，现代运动科学讲「中低强度、注意环境与汗后管理」，两者今天指向同一件事：**微微暖、不出大汗、汗后别受风**。这不是玄学宜忌，是给身体留余量。\n\n---\n\n## 二、今日宜（行为提醒，非吉凶）\n\n1. **早卧晚起，必待日光** —— 22:30 前睡、07:10 后起（日出 07:12），不摸黑晨练。\n2. **低—中低强度活动 20–30 分钟**，热身做足 10 分钟；**一旦背部开始冒汗，即降速或结束**。\n3. **分层穿衣**：内层贴身、外层防风；热了先脱外层，别一次脱到单衣。\n4. **少量多次温水**；室内湿度偏干时适当加湿到舒适区间。\n5. **护三处**：后颈、腰腹、脚踝；外出挡风（薄口罩 / 围巾）。\n6. **上午见光 15–20 分钟**（UV 2.1，比阴雨盆地条件好）。\n7. **每 45–60 分钟起身**，做收下巴 + 肩胛后缩 10 次。\n\n## 三、今日不宜（行为提醒，非吉凶）\n\n1. 不追求大汗、不做力竭 / 冲刺 / 高强度间歇（「无泄皮肤」，也是你自述的出汗反应所限）。\n2. 不在日出前、日落后外出运动（17:52 日落，降温快）。\n3. 不在风口久站或迎风运动（阵风 22 km·h⁻¹）。\n4. 不久坐连续超过 60 分钟、不长时间低头。\n5. 不冰饮、不生冷、不过量辛辣；不烟尘刺激、不过度用嗓。\n6. 汗后不冲冷水、不吹风、不湿衣久穿。\n7. **不把「宜 / 不宜」当吉凶判断** —— 这里全是行为与生理提醒。\n\n---\n\n## 四、作息（照着做即可）\n\n| 时间 | 做什么 |\n|------|--------|\n| 07:10–07:20 | 醒后「三个 1 分钟」：躺 1 分钟 → 坐起 1 分钟 → 床边站 1 分钟，再下地（防体位性头晕）；等天亮再活动 |\n| 07:20 | 温水 200 ml；开窗见光 5 分钟 |\n| 09:00–11:00 | 每 45–60 分钟起身 2–3 分钟：**收下巴 10 次 + 肩胛后缩 10 次 + 踝泵** |\n| 10:00–16:00 | 今日运动的推荐窗口：气温较高、有日光、避开早晚最冷时段；选背风处 |\n| 12:30 | 午餐七分饱，饭后慢走 / 靠墙站 10 分钟，不立刻躺 |\n| 15:00 | 见光 15–20 分钟 + 3 分钟呼吸练习 |\n| 17:52 后 | 日落收户外活动，改室内；加一件外套，风口不逗留 |\n| 21:20 | 泡脚（可选）：水温 ≤40 ℃、10–15 分钟，**微微暖即停，不出汗** |\n| 22:30 前 | 熄灯入睡；睡前 30 分钟放下屏幕 |\n\n> 泡脚限定：糖尿病足 / 周围血管病 / 皮肤破损 / 感觉减退者不做，或先咨询医生；易大汗者尤其别泡到出汗。\n\n---\n\n## 五、饮食\n\n- **结构**：温热熟食为主；每餐一掌心优质蛋白（蛋 / 豆制品 / 鱼 / 瘦肉）；主食粗细搭配；蔬菜占半盘。48 岁配合每周 2 天力量活动，有助于维持肌肉量。\n- **今日顺手可做**：早上一碗热粥 / 热汤面；午餐炖煮类（白萝卜、莲藕、山药、南瓜、白菜）；下午一杯温水。**干燥（湿度 43 %）可适度增加汤水。**\n- **喝水**：全天约 1200–1500 ml，少量多次；风大、偏干时别等口渴猛灌（心 / 肾功能异常者遵医嘱调整）。\n- **少一点**：冰饮、生冷、甜腻、过量辛辣与烟尘刺激。\n- **边界**：以上只是日常饮食结构，**不含药膳、食疗方、药材或任何「化痰」偏方**；有慢性病、过敏或忌口，请按医生 / 营养师方案。喉咙的舒适护理见「个人化说明」与「风险提醒」。\n\n---\n\n## 六、运动（今日重点）\n\n**定调：低—中低强度 · 以不出大汗为硬上限 · 室内或背风处**\n\n| 要素 | 具体做法 |\n|------|---------|\n| 强度自测 | **谈话测试**：能轻松完整说话 = 刚好；**RPE 9–11**（6–20 量表），自觉「很轻松、略有点活动感」 |\n| 心率参考 | 48 岁按 220−年龄估算上限约 172，中低强度 50–60 % ≈ **86–103 次/分**。仅为粗略参考：年龄公式误差大，**一律以谈话测试 + RPE 为准**；服降心率类药物者不用心率法，只用 RPE |\n| 硬上限 | **背部一开始冒汗，就降速或结束**——这是今天最重要的规则。宁可少做 5 分钟，不要练到大汗后受风 |\n| 总量 | 一次 20–30 分钟（含热身与收操）；本周往 WHO 成人 **150–300 分钟中等强度 / 周** 靠拢，不必一天补完 |\n| 热身 10 分钟 | 干冷有风，关节更僵，比平时做足：原地踏步 2 分钟 → **收下巴（颈深屈肌）8 次** → 肩 / 髋 / 膝 / 踝绕环各 8 次 → 靠墙天使 6 次 → 猫牛式 6 次 |\n| 主项（三选一） | **A** 室内或背风处快走 15–20 分钟　**B** 八段锦或太极 1–2 遍（低冲击、配合呼吸）　**C** 徒手力量（ACSM 每周 ≥2 天）：靠墙静蹲 2×8、坐姿提踵 2×12、墙壁俯卧撑 2×8、臀桥 2×10，组间休息 60–90 秒 |\n| 收操 3–5 分钟 | 慢走 + **胸大肌靠墙拉伸** / 小腿 / 大腿后侧静态拉伸，各 15–20 秒，**不痛为准** |\n| 汗后 | 立刻到背风处擦干、换干衣、加回外层；不冲冷水、不迎风站 |\n\n**肩颈温和动作**（针对「肩颈僵硬」这一自觉感受，非治疗）：收下巴、肩绕环、肩胛后缩、靠墙天使、胸大肌拉伸，全程缓慢、不痛为准。**不做**快速甩头、大幅度扭颈、暴力扳动；不做长时间低头。\n\n**为什么今天更保守**：干冷 + 阵风 22 km·h⁻¹ + 昼夜温差 7.4 ℃，汗后受凉风险比湿冷盆地更突出；加上你自述运动后背部易大汗，因此把上限压到「不出大汗」。AQI 51（良）、无雨，户外条件本身尚可，只是**风与汗**要管住。\n\n**立即停止的信号**：胸痛 / 胸闷、头晕或眼前发黑、明显气短、心悸不缓解、关节急性肿痛、上肢麻木或放射痛。\n\n> 《内经》「无泄皮肤」与现代运动科学「控制强度、重视环境与汗后管理」在这里是同一条建议的两种说法，不是互相印证疗效，只是都主张**留余量**。\n\n---\n\n## 七、情志\n\n《素问·四气调神大论》：「使志若伏若匿，若有私意，若已有得。」\n\n- 冬主藏，情绪宜**收**不宜**泄**：不必逼自己亢奋、高效、满满当当。\n- 今日两件小事：\n  1. **3 分钟呼吸**：吸 4 秒 / 呼 6 秒，5 轮，呼气比吸气长（顺带放松肩颈）。\n  2. 写下一句「**今天这样已经够了**」，允许自己留白。\n- 今日有日光（UV 2.1），上午见光 15–20 分钟比阴雨天更容易做到。\n- 陪伴优于社交：低强度、不耗能的相处就好。\n- 若情绪低落 / 兴趣减退**持续 2 周以上**，或明显影响睡眠进食 → 建议找专业医生评估（此处不做判断）。\n\n---\n\n## 八、内观五问（只记录事实，不自我诊断）\n\n1. 今天肩颈的紧，是**起床时**最明显，还是**久坐后**更明显？左右有差别吗？\n2. 喉咙的不适，喝温水后有没有缓和？一天里哪个时段明显？\n3. 今天活动到**第几分钟、做了哪个动作**时背部开始出汗？\n4. 到下午手脚还凉吗？在风口待过后有没有更不舒服？\n5. 睡前脑子静下来了吗，还在转明天的事吗？\n\n> 记录方式：只写事实与感受，不给自己下结论、不拿症状对号入座、不据此调整用药。\n\n---\n\n## 九、风险提醒\n\n| 类别 | 提醒 |\n|------|------|\n| 天气 | 阵风 22 km·h⁻¹ → 不迎风久站 / 不在风口运动；温差 7.4 ℃ → 分层穿衣、早晚加衣；湿度 43 % → 少量多次温水；AQI 51（良）→ 户外条件尚可 |\n| 红旗（出现即停止并就医） | 运动后持续胸痛 / 胸闷、头晕黑朦、明显气短、心悸不缓解、关节急性肿痛、上肢麻木或放射痛 |\n| 40 岁以上 + 出汗明显 | 若出汗同时伴胸闷 / 胸痛 / 头晕 / 明显气短，先就医评估，再恢复规律运动 |\n| 先问医生再调整运动 | 高血压 / 心脏病 / 糖尿病 / 呼吸系统疾病等慢性病史、孕期、术后恢复期、正在服药、近两周有发热或急性感染 |\n| 肩颈 / 咽喉 | 肩颈不适若伴上肢麻木、放射痛或头晕，或持续加重 → 就医评估；咽喉不适若**持续超过 2 周**，或伴发热、气短、血痰、明显咽痛 → 就医评估。**本日历不提供任何药物、药膳或化痰方** |\n| 泡脚限定 | 水温 ≤40 ℃、10–15 分钟、不出汗；糖尿病足 / 周围血管病 / 皮肤破损 / 感觉减退者不做 |\n| 边界 | 本日历为**日常养生教育**，不诊断、不开方药、不判吉凶、不承诺疗效，不替代医疗诊断与治疗 |\n\n---\n\n## 十、依据（四层，可查）\n\n| 层 | 来源 | 用于本日哪些结论 |\n|----|------|-----------------|\n| 经典 | 《素问·四气调神大论》冬三月章：「早卧晚起，必待日光」「去寒就温，无泄皮肤」「使志若伏若匿」；《素问·上古天真论》「法于阴阳，和于术数」 | 待日光而作、护阳不泄、情志收敛、**不出大汗**这一硬上限 |\n| 现代规范 | **WHO**《Guidelines on physical activity and sedentary behaviour》(2020)：成人每周 150–300 min 中等强度有氧 + ≥2 天肌肉强化、减少久坐；**ACSM** 强度分级（RPE / 谈话测试）、热身与渐进原则、年龄预测心率公式的局限性、环境与汗后管理属通用运动安全建议 | RPE 9–11、20–30 min/次、热身加倍、每周力量 2 天、每 45–60 分钟起身、心率仅作参考 |\n| 气象 | **Open-Meteo** Forecast + Air Quality API，2026-11-08 11:15，西乡县 32.98 / 107.76 | 阴、15.2 ℃（体感 12.4）、湿度 43 %、风 7.8（阵风 22）、无降水、9.7–17.1 ℃、07:12 / 17:52、US AQI 51、UV 2.1、海拔 429 m |\n| 历法 / 区划 | 本项目离线农历 + 太阳黄经 24 节气算法（1900–2100；已用 2026 春节＝丙午年正月初一、1984 甲子年、2033 闰冬月校验）；离线行政区划表命中「陕西省 / 汉中市 / 西乡县」code 610724（同名候选：广西南宁西乡塘区） | 丙午年九月三十、立冬第 2 天、距小雪 14 天；县级位置可离线定位 |\n\n> 经典提供**思想框架**，现代指南提供**剂量与安全阈值**，气象与历法提供**当日条件**；四者均不构成医疗建议。\n\n---\n\n*本日历为日常养生科普，不替代医疗诊断与治疗。生成于 2026-11-08 · 依据你提供的个人情况做了保守调整。*\n\n---\n\n## 12. 附录 A · 数据来源与算法校验\n\n| 类别 | 明细 |\n|---|---|\n| 历法 | 本项目离线农历 + 太阳黄经 24 节气算法（1900–2100）。已用 2026 春节＝丙午年正月初一、1984 甲子年、2033 闰冬月三处校验 |\n| 节气 | 立冬第 2 天 · 距小雪 14 天；以太阳黄经到达 225° / 240° 时刻定节气日 |\n| 区划 | 离线行政区划表 31 省 / 341 市 / 2995 县级；命中「陕西省 / 汉中市 / 西乡县」code 610724，同名候选为广西南宁西乡塘区 |\n| 气象 | Open-Meteo Forecast API + Air Quality API，取数时间 2026-11-08 11:15，网格坐标 32.98 / 107.76，海拔 429 m |\n| 天气实况 | 阴（WMO 3）、全日无降水、15.2 ℃ / 体感 12.4 ℃、区间 9.7–17.1 ℃（温差 7.4 ℃）、湿度 43 %、风 7.8（阵风 22.0 km·h⁻¹）、日出 07:12 / 日落 17:52、US AQI 51（良）、PM2.5 17.5 μg·m⁻³、UV 2.1 |\n| 现代规范 | WHO《Guidelines on physical activity and sedentary behaviour》(2020)；ACSM 强度分级与运动测试原则 |\n| 经典 | 《素问·四气调神大论》冬三月章、《素问·上古天真论》 |\n\n> 与成都双流区示例相比：西乡县**更干、风更大、温差更大、无雨、空气更好**。因此「去寒就温」的重点从「防湿滑」转为「**防风 + 分层穿衣 + 汗后避风**」。\n\n## 13. 附录 B · 安全边界（完整）\n\n1. **不诊断**：不辨体质证型，不判断任何疾病或病因。\n2. **不开方药**：不含药膳、食疗方、药材、化痰偏方、穴位处方。\n3. **不判吉凶**：「宜 / 不宜」是行为与生理提醒，不是黄历禁忌。\n4. **不承诺疗效**：不宣称任何调理、动作或作息能治疗或改善病症。\n5. **保守强度**：默认中低强度，以谈话测试 + RPE 为准；年龄预测心率公式仅作粗略参考。\n6. **红旗处置**：出现持续胸痛 / 胸闷、头晕黑朦、明显气短、心悸不缓解、关节急性肿痛、上肢麻木或放射痛，立即停止并就医。\n7. **先问医生**：高血压 / 心脏病 / 糖尿病 / 呼吸系统疾病等慢性病史、孕期、术后恢复期、正在服药、近两周有发热或急性感染，先咨询医生再调整运动。\n8. **不替代医疗**：本日历为日常养生科普，不替代医疗诊断与治疗；相关感受若持续或加重，请就医评估。\n\n## 14. 附录 C · 术语速查\n\n| 术语 | 含义与今日用法 |\n|---|---|\n| 谈话测试 | 运动时能轻松完整说一句话＝强度刚好；说不成句＝偏强。今日优先以此判定 |\n| RPE | 主观用力程度（6–20 量表）。今日目标 **9–11**，自觉「很轻松、略有点活动感」 |\n| 220−年龄 | 年龄预测最大心率公式，误差大。48 岁估算上限约 172，中低强度 50–60 % ≈ 86–103 次/分，仅粗略参考 |\n| WHO 2020 | 成人每周 150–300 分钟中等强度有氧 + ≥2 天肌肉强化，减少久坐 |\n| ACSM | 美国运动医学会；强度分级、热身渐进、环境与汗后管理属通用运动安全建议 |\n| 体感温度 | 综合气温、湿度、风速的人体感受温度；今日 12.4 ℃ 低于气温 15.2 ℃，主因阵风 |\n| WMO 天气码 | 世界气象组织天气现象编码；3 ≈ 阴 |\n| US AQI / UV | 美标空气质量指数 51（良）；紫外线指数 2.1（低） |\n| 三个 1 分钟 | 醒后躺 1 分钟 → 坐起 1 分钟 → 床边站 1 分钟再下地，防体位性头晕 |\n\n## 15. 附录 D · 本报告与派生产物\n\n本报告与下列产物**同源**，均来自《中医身体日历》长图母版：\n\n| 产物 | 形态 | 用途 |\n|---|---|---|\n| 中医身体日历 · 长图 | 1080 px 宽长页 / PNG | 完整存档、打印、单图发布 |\n| 3 张 9:16 竖图 | 1080 × 1920 × 3 / PNG | 分篇分发（天时总纲 / 宜忌作息 / 运动边界） |\n| 详细文字报告（本文件） | Markdown / HTML | 公众号正文、知识库存档、二次编辑 |\n\n> 长图是母版；3 张竖图是要点提炼，文字报告是完整展开。三者内容一致、详略不同。修改内容请**以长图母版为准**，再同步派生，避免口径漂移。\n\n---\n\n*本日历为日常养生科普，不替代医疗诊断与治疗。生成于 2026-11-08 · 依据提供的个人情况做了保守调整。*\n";
+var REPORT_HTML = "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>中医身体日历 · 详细文字报告</title><style>\n:root{--paper:#F7F4EC;--card:#FFFDF8;--ink:#2F4154;--ink2:#5F6B7A;--cin:#9C4A3C;\n      --blue:#6E88A6;--gold:#A98543;--line:#E4DDCC;--serif:\"Noto Serif CJK SC\",\"Songti SC\",serif;\n      --sans:\"Noto Sans CJK SC\",\"PingFang SC\",\"Microsoft YaHei\",sans-serif}\n*{box-sizing:border-box;margin:0;padding:0}\n.rp-body{background:var(--paper);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;padding:38px 20px}\n.rp{width:860px;max-width:100%;margin:0 auto;background:var(--card);border:1px solid var(--line);\n    border-radius:10px;padding:56px 62px;box-shadow:0 6px 30px rgba(47,65,84,.07)}\n.rp h1{font-family:var(--serif);font-size:34px;letter-spacing:2px;padding-bottom:18px;border-bottom:2px solid var(--ink);margin-bottom:22px}\n.rp h2{font-family:var(--serif);font-size:24px;letter-spacing:1px;margin:38px 0 14px;padding-left:13px;border-left:5px solid var(--cin)}\n.rp h3{font-size:18px;margin:22px 0 10px;color:var(--ink)}\n.rp p{font-size:15px;line-height:1.9;color:var(--ink2);margin:10px 0}\n.rp strong{color:var(--ink);font-weight:700}\n.rp blockquote{background:#FBF6EC;border-left:4px solid var(--gold);padding:14px 20px;margin:16px 0;border-radius:0 6px 6px 0}\n.rp blockquote p{margin:4px 0;color:#6B5B3E}\n.rp hr{border:none;border-top:1px solid var(--line);margin:30px 0}\n.rp ul,.rp ol{padding-left:24px;margin:10px 0}\n.rp li{font-size:15px;line-height:1.9;color:var(--ink2);margin:5px 0}\n.rp table{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0}\n.rp th,.rp td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;line-height:1.75}\n.rp th{background:#F4EFE2;color:var(--ink);font-weight:700;white-space:nowrap}\n.rp td{color:var(--ink2)}\n.rp em{color:var(--ink2)}\n.rp code{background:rgba(110,136,166,.12);color:#3C5670;padding:1px 5px;border-radius:3px;font-size:.9em}\n@media print{.rp-body{background:#fff;padding:0}.rp{box-shadow:none;border:none;width:100%}}\n</style></head>\n<body class=\"rp-body\"><div class=\"rp\"><h1>中医身体日历 · 详细文字报告</h1>\n<blockquote>\n<p><strong>立冬第 2 天 · 2026 年 11 月 8 日（星期日） · 农历丙午年九月三十 · 陕西 · 汉中 · 西乡县</strong></p>\n</blockquote>\n<table>\n<thead>\n<tr>\n<th>报告项</th>\n<th>内容</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>报告名称</td>\n<td>中医身体日历 · 详细文字报告</td>\n</tr>\n<tr>\n<td>报告日期</td>\n<td>2026-11-08（立冬第 2 天，距小雪 14 天）</td>\n</tr>\n<tr>\n<td>适用对象</td>\n<td>48 岁 · 肩颈僵硬 · 喉咙有痰 · 运动后背部冒大汗 · 陕西汉中西乡县</td>\n</tr>\n<tr>\n<td>数据基准</td>\n<td>《中医身体日历》长图母版（同源派生）</td>\n</tr>\n<tr>\n<td>气象来源</td>\n<td>Open-Meteo Forecast + Air Quality API，2026-11-08 11:15，西乡县 32.98 / 107.76</td>\n</tr>\n<tr>\n<td>版本</td>\n<td>v1.0 · 保守版（中低强度、不出大汗为硬上限）</td>\n</tr>\n</tbody>\n</table>\n<hr />\n<h2>今日一句</h2>\n<blockquote>\n<p><strong>暖得起来，却不出大汗；万一出汗，立刻擦干避风。</strong></p>\n</blockquote>\n<p>今日西乡县阴而不雨、湿度仅 43 %、阵风 22 km·h⁻¹、体感 12.4 ℃ 低于气温，早晚最低 9.7 ℃。《素问》讲「藏」，现代运动科学讲「中低强度 + 环境与汗后管理」，两者今天指向同一件事：<strong>给身体留余量</strong>。这不是玄学宜忌。</p>\n<hr />\n<h2>目录</h2>\n<ol>\n<li>今日档案</li>\n<li>个人化说明（先读这一段）</li>\n<li>今日主题</li>\n<li>今日宜 / 今日不宜</li>\n<li>作息</li>\n<li>饮食</li>\n<li>运动（今日重点）</li>\n<li>情志</li>\n<li>内观五问</li>\n<li>风险提醒</li>\n<li>依据（四层可查）</li>\n<li>附录 A · 数据来源与算法校验</li>\n<li>附录 B · 安全边界（完整）</li>\n<li>附录 C · 术语速查</li>\n<li>附录 D · 本报告与派生产物</li>\n</ol>\n<hr />\n<blockquote>\n<p><strong>闭藏之始 · 防风就温，勿令大汗</strong>\n立冬第 2 天。西乡县今日干冷有风、昼夜温差 7.4 ℃。《四气调神大论》讲「去寒就温，无泄皮肤」，落到今天和你自述的「运动后背部冒大汗」，重点只有一句：<strong>暖得起来，却不出大汗；万一出汗，立刻擦干避风</strong>。</p>\n</blockquote>\n<hr />\n<h2>今日档案</h2>\n<table>\n<thead>\n<tr>\n<th>项目</th>\n<th>值</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>公历</td>\n<td>2026-11-08 · 星期日</td>\n</tr>\n<tr>\n<td>农历</td>\n<td>丙午年 九月三十</td>\n</tr>\n<tr>\n<td>节气</td>\n<td><strong>立冬第 2 天</strong> · 距小雪 14 天</td>\n</tr>\n<tr>\n<td>位置</td>\n<td>陕西 · 汉中 · <strong>西乡县</strong>（离线行政区划表命中，code 610724）</td>\n</tr>\n<tr>\n<td>天气</td>\n<td>阴（WMO 3），<strong>全日无降水</strong></td>\n</tr>\n<tr>\n<td>气温</td>\n<td>实况 <strong>15.2 ℃</strong>（体感 12.4 ℃）；今日 <strong>9.7–17.1 ℃</strong>，温差 7.4 ℃</td>\n</tr>\n<tr>\n<td>湿度 / 风</td>\n<td><strong>43 %</strong>（偏干）／ 7.8 km·h⁻¹，<strong>阵风 22.0</strong></td>\n</tr>\n<tr>\n<td>日出 / 日落</td>\n<td>07:12 / 17:52</td>\n</tr>\n<tr>\n<td>空气</td>\n<td>US AQI <strong>51（良）</strong>，PM2.5 17.5 μg·m⁻³，UV 2.1</td>\n</tr>\n<tr>\n<td>海拔</td>\n<td>429 m（Open-Meteo 网格）</td>\n</tr>\n</tbody>\n</table>\n<blockquote>\n<p>与之前示例用的成都双流区相比：这里<strong>更干、风更大、温差更大、无雨、空气更好</strong>。所以「去寒就温」的重点从「防湿滑」转为「<strong>防风 + 分层穿衣 + 汗后避风</strong>」。</p>\n</blockquote>\n<hr />\n<h2>⚠️ 个人化说明（先读这一段）</h2>\n<p>你提供的是：<strong>48 岁 · 肩颈僵硬 · 喉咙有痰 · 运动后背部冒大汗 · 陕西汉中西乡县</strong>。</p>\n<p>本版据此做了 4 处<strong>保守调整</strong>：</p>\n<table>\n<thead>\n<tr>\n<th>你的自述</th>\n<th>本版怎么处理</th>\n<th>不做什么</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>运动后背部冒大汗</td>\n<td>强度再降一档（RPE 9–11），<strong>以不出大汗为硬上限</strong>；分层穿衣，汗后立即擦干换衣、避风</td>\n<td>不判断这是什么体质 / 证型</td>\n</tr>\n<tr>\n<td>肩颈僵硬</td>\n<td>热身与工间加温和肩颈动作，缓慢、不痛为准</td>\n<td>不诊断颈椎问题、不做手法扳动建议</td>\n</tr>\n<tr>\n<td>喉咙有痰</td>\n<td>只给通用舒适护理：温水、适宜室内湿度、挡风、减少刺激</td>\n<td><strong>不开药方、不给食疗/化痰方、不判断病因</strong></td>\n</tr>\n<tr>\n<td>48 岁</td>\n<td>给一个粗略心率参考，但仍以谈话测试为准；保留每周力量 2 天</td>\n<td>不做健康评估、不替代体检</td>\n</tr>\n</tbody>\n</table>\n<blockquote>\n<p>以上自述仅作为<strong>调整作息与运动强度的依据</strong>，不构成对任何疾病的判断。本日历为养生教育，不诊断、不开方药、不判吉凶、不承诺疗效。相关感受若持续或加重，请就医评估（见「风险提醒」）。</p>\n</blockquote>\n<hr />\n<h2>一、今日主题</h2>\n<p><strong>闭藏之始 · 防风就温，勿令大汗</strong></p>\n<p>《素问·四气调神大论》：「冬三月，此谓闭藏。水冰地坼，无扰乎阳。早卧晚起，必待日光……去寒就温，无泄皮肤，使气亟夺。」</p>\n<p>立冬刚过两天。西乡县今日阴而不雨、湿度仅 43%、阵风 22 km·h⁻¹、体感 12.4 ℃ 明显低于气温 15.2 ℃，早晚最低 9.7 ℃。中医讲「藏」，现代运动科学讲「中低强度、注意环境与汗后管理」，两者今天指向同一件事：<strong>微微暖、不出大汗、汗后别受风</strong>。这不是玄学宜忌，是给身体留余量。</p>\n<hr />\n<h2>二、今日宜（行为提醒，非吉凶）</h2>\n<ol>\n<li><strong>早卧晚起，必待日光</strong> —— 22:30 前睡、07:10 后起（日出 07:12），不摸黑晨练。</li>\n<li><strong>低—中低强度活动 20–30 分钟</strong>，热身做足 10 分钟；<strong>一旦背部开始冒汗，即降速或结束</strong>。</li>\n<li><strong>分层穿衣</strong>：内层贴身、外层防风；热了先脱外层，别一次脱到单衣。</li>\n<li><strong>少量多次温水</strong>；室内湿度偏干时适当加湿到舒适区间。</li>\n<li><strong>护三处</strong>：后颈、腰腹、脚踝；外出挡风（薄口罩 / 围巾）。</li>\n<li><strong>上午见光 15–20 分钟</strong>（UV 2.1，比阴雨盆地条件好）。</li>\n<li><strong>每 45–60 分钟起身</strong>，做收下巴 + 肩胛后缩 10 次。</li>\n</ol>\n<h2>三、今日不宜（行为提醒，非吉凶）</h2>\n<ol>\n<li>不追求大汗、不做力竭 / 冲刺 / 高强度间歇（「无泄皮肤」，也是你自述的出汗反应所限）。</li>\n<li>不在日出前、日落后外出运动（17:52 日落，降温快）。</li>\n<li>不在风口久站或迎风运动（阵风 22 km·h⁻¹）。</li>\n<li>不久坐连续超过 60 分钟、不长时间低头。</li>\n<li>不冰饮、不生冷、不过量辛辣；不烟尘刺激、不过度用嗓。</li>\n<li>汗后不冲冷水、不吹风、不湿衣久穿。</li>\n<li><strong>不把「宜 / 不宜」当吉凶判断</strong> —— 这里全是行为与生理提醒。</li>\n</ol>\n<hr />\n<h2>四、作息（照着做即可）</h2>\n<table>\n<thead>\n<tr>\n<th>时间</th>\n<th>做什么</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>07:10–07:20</td>\n<td>醒后「三个 1 分钟」：躺 1 分钟 → 坐起 1 分钟 → 床边站 1 分钟，再下地（防体位性头晕）；等天亮再活动</td>\n</tr>\n<tr>\n<td>07:20</td>\n<td>温水 200 ml；开窗见光 5 分钟</td>\n</tr>\n<tr>\n<td>09:00–11:00</td>\n<td>每 45–60 分钟起身 2–3 分钟：<strong>收下巴 10 次 + 肩胛后缩 10 次 + 踝泵</strong></td>\n</tr>\n<tr>\n<td>10:00–16:00</td>\n<td>今日运动的推荐窗口：气温较高、有日光、避开早晚最冷时段；选背风处</td>\n</tr>\n<tr>\n<td>12:30</td>\n<td>午餐七分饱，饭后慢走 / 靠墙站 10 分钟，不立刻躺</td>\n</tr>\n<tr>\n<td>15:00</td>\n<td>见光 15–20 分钟 + 3 分钟呼吸练习</td>\n</tr>\n<tr>\n<td>17:52 后</td>\n<td>日落收户外活动，改室内；加一件外套，风口不逗留</td>\n</tr>\n<tr>\n<td>21:20</td>\n<td>泡脚（可选）：水温 ≤40 ℃、10–15 分钟，<strong>微微暖即停，不出汗</strong></td>\n</tr>\n<tr>\n<td>22:30 前</td>\n<td>熄灯入睡；睡前 30 分钟放下屏幕</td>\n</tr>\n</tbody>\n</table>\n<blockquote>\n<p>泡脚限定：糖尿病足 / 周围血管病 / 皮肤破损 / 感觉减退者不做，或先咨询医生；易大汗者尤其别泡到出汗。</p>\n</blockquote>\n<hr />\n<h2>五、饮食</h2>\n<ul>\n<li><strong>结构</strong>：温热熟食为主；每餐一掌心优质蛋白（蛋 / 豆制品 / 鱼 / 瘦肉）；主食粗细搭配；蔬菜占半盘。48 岁配合每周 2 天力量活动，有助于维持肌肉量。</li>\n<li><strong>今日顺手可做</strong>：早上一碗热粥 / 热汤面；午餐炖煮类（白萝卜、莲藕、山药、南瓜、白菜）；下午一杯温水。<strong>干燥（湿度 43 %）可适度增加汤水。</strong></li>\n<li><strong>喝水</strong>：全天约 1200–1500 ml，少量多次；风大、偏干时别等口渴猛灌（心 / 肾功能异常者遵医嘱调整）。</li>\n<li><strong>少一点</strong>：冰饮、生冷、甜腻、过量辛辣与烟尘刺激。</li>\n<li><strong>边界</strong>：以上只是日常饮食结构，<strong>不含药膳、食疗方、药材或任何「化痰」偏方</strong>；有慢性病、过敏或忌口，请按医生 / 营养师方案。喉咙的舒适护理见「个人化说明」与「风险提醒」。</li>\n</ul>\n<hr />\n<h2>六、运动（今日重点）</h2>\n<p><strong>定调：低—中低强度 · 以不出大汗为硬上限 · 室内或背风处</strong></p>\n<table>\n<thead>\n<tr>\n<th>要素</th>\n<th>具体做法</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>强度自测</td>\n<td><strong>谈话测试</strong>：能轻松完整说话 = 刚好；<strong>RPE 9–11</strong>（6–20 量表），自觉「很轻松、略有点活动感」</td>\n</tr>\n<tr>\n<td>心率参考</td>\n<td>48 岁按 220−年龄估算上限约 172，中低强度 50–60 % ≈ <strong>86–103 次/分</strong>。仅为粗略参考：年龄公式误差大，<strong>一律以谈话测试 + RPE 为准</strong>；服降心率类药物者不用心率法，只用 RPE</td>\n</tr>\n<tr>\n<td>硬上限</td>\n<td><strong>背部一开始冒汗，就降速或结束</strong>——这是今天最重要的规则。宁可少做 5 分钟，不要练到大汗后受风</td>\n</tr>\n<tr>\n<td>总量</td>\n<td>一次 20–30 分钟（含热身与收操）；本周往 WHO 成人 <strong>150–300 分钟中等强度 / 周</strong> 靠拢，不必一天补完</td>\n</tr>\n<tr>\n<td>热身 10 分钟</td>\n<td>干冷有风，关节更僵，比平时做足：原地踏步 2 分钟 → <strong>收下巴（颈深屈肌）8 次</strong> → 肩 / 髋 / 膝 / 踝绕环各 8 次 → 靠墙天使 6 次 → 猫牛式 6 次</td>\n</tr>\n<tr>\n<td>主项（三选一）</td>\n<td><strong>A</strong> 室内或背风处快走 15–20 分钟　<strong>B</strong> 八段锦或太极 1–2 遍（低冲击、配合呼吸）　<strong>C</strong> 徒手力量（ACSM 每周 ≥2 天）：靠墙静蹲 2×8、坐姿提踵 2×12、墙壁俯卧撑 2×8、臀桥 2×10，组间休息 60–90 秒</td>\n</tr>\n<tr>\n<td>收操 3–5 分钟</td>\n<td>慢走 + <strong>胸大肌靠墙拉伸</strong> / 小腿 / 大腿后侧静态拉伸，各 15–20 秒，<strong>不痛为准</strong></td>\n</tr>\n<tr>\n<td>汗后</td>\n<td>立刻到背风处擦干、换干衣、加回外层；不冲冷水、不迎风站</td>\n</tr>\n</tbody>\n</table>\n<p><strong>肩颈温和动作</strong>（针对「肩颈僵硬」这一自觉感受，非治疗）：收下巴、肩绕环、肩胛后缩、靠墙天使、胸大肌拉伸，全程缓慢、不痛为准。<strong>不做</strong>快速甩头、大幅度扭颈、暴力扳动；不做长时间低头。</p>\n<p><strong>为什么今天更保守</strong>：干冷 + 阵风 22 km·h⁻¹ + 昼夜温差 7.4 ℃，汗后受凉风险比湿冷盆地更突出；加上你自述运动后背部易大汗，因此把上限压到「不出大汗」。AQI 51（良）、无雨，户外条件本身尚可，只是<strong>风与汗</strong>要管住。</p>\n<p><strong>立即停止的信号</strong>：胸痛 / 胸闷、头晕或眼前发黑、明显气短、心悸不缓解、关节急性肿痛、上肢麻木或放射痛。</p>\n<blockquote>\n<p>《内经》「无泄皮肤」与现代运动科学「控制强度、重视环境与汗后管理」在这里是同一条建议的两种说法，不是互相印证疗效，只是都主张<strong>留余量</strong>。</p>\n</blockquote>\n<hr />\n<h2>七、情志</h2>\n<p>《素问·四气调神大论》：「使志若伏若匿，若有私意，若已有得。」</p>\n<ul>\n<li>冬主藏，情绪宜<strong>收</strong>不宜<strong>泄</strong>：不必逼自己亢奋、高效、满满当当。</li>\n<li>今日两件小事：\n  1. <strong>3 分钟呼吸</strong>：吸 4 秒 / 呼 6 秒，5 轮，呼气比吸气长（顺带放松肩颈）。\n  2. 写下一句「<strong>今天这样已经够了</strong>」，允许自己留白。</li>\n<li>今日有日光（UV 2.1），上午见光 15–20 分钟比阴雨天更容易做到。</li>\n<li>陪伴优于社交：低强度、不耗能的相处就好。</li>\n<li>若情绪低落 / 兴趣减退<strong>持续 2 周以上</strong>，或明显影响睡眠进食 → 建议找专业医生评估（此处不做判断）。</li>\n</ul>\n<hr />\n<h2>八、内观五问（只记录事实，不自我诊断）</h2>\n<ol>\n<li>今天肩颈的紧，是<strong>起床时</strong>最明显，还是<strong>久坐后</strong>更明显？左右有差别吗？</li>\n<li>喉咙的不适，喝温水后有没有缓和？一天里哪个时段明显？</li>\n<li>今天活动到<strong>第几分钟、做了哪个动作</strong>时背部开始出汗？</li>\n<li>到下午手脚还凉吗？在风口待过后有没有更不舒服？</li>\n<li>睡前脑子静下来了吗，还在转明天的事吗？</li>\n</ol>\n<blockquote>\n<p>记录方式：只写事实与感受，不给自己下结论、不拿症状对号入座、不据此调整用药。</p>\n</blockquote>\n<hr />\n<h2>九、风险提醒</h2>\n<table>\n<thead>\n<tr>\n<th>类别</th>\n<th>提醒</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>天气</td>\n<td>阵风 22 km·h⁻¹ → 不迎风久站 / 不在风口运动；温差 7.4 ℃ → 分层穿衣、早晚加衣；湿度 43 % → 少量多次温水；AQI 51（良）→ 户外条件尚可</td>\n</tr>\n<tr>\n<td>红旗（出现即停止并就医）</td>\n<td>运动后持续胸痛 / 胸闷、头晕黑朦、明显气短、心悸不缓解、关节急性肿痛、上肢麻木或放射痛</td>\n</tr>\n<tr>\n<td>40 岁以上 + 出汗明显</td>\n<td>若出汗同时伴胸闷 / 胸痛 / 头晕 / 明显气短，先就医评估，再恢复规律运动</td>\n</tr>\n<tr>\n<td>先问医生再调整运动</td>\n<td>高血压 / 心脏病 / 糖尿病 / 呼吸系统疾病等慢性病史、孕期、术后恢复期、正在服药、近两周有发热或急性感染</td>\n</tr>\n<tr>\n<td>肩颈 / 咽喉</td>\n<td>肩颈不适若伴上肢麻木、放射痛或头晕，或持续加重 → 就医评估；咽喉不适若<strong>持续超过 2 周</strong>，或伴发热、气短、血痰、明显咽痛 → 就医评估。<strong>本日历不提供任何药物、药膳或化痰方</strong></td>\n</tr>\n<tr>\n<td>泡脚限定</td>\n<td>水温 ≤40 ℃、10–15 分钟、不出汗；糖尿病足 / 周围血管病 / 皮肤破损 / 感觉减退者不做</td>\n</tr>\n<tr>\n<td>边界</td>\n<td>本日历为<strong>日常养生教育</strong>，不诊断、不开方药、不判吉凶、不承诺疗效，不替代医疗诊断与治疗</td>\n</tr>\n</tbody>\n</table>\n<hr />\n<h2>十、依据（四层，可查）</h2>\n<table>\n<thead>\n<tr>\n<th>层</th>\n<th>来源</th>\n<th>用于本日哪些结论</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>经典</td>\n<td>《素问·四气调神大论》冬三月章：「早卧晚起，必待日光」「去寒就温，无泄皮肤」「使志若伏若匿」；《素问·上古天真论》「法于阴阳，和于术数」</td>\n<td>待日光而作、护阳不泄、情志收敛、<strong>不出大汗</strong>这一硬上限</td>\n</tr>\n<tr>\n<td>现代规范</td>\n<td><strong>WHO</strong>《Guidelines on physical activity and sedentary behaviour》(2020)：成人每周 150–300 min 中等强度有氧 + ≥2 天肌肉强化、减少久坐；<strong>ACSM</strong> 强度分级（RPE / 谈话测试）、热身与渐进原则、年龄预测心率公式的局限性、环境与汗后管理属通用运动安全建议</td>\n<td>RPE 9–11、20–30 min/次、热身加倍、每周力量 2 天、每 45–60 分钟起身、心率仅作参考</td>\n</tr>\n<tr>\n<td>气象</td>\n<td><strong>Open-Meteo</strong> Forecast + Air Quality API，2026-11-08 11:15，西乡县 32.98 / 107.76</td>\n<td>阴、15.2 ℃（体感 12.4）、湿度 43 %、风 7.8（阵风 22）、无降水、9.7–17.1 ℃、07:12 / 17:52、US AQI 51、UV 2.1、海拔 429 m</td>\n</tr>\n<tr>\n<td>历法 / 区划</td>\n<td>本项目离线农历 + 太阳黄经 24 节气算法（1900–2100；已用 2026 春节＝丙午年正月初一、1984 甲子年、2033 闰冬月校验）；离线行政区划表命中「陕西省 / 汉中市 / 西乡县」code 610724（同名候选：广西南宁西乡塘区）</td>\n<td>丙午年九月三十、立冬第 2 天、距小雪 14 天；县级位置可离线定位</td>\n</tr>\n</tbody>\n</table>\n<blockquote>\n<p>经典提供<strong>思想框架</strong>，现代指南提供<strong>剂量与安全阈值</strong>，气象与历法提供<strong>当日条件</strong>；四者均不构成医疗建议。</p>\n</blockquote>\n<hr />\n<p><em>本日历为日常养生科普，不替代医疗诊断与治疗。生成于 2026-11-08 · 依据你提供的个人情况做了保守调整。</em></p>\n<hr />\n<h2>12. 附录 A · 数据来源与算法校验</h2>\n<table>\n<thead>\n<tr>\n<th>类别</th>\n<th>明细</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>历法</td>\n<td>本项目离线农历 + 太阳黄经 24 节气算法（1900–2100）。已用 2026 春节＝丙午年正月初一、1984 甲子年、2033 闰冬月三处校验</td>\n</tr>\n<tr>\n<td>节气</td>\n<td>立冬第 2 天 · 距小雪 14 天；以太阳黄经到达 225° / 240° 时刻定节气日</td>\n</tr>\n<tr>\n<td>区划</td>\n<td>离线行政区划表 31 省 / 341 市 / 2995 县级；命中「陕西省 / 汉中市 / 西乡县」code 610724，同名候选为广西南宁西乡塘区</td>\n</tr>\n<tr>\n<td>气象</td>\n<td>Open-Meteo Forecast API + Air Quality API，取数时间 2026-11-08 11:15，网格坐标 32.98 / 107.76，海拔 429 m</td>\n</tr>\n<tr>\n<td>天气实况</td>\n<td>阴（WMO 3）、全日无降水、15.2 ℃ / 体感 12.4 ℃、区间 9.7–17.1 ℃（温差 7.4 ℃）、湿度 43 %、风 7.8（阵风 22.0 km·h⁻¹）、日出 07:12 / 日落 17:52、US AQI 51（良）、PM2.5 17.5 μg·m⁻³、UV 2.1</td>\n</tr>\n<tr>\n<td>现代规范</td>\n<td>WHO《Guidelines on physical activity and sedentary behaviour》(2020)；ACSM 强度分级与运动测试原则</td>\n</tr>\n<tr>\n<td>经典</td>\n<td>《素问·四气调神大论》冬三月章、《素问·上古天真论》</td>\n</tr>\n</tbody>\n</table>\n<blockquote>\n<p>与成都双流区示例相比：西乡县<strong>更干、风更大、温差更大、无雨、空气更好</strong>。因此「去寒就温」的重点从「防湿滑」转为「<strong>防风 + 分层穿衣 + 汗后避风</strong>」。</p>\n</blockquote>\n<h2>13. 附录 B · 安全边界（完整）</h2>\n<ol>\n<li><strong>不诊断</strong>：不辨体质证型，不判断任何疾病或病因。</li>\n<li><strong>不开方药</strong>：不含药膳、食疗方、药材、化痰偏方、穴位处方。</li>\n<li><strong>不判吉凶</strong>：「宜 / 不宜」是行为与生理提醒，不是黄历禁忌。</li>\n<li><strong>不承诺疗效</strong>：不宣称任何调理、动作或作息能治疗或改善病症。</li>\n<li><strong>保守强度</strong>：默认中低强度，以谈话测试 + RPE 为准；年龄预测心率公式仅作粗略参考。</li>\n<li><strong>红旗处置</strong>：出现持续胸痛 / 胸闷、头晕黑朦、明显气短、心悸不缓解、关节急性肿痛、上肢麻木或放射痛，立即停止并就医。</li>\n<li><strong>先问医生</strong>：高血压 / 心脏病 / 糖尿病 / 呼吸系统疾病等慢性病史、孕期、术后恢复期、正在服药、近两周有发热或急性感染，先咨询医生再调整运动。</li>\n<li><strong>不替代医疗</strong>：本日历为日常养生科普，不替代医疗诊断与治疗；相关感受若持续或加重，请就医评估。</li>\n</ol>\n<h2>14. 附录 C · 术语速查</h2>\n<table>\n<thead>\n<tr>\n<th>术语</th>\n<th>含义与今日用法</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>谈话测试</td>\n<td>运动时能轻松完整说一句话＝强度刚好；说不成句＝偏强。今日优先以此判定</td>\n</tr>\n<tr>\n<td>RPE</td>\n<td>主观用力程度（6–20 量表）。今日目标 <strong>9–11</strong>，自觉「很轻松、略有点活动感」</td>\n</tr>\n<tr>\n<td>220−年龄</td>\n<td>年龄预测最大心率公式，误差大。48 岁估算上限约 172，中低强度 50–60 % ≈ 86–103 次/分，仅粗略参考</td>\n</tr>\n<tr>\n<td>WHO 2020</td>\n<td>成人每周 150–300 分钟中等强度有氧 + ≥2 天肌肉强化，减少久坐</td>\n</tr>\n<tr>\n<td>ACSM</td>\n<td>美国运动医学会；强度分级、热身渐进、环境与汗后管理属通用运动安全建议</td>\n</tr>\n<tr>\n<td>体感温度</td>\n<td>综合气温、湿度、风速的人体感受温度；今日 12.4 ℃ 低于气温 15.2 ℃，主因阵风</td>\n</tr>\n<tr>\n<td>WMO 天气码</td>\n<td>世界气象组织天气现象编码；3 ≈ 阴</td>\n</tr>\n<tr>\n<td>US AQI / UV</td>\n<td>美标空气质量指数 51（良）；紫外线指数 2.1（低）</td>\n</tr>\n<tr>\n<td>三个 1 分钟</td>\n<td>醒后躺 1 分钟 → 坐起 1 分钟 → 床边站 1 分钟再下地，防体位性头晕</td>\n</tr>\n</tbody>\n</table>\n<h2>15. 附录 D · 本报告与派生产物</h2>\n<p>本报告与下列产物<strong>同源</strong>，均来自《中医身体日历》长图母版：</p>\n<table>\n<thead>\n<tr>\n<th>产物</th>\n<th>形态</th>\n<th>用途</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>中医身体日历 · 长图</td>\n<td>1080 px 宽长页 / PNG</td>\n<td>完整存档、打印、单图发布</td>\n</tr>\n<tr>\n<td>3 张 9:16 竖图</td>\n<td>1080 × 1920 × 3 / PNG</td>\n<td>分篇分发（天时总纲 / 宜忌作息 / 运动边界）</td>\n</tr>\n<tr>\n<td>详细文字报告（本文件）</td>\n<td>Markdown / HTML</td>\n<td>公众号正文、知识库存档、二次编辑</td>\n</tr>\n</tbody>\n</table>\n<blockquote>\n<p>长图是母版；3 张竖图是要点提炼，文字报告是完整展开。三者内容一致、详略不同。修改内容请<strong>以长图母版为准</strong>，再同步派生，避免口径漂移。</p>\n</blockquote>\n<hr />\n<p><em>本日历为日常养生科普，不替代医疗诊断与治疗。生成于 2026-11-08 · 依据提供的个人情况做了保守调整。</em></p></div></body>\n</html>\n";
+var CARD_NAMES = [
+  '中医身体日历-9x16-1-天时总纲.png',
+  '中医身体日历-9x16-2-宜忌作息.png',
+  '中医身体日历-9x16-3-运动边界.png'
+];
+
+var PNG_SCALE = 2, VIEW = 'long';
+var ZOOM_CAP = {'long':.62,'cards':.42,'report':.86};   /* 桌面端预览上限，保持原视觉 */
+var ZOOM_BASE = {'long':1080,'cards':1080,'report':860}; /* 产物原始宽度 */
+var PREVIEW_FIT = true;                                  /* 窄屏下 true=适应宽度 / false=1:1 可滑动 */
+var $ = function(s){return document.querySelector(s)};
+var $$ = function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
+
+function toast(t){var e=$('#toast');e.textContent=t;e.classList.add('on');
+  clearTimeout(e._t);e._t=setTimeout(function(){e.classList.remove('on')},2100)}
+function xesc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+
+/* 统一的 PNG 引擎：CSS 全量内联 + XHTML 序列化 → foreignObject → canvas */
+function domToPNG(node, cssText, W, H, name){
+  var svg='<'+'svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">'
+        + '<foreignObject width="100%" height="100%">'
+        + '<div xmlns="http://www.w3.org/1999/xhtml"><style>'+xesc(cssText)+'</style>'
+        + new XMLSerializer().serializeToString(node) + '</div>'
+        + '</foreignObject></'+'svg>';
+  var img=new Image();
+  img.onload=function(){
+    var c=document.createElement('canvas');c.width=W*PNG_SCALE;c.height=H*PNG_SCALE;
+    var g=c.getContext('2d');g.fillStyle='#F3EFE5';g.fillRect(0,0,c.width,c.height);
+    g.drawImage(img,0,0,c.width,c.height);
+    c.toBlob(function(b){downloadBlob(name,b)},'image/png');
+  };
+  img.onerror=function(){toast('导出失败，请稍后重试')};
+  img.src='data:'+'image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+}
+function downloadBlob(name,blob){
+  var u=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=u;a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(u)},900);
+}
+function downloadText(name,text,mime){
+  var b=new Blob([text],{type:mime||'text/plain;charset=utf-8'});downloadBlob(name,b)
+}
+
+function applyZoom(){
+  // 预览倍率按「.app 实际可用宽度」动态计算：桌面沿用原上限；窄屏等比缩到完整可见
+  var host=$('.app'), cs=getComputedStyle(host);
+  var avail=host.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight)-6;
+  var narrow=window.innerWidth<=760;
+  var z=Math.min(ZOOM_CAP[VIEW], avail/ZOOM_BASE[VIEW]);
+  if(narrow&&VIEW==='report')z=1;                      /* 报告改原生响应式排版，保证手机上可读 */
+  else if(narrow&&VIEW!=='report'&&!PREVIEW_FIT)z=1;  /* 长图/卡片可放大到 1:1 左右滑动看细节 */
+  if(!isFinite(z)||z<=0)z=ZOOM_CAP[VIEW];
+  var raw=(narrow&&VIEW!=='report'&&z>=.98);
+  $$('.stage').forEach(function(s){s.style.zoom=z;s.classList.toggle('raw',raw)});
+}
+
+function setView(v){
+  VIEW=v;
+  $$('.view').forEach(function(e){e.classList.toggle('on',e.id==='v'+v.charAt(0).toUpperCase()+v.slice(1))});
+  $$('.tabs button').forEach(function(b){b.classList.toggle('on',b.dataset.v===v)});
+  var btn=$('#btnMain');
+  btn.textContent = v==='long' ? '导出长图 PNG' : (v==='cards' ? '导出三张 PNG' : '复制全文');
+  applyZoom();
+}
+
+/* ---- 长图导出 ---- */
+function exportLong(){
+  var node=$('#vLong .lv');if(!node){toast('长图尚未就绪');return}
+  /* 预览 zoom 会影响 scrollHeight 的舍入，量高时临时取消，保证任何视口下导出高度一致 */
+  var stage=node.closest?node.closest('.stage'):node.parentNode, old=stage?stage.style.zoom:'';
+  if(stage)stage.style.zoom=1;
+  var H=node.scrollHeight;
+  if(stage)stage.style.zoom=old;
+  domToPNG(node, LONG_CSS, 1080, H, '中医身体日历-长图-2026-11-08.png');
+  toast('正在生成长图 PNG …');
+}
+/* ---- 三张竖卡导出 ---- */
+function exportCard(i){
+  var node=$('#c'+(i+1));if(!node){return}
+  // 导出时排除阴影与外框，保证干净
+  var css=CARD_CSS+'\n.c9{box-shadow:none!important;border:none!important}';
+  domToPNG(node, css, 1080, 1920, CARD_NAMES[i]);
+}
+function exportAllCards(){
+  toast('正在依次生成 3 张 9:16 PNG …');
+  [0,1,2].forEach(function(i){setTimeout(function(){exportCard(i)},i*1100)});
+}
+/* ---- 报告导出 ---- */
+function copyReport(){
+  var t=REPORT_MD;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(function(){toast('全文已复制（'+t.length+' 字）')},
+      function(){fallbackCopy(t)});
+  }else fallbackCopy(t);
+}
+function fallbackCopy(t){
+  var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.left='-9999px';
+  document.body.appendChild(a);a.select();
+  try{document.execCommand('copy');toast('全文已复制')}catch(e){toast('复制失败，请用「下载 MD」')}
+  document.body.removeChild(a);
+}
+
+$('#btnMain').addEventListener('click',function(){
+  if(VIEW==='long')exportLong();
+  else if(VIEW==='cards')exportAllCards();
+  else copyReport();
+});
+$$('.tabs button').forEach(function(b){b.addEventListener('click',function(){setView(b.dataset.v)})});
+$('#btnMore').addEventListener('click',function(e){e.stopPropagation();$('#morePop').classList.toggle('open')});
+document.addEventListener('click',function(){$('#morePop').classList.remove('open')});
+$('#morePop').addEventListener('click',function(e){e.stopPropagation()});
+$('#mCard1').addEventListener('click',function(){exportCard(0);$('#morePop').classList.remove('open')});
+$('#mCard2').addEventListener('click',function(){exportCard(1);$('#morePop').classList.remove('open')});
+$('#mCard3').addEventListener('click',function(){exportCard(2);$('#morePop').classList.remove('open')});
+$('#mScale').addEventListener('click',function(){
+  PNG_SCALE=PNG_SCALE===2?1:2;this.textContent='PNG '+(PNG_SCALE===2?'2x 高清':'1x 原尺寸');
+  toast('导出倍率：'+PNG_SCALE+'x');$('#morePop').classList.remove('open')});
+$('#mMD').addEventListener('click',function(){downloadText('中医身体日历-详细文字报告.md',REPORT_MD,'text/markdown;charset=utf-8');toast('已下载 Markdown');$('#morePop').classList.remove('open')});
+$('#mHTML').addEventListener('click',function(){downloadText('中医身体日历-详细文字报告.html',REPORT_HTML,'text/html;charset=utf-8');toast('已下载 HTML');$('#morePop').classList.remove('open')});
+$('#mPrint').addEventListener('click',function(){window.print();$('#morePop').classList.remove('open')});
+$('.app').addEventListener('click',function(e){
+  if(window.innerWidth>760||VIEW==='report')return;
+  if(!e.target.closest||!e.target.closest('.stage'))return;
+  PREVIEW_FIT=!PREVIEW_FIT;applyZoom();
+  toast(PREVIEW_FIT?'已适应宽度':'已放大 1:1 · 可左右滑动');
+});
+window.addEventListener('resize',applyZoom);
+setView('long');
+
+</script>
+</body>
+</html>

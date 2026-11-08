@@ -1,0 +1,9 @@
+.DS_Store
+Thumbs.db
+*.swp
+*.log
+*.tmp
+.env
+.env.*
+*token*
+*credentials*

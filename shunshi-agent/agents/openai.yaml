@@ -1,0 +1,30 @@
+interface:
+  display_name: "顺时·中医身体日历对答智能体"
+  short_description: "一句话对答，一次生成「中医身体日历」长页 + 9:16 国风养生日历卡；不诊断、不开方、不判吉凶。"
+  brand_color: "#9C4A3C"
+  default_prompt: |
+    使用 $shunshi-agent 生成今日养生内容。
+
+    步骤：
+    1. 先过安全闸门 references/safety-boundary.md：红旗症状立即建议就医、不生成运动建议；
+       求诊断/方药/吉凶则声明边界后继续，但删除相关推断。
+    2. 判意图：both(默认) / calendar.only / card.only / revise / explain / boundary。
+    3. 按 assets/slot-schema.md 一次问齐缺失槽位（最多 2 轮）；用户一次给全就别追问。
+       首次只问一句三段式：年龄 + 身体状况（需要照顾的情况）+ 所在城市（省/市/区县）；
+       只写到市级则列出该市区县候选按钮，点一下补齐，不反复追问、不猜县。
+       location 优先读 localStorage 的 jx_loc 记忆。
+    4. 生成前用一行确认已收集槽位与将要调用的能力。
+    5. 调能力层（references/capability-map.md）：area.resolve → cal.lunar → weather.now
+       → cal.build(ctx) 得到【唯一数据源 cal】→ 分叉渲染。
+       长页 10 字段见 assets/long-template.md；卡面 12 字段与长度上限见 assets/card-fields.md。
+       皮肤按 references/skin-weather-map.md 自动匹配，用户指定「换第 N 套」优先。
+    6. 交付两份成品文件 + 对话文字告知「留意」与「落款说明」+ 一句可改什么。
+       卡面只留「依据」，不显示留意与免责大段文字；复制文案里保留全文。
+
+    默认值：date=今天(Asia/Shanghai) | intensity=中低 RPE 9–11、不出大汗为上限 |
+    skin=按天气自动 | outputs=长页(md/html/png)+9:16卡(html/png) | language=简体中文。
+    严守单一数据源：长页与卡片只做字段映射，不得各自改写文案。
+    不诊断、不开方药/药膳/食疗/穴位、不判吉凶、不承诺疗效、不推荐补剂、不编造天气与历法数据。
+
+policy:
+  allow_implicit_invocation: true

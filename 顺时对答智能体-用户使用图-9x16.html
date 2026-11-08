@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>顺时 · 对答智能体 · 用户使用图 9:16（三张）</title>
+<style>
+/* ===== 宣纸宿雨配色（与长图、卡片一致） ===== */
+:root{
+  --paper:#EFECE3; --card:#F8F6F0; --card2:#F2EFE6;
+  --ink:#2F4154; --ink2:#5A6675; --blue:#6E88A6;
+  --cinnabar:#9C4A3C; --line:#D6D0C0; --gold:#A98543;
+  --k:1.09;                    /* 全卡统一字号倍率：二分所得最大不溢出值（卡1 为瓶颈），留有余量 */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#1B2026;color:var(--ink);
+  font-family:"Noto Sans CJK SC","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+  padding:40px 0;display:flex;flex-direction:column;align-items:center;gap:40px;
+}
+.serif{font-family:"Noto Serif CJK SC","Noto Serif SC","Songti SC",serif}
+
+/* ===== 单张 9:16 卡 ===== */
+.card9{
+  width:1080px;height:1920px;flex:none;position:relative;overflow:hidden;
+  background:var(--paper);
+  background-image:repeating-linear-gradient(90deg,rgba(120,110,90,.035) 0 1px,transparent 1px 4px),
+                   repeating-linear-gradient(0deg,rgba(120,110,90,.018) 0 1px,transparent 1px 7px);
+  display:flex;flex-direction:column;
+  padding:64px 66px 52px;
+  box-shadow:0 12px 40px rgba(0,0,0,.35);
+}
+.card9::before{content:"";position:absolute;inset:22px;border:1px solid rgba(156,74,60,.18);pointer-events:none}
+.nw{white-space:nowrap}
+
+/* 页眉 */
+.hd{position:relative;border-bottom:2px solid var(--ink);padding-bottom:26px;flex:none}
+.hd .kick{font-size:calc(20px*var(--k));letter-spacing:5px;color:var(--cinnabar);margin-bottom:16px}
+.ft .r{display:flex;align-items:center;gap:16px;flex:none}
+.ft .pg{font-size:calc(19px*var(--k));letter-spacing:3px;color:var(--cinnabar);
+  border:1px solid var(--cinnabar);border-radius:3px;padding:5px 13px;white-space:nowrap}
+.hd h1{font-size:calc(62px*var(--k));font-weight:700;letter-spacing:2px;line-height:1.25;padding-right:130px}
+.hd h1 .dot{color:var(--cinnabar)}
+.hd .sub{margin-top:14px;font-size:calc(27px*var(--k));color:var(--ink2);letter-spacing:.5px}
+.hd .stamp{
+  position:absolute;right:10px;top:-6px;width:104px;height:104px;
+  border:3px solid var(--cinnabar);border-radius:6px;color:var(--cinnabar);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-size:calc(27px*var(--k));line-height:1.15;letter-spacing:2px;font-weight:700;
+  transform:rotate(-6deg);opacity:.9;box-shadow:inset 0 0 0 2px rgba(156,74,60,.25);
+}
+
+/* 6 步进度条：本卡覆盖的两步高亮 */
+.rail{display:flex;align-items:center;gap:0;margin:26px 0 6px;flex:none}
+.rail .s{
+  flex:1;text-align:center;padding:12px 2px;background:var(--card2);
+  border:1px solid var(--line);border-radius:4px;
+  font-size:calc(19px*var(--k));font-weight:600;color:var(--ink2);white-space:nowrap;
+}
+.rail .s b{display:block;font-size:calc(12px*var(--k));letter-spacing:1.4px;margin-bottom:4px;font-weight:500}
+.rail .s.on{background:var(--cinnabar);border-color:var(--cinnabar);color:#F8F6F0}
+.rail .s.on b{color:rgba(255,255,255,.82)}
+.rail .a{width:22px;text-align:center;color:var(--blue);font-size:calc(20px*var(--k));flex:none}
+
+/* 内容区 */
+.bd{flex:1;display:flex;flex-direction:column;min-height:0;
+  justify-content:space-between;padding-bottom:14px}
+
+/* 步骤块 */
+.blk{flex:none;margin-top:30px}
+.blk:first-child{margin-top:26px}
+.blk .row{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.blk .num{
+  width:52px;height:52px;border-radius:50%;background:var(--ink);color:var(--paper);
+  display:flex;align-items:center;justify-content:center;
+  font-size:calc(25px*var(--k));font-weight:700;flex:none;
+}
+.blk.g .num{background:var(--gold)}
+.blk.b .num{background:var(--blue)}
+.blk .tag{font-size:calc(17px*var(--k));letter-spacing:2px;color:var(--cinnabar);
+  border:1px solid var(--cinnabar);border-radius:2px;padding:3px 10px;white-space:nowrap}
+.blk.b .tag{color:#3C5670;border-color:var(--blue)}
+.blk h2{font-size:calc(40px*var(--k));letter-spacing:1px;font-weight:700;line-height:1.2}
+
+/* 对话气泡 */
+.bub{border-radius:6px;padding:16px 22px;font-size:calc(30px*var(--k));line-height:1.62}
+.bub .who{display:block;font-size:calc(19px*var(--k));letter-spacing:2.4px;font-weight:700;margin-bottom:10px}
+.bub.you{background:rgba(156,74,60,.06);border:1px solid rgba(156,74,60,.24);border-left:5px solid var(--cinnabar)}
+.bub.you .who{color:var(--cinnabar)}
+.bub.it{background:rgba(110,136,166,.10);border:1px solid rgba(110,136,166,.32);border-left:5px solid var(--blue)}
+.bub.it .who{color:#3C5670}
+.bub .ln{padding:3px 0 3px 22px;position:relative;color:var(--ink)}
+.bub .ln::before{content:"「";position:absolute;left:0;color:var(--ink2)}
+.bub .ln::after{content:"」"}
+.bub .ln b{color:var(--cinnabar);font-weight:600}
+.bub .ln.em{color:var(--ink2);font-size:calc(26px*var(--k))}
+/* STEP 02 三段式引导语较长：只这一句微调，保持全卡其余文字仍是大字 */
+.bub .ln.long{font-size:calc(27px*var(--k));line-height:1.48}
+.bub+.bub{margin-top:14px}
+
+/* chip 组 */
+.chips{display:flex;flex-wrap:wrap;gap:11px;margin-top:16px}
+.chip{font-size:calc(23px*var(--k));padding:9px 15px;border-radius:4px;
+  border:1px solid var(--line);background:#fff;color:var(--ink);white-space:nowrap}
+.chip.k1{border-color:var(--cinnabar);color:var(--cinnabar);background:rgba(156,74,60,.06)}
+.chip.k2{border-color:var(--blue);color:#3C5670;background:rgba(110,136,166,.09)}
+.chip b{font-weight:700}
+
+/* 结果行 */
+.lead{margin-top:16px;padding:12px 18px;border-left:5px solid var(--blue);
+  background:rgba(110,136,166,.08);font-size:calc(25px*var(--k));line-height:1.6;color:var(--ink)}
+.lead.w{border-left-color:var(--cinnabar);background:rgba(156,74,60,.07)}
+.lead .mk{color:var(--cinnabar);font-weight:700;margin-right:8px}
+.lead .mk.b{color:var(--blue)}
+.lead b{color:var(--cinnabar)}
+
+/* 双产物并排 */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.two .c{border:1px solid var(--line);border-radius:5px;padding:16px 18px;background:#fff}
+.two .c.b{background:rgba(110,136,166,.08);border-color:var(--blue)}
+.two .c .h{font-size:calc(27px*var(--k));font-weight:700;color:var(--ink)}
+.two .c .h i{font-style:normal;font-size:calc(16px*var(--k));color:var(--cinnabar);
+  letter-spacing:2px;display:block;margin-bottom:5px}
+.two .c ul{list-style:none;margin-top:10px}
+.two .c li{font-size:calc(21px*var(--k));line-height:1.6;color:var(--ink2);padding-left:16px;position:relative}
+.two .c li::before{content:"·";position:absolute;left:2px;color:var(--cinnabar);font-weight:700}
+.two .c .out{margin-top:10px;padding-top:9px;border-top:1px dashed var(--line);
+  font-size:calc(19px*var(--k));color:#3C5670;line-height:1.5}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.92em;
+  background:rgba(110,136,166,.14);color:#3C5670;padding:1px 6px;border-radius:3px;white-space:nowrap}
+
+/* 三种典型用法 */
+.how{margin-top:18px}
+.how .cap{font-size:calc(18px*var(--k));letter-spacing:3px;color:var(--ink);font-weight:700;
+  border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:12px}
+.how .cap b{color:var(--cinnabar)}
+.how .g{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.how .c{border:1px solid var(--line);border-radius:5px;background:#fff;padding:13px 15px}
+.how .c .sc{font-size:calc(17px*var(--k));letter-spacing:2px;color:var(--cinnabar);font-weight:700;margin-bottom:7px}
+.how .c .say{font-size:calc(23px*var(--k));font-weight:600;color:var(--ink);line-height:1.5}
+.how .c .get{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);
+  font-size:calc(18px*var(--k));color:var(--ink2);line-height:1.55}
+
+/* 区块间软箭头 */
+.soft{height:34px;display:flex;align-items:center;justify-content:center;flex:none}
+.soft .ln{width:2px;height:20px;background:var(--line);position:relative}
+.soft .ln::after{content:"";position:absolute;bottom:-9px;left:-5px;
+  border-left:6px solid transparent;border-right:6px solid transparent;border-top:9px solid var(--blue)}
+
+/* 页脚 */
+.ft{margin-top:auto;border-top:2px solid var(--ink);padding-top:18px;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex:none}
+.ft .l{font-size:calc(21px*var(--k));color:var(--ink2);line-height:1.6}
+.ft .l b{color:var(--cinnabar)}
+.ft .seal{width:max-content;border:2px solid var(--cinnabar);color:var(--cinnabar);
+  padding:6px 14px;font-size:calc(21px*var(--k));letter-spacing:4px;
+  transform:rotate(-4deg);opacity:.85;flex:none}
+
+/* 单张模式 ?c=N */
+body.single{padding:0;gap:0}
+body.single .card9{display:none}
+body.single .card9.show{display:flex}
+@media print{
+  body{padding:0;background:#fff;gap:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card9{box-shadow:none;page-break-after:always}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ 卡 1 / 3 · 开口与对答 ============ -->
+<section class="card9" id="c1">
+  <div class="hd">
+    <div class="kick">静心 · 顺时对答智能体 / USER GUIDE</div>
+    <h1 class="serif">一句话开口，<span class="dot">·</span>最多答两句</h1>
+    <div class="sub">不用改 HTML · 不用选皮肤 · 不用填表</div>
+    <div class="stamp serif">顺时<br>而养</div>
+  </div>
+
+  <div class="rail">
+    <div class="s on"><b>01 ASK</b>开口</div><div class="a">→</div>
+    <div class="s on"><b>02 ANSWER</b>答两句</div><div class="a">→</div>
+    <div class="s"><b>03</b>确认</div><div class="a">→</div>
+    <div class="s"><b>04</b>收成品</div><div class="a">→</div>
+    <div class="s"><b>05</b>修订</div><div class="a">→</div>
+    <div class="s"><b>06</b>用起来</div>
+  </div>
+
+  <div class="bd">
+    <div class="blk">
+      <div class="row"><div class="num">1</div><span class="tag">STEP 01 · 开口</span><h2 class="serif">像发消息一样说一句</h2></div>
+      <div class="bub you">
+        <span class="who">你 说 · 任选一句</span>
+        <div class="ln">生成今天的身体日历，再出张卡</div>
+        <div class="ln">48 岁，肩颈僵硬，喉咙有痰，运动后背部冒大汗，在陕西汉中西乡县</div>
+        <div class="ln">做张 9:16 的卡 ／ 只要 Markdown ／ 明天呢</div>
+      </div>
+      <div class="chips">
+        <span class="chip k1"><b>生成</b>　长页 + 卡（默认）</span>
+        <span class="chip"><b>只要长页</b>　给我 Markdown</span>
+        <span class="chip"><b>只要卡</b>　做张 9:16</span>
+        <span class="chip k2"><b>重算</b>　按我这情况再来一份</span>
+        <span class="chip k2"><b>想改</b>　换第 7 套</span>
+        <span class="chip k2"><b>想懂</b>　这条依据是什么</span>
+      </div>
+      <div class="lead w"><span class="mk">!</span>问「是不是颈椎病 / 化痰方 / 宜不宜出门」会被<b>温和拦下</b>并说明边界，其余养生建议照常给。</div>
+    </div>
+
+    <div class="soft"><div class="ln"></div></div>
+
+    <div class="blk b">
+      <div class="row"><div class="num">2</div><span class="tag">STEP 02 · 对答</span><h2 class="serif">它最多问你两句</h2></div>
+      <div class="bub it">
+        <span class="who">它 答 · 首次只问这一句</span>
+        <div class="ln long">好的，先确认三件事：① 你的<b>年龄</b>，② <b>身体状况</b> —— 有没有需要照顾的情况（性别、肩颈、出汗、慢病孕期，简单说就行），③ 你在哪个<b>省 / 市 / 区县</b>？不说也行 —— 我按「普通健康成年人 · 中低强度保守版」生成，位置沿用上次记忆。</div>
+      </div>
+      <div class="chips">
+        <span class="chip k1"><b>全答</b>　省市县 + 自述，一步到位</span>
+        <span class="chip"><b>简答</b>　只给「陕西汉中西乡县」</span>
+        <span class="chip"><b>跳过</b>　回「用默认值」或「生成」</span>
+        <span class="chip k2"><b>同名县</b>　它列候选让你点一下</span>
+      </div>
+      <div class="lead"><span class="mk b">↳</span><b>能推断就推断，绝不逐项追问</b>；最多 2 轮，缺的用保守默认值，生成后会告诉你用了哪些。</div>
+    </div>
+  </div>
+
+  <div class="ft">
+    <div class="l">下一张 → <b>回「生成」，一次拿三样</b><br>全 6 步见《顺时对答智能体-用户使用流程图》长图</div>
+    <div class="r"><span class="pg">1 / 3</span><div class="seal serif">顺时而养</div></div>
+  </div>
+</section>
+
+<!-- ============ 卡 2 / 3 · 确认与收成品 ============ -->
+<section class="card9" id="c2">
+  <div class="hd">
+    <div class="kick">静心 · 顺时对答智能体 / USER GUIDE</div>
+    <h1 class="serif">回「生成」，<span class="dot">·</span>一次拿三样</h1>
+    <div class="sub">确认 → 自动装配 → 两份成品 + 一段文字</div>
+    <div class="stamp serif">顺时<br>而养</div>
+  </div>
+
+  <div class="rail">
+    <div class="s"><b>01</b>开口</div><div class="a">→</div>
+    <div class="s"><b>02</b>答两句</div><div class="a">→</div>
+    <div class="s on"><b>03 CONFIRM</b>确认</div><div class="a">→</div>
+    <div class="s on"><b>04 RECEIVE</b>收成品</div><div class="a">→</div>
+    <div class="s"><b>05</b>修订</div><div class="a">→</div>
+    <div class="s"><b>06</b>用起来</div>
+  </div>
+
+  <div class="bd">
+    <div class="blk g">
+      <div class="row"><div class="num">3</div><span class="tag">STEP 03 · 确认</span><h2 class="serif">回一个「生成」就开工</h2></div>
+      <div class="bub it">
+        <span class="who">它 答 · 生成前一行确认</span>
+        <div class="ln">已收集：<b>2026-11-08</b> · <b>陕西汉中 · 西乡县</b> · 48 岁 / 肩颈僵硬 / 喉咙有痰 / 运动后背部易大汗 · 强度<b>中低（不出大汗）</b> · 皮肤自动匹配。接下来查天气 + 离线历法，出「长页 + 9:16 卡」。要改现在说，或回「生成」。</div>
+      </div>
+      <div class="bub you">
+        <span class="who">你 说</span>
+        <div class="ln">生成</div>
+        <div class="ln em">或现在补一句：改区县 / 降一档 / 指定第 7 套 / 只要 Markdown</div>
+      </div>
+      <div class="lead"><span class="mk b">↳</span>之后<b>你不用操作</b>：它自动查天气与空气、算农历节气、按区县调整建议、按天气挑皮肤。断网照常出，标注 <span class="nw">「天气缺席」</span>。</div>
+    </div>
+
+    <div class="soft"><div class="ln"></div></div>
+
+    <div class="blk">
+      <div class="row"><div class="num">4</div><span class="tag">STEP 04 · 收成品</span><h2 class="serif">一次拿到三样</h2></div>
+      <div class="two">
+        <div class="c">
+          <div class="h"><i>成品 A · 长页</i>中医身体日历</div>
+          <ul>
+            <li>10 字段全量 + 今日档案</li>
+            <li>个人化说明 + 四层依据</li>
+            <li>作息带时间点、运动带停止信号</li>
+          </ul>
+          <div class="out">→ <code>.md</code> / <code>.html</code> / 长图；可打印存 PDF</div>
+        </div>
+        <div class="c b">
+          <div class="h"><i>成品 B · 卡片</i>国风养生日历卡 9:16</div>
+          <ul>
+            <li>1080×1920，无配图、大字</li>
+            <li>宜忌每条压到一行</li>
+            <li><b>卡面只留「依据」</b>（避开印章）</li>
+          </ul>
+          <div class="out">→ <code>.html</code> / <code>.png</code>；可直接发号</div>
+        </div>
+      </div>
+      <div class="lead w"><span class="mk">＋</span><b>对话文字告知</b>：留意（红旗 / 防风 / 先问医生 / 就医门槛）与 落款说明（免责 + 日期 · 节气 · 区县 · 模板名）。<b>不上卡面</b>，发稿时补进正文；「复制文案」里带全文。</div>
+    </div>
+  </div>
+
+  <div class="ft">
+    <div class="l">下一张 → <b>想改补一句，直接拿去发</b><br>留意与免责不上卡面，发稿时补进正文</div>
+    <div class="r"><span class="pg">2 / 3</span><div class="seal serif">顺时而养</div></div>
+  </div>
+</section>
+
+<!-- ============ 卡 3 / 3 · 修订与用起来 ============ -->
+<section class="card9" id="c3">
+  <div class="hd">
+    <div class="kick">静心 · 顺时对答智能体 / USER GUIDE</div>
+    <h1 class="serif">想改补一句，<span class="dot">·</span>直接拿去发</h1>
+    <div class="sub">修订只重算改动部分 · 不用从头再来</div>
+    <div class="stamp serif">顺时<br>而养</div>
+  </div>
+
+  <div class="rail">
+    <div class="s"><b>01</b>开口</div><div class="a">→</div>
+    <div class="s"><b>02</b>答两句</div><div class="a">→</div>
+    <div class="s"><b>03</b>确认</div><div class="a">→</div>
+    <div class="s"><b>04</b>收成品</div><div class="a">→</div>
+    <div class="s on"><b>05 REVISE</b>修订</div><div class="a">→</div>
+    <div class="s on"><b>06 USE</b>用起来</div>
+  </div>
+
+  <div class="bd">
+    <div class="blk b">
+      <div class="row"><div class="num">5</div><span class="tag">STEP 05 · 修订</span><h2 class="serif">想改，再补一句就行</h2></div>
+      <div class="bub you">
+        <span class="who">你 说 · 任选一句</span>
+        <div class="ln">换到成都双流区 ／ 强度再降一档 ／ 换第 7 套</div>
+        <div class="ln">只要 Markdown ／ 为什么今天不能练到大汗 ／ 明天呢</div>
+      </div>
+      <div class="chips">
+        <span class="chip"><b>换城市</b>　天气与建议一起变</span>
+        <span class="chip"><b>换皮肤</b>　只换配色，长页不动</span>
+        <span class="chip"><b>降强度</b>　建议更保守一档</span>
+        <span class="chip k2"><b>解释依据</b>　直接答原因，不重做</span>
+        <span class="chip k2"><b>改日期</b>　按排期预览，天气留空</span>
+      </div>
+      <div class="lead w"><span class="mk">↺</span><b>修订回环</b>：只重算改动涉及的部分，<b>不用重新回答前面的问题</b>，也不会从头再来。</div>
+    </div>
+
+    <div class="soft"><div class="ln"></div></div>
+
+    <div class="blk">
+      <div class="row"><div class="num">6</div><span class="tag">STEP 06 · 用起来</span><h2 class="serif">发稿，以及下次直接用</h2></div>
+      <div class="chips">
+        <span class="chip k1"><b>长页</b>　公众号长文 / 打印 / PDF</span>
+        <span class="chip k1"><b>卡片 PNG</b>　配图直发</span>
+        <span class="chip"><b>留意 + 免责</b>　正文补上（卡面没有）</span>
+        <span class="chip k2"><b>下次</b>　直接说「生成今天的」</span>
+      </div>
+      <div class="lead"><span class="mk b">↳</span>位置与个人情况存本机记忆，下次打开<b>自动带出到县级</b>；只存本机 <code>localStorage</code> / 会话上下文，<b>不上传</b>。</div>
+    </div>
+
+    <div class="how">
+      <div class="cap">速查 · <b>三种典型用法</b>（照着说就能用）</div>
+      <div class="g">
+        <div class="c"><div class="sc">第一次用</div><div class="say">「生成今天的身体日历」→ 答两句 →「生成」</div><div class="get">拿到长页 + 卡片 + 留意 / 免责文字</div></div>
+        <div class="c"><div class="sc">第二天用</div><div class="say">「生成今天的」</div><div class="get">不再问位置与身体情况，直接出成品</div></div>
+        <div class="c"><div class="sc">临时要改</div><div class="say">「换第 7 套」/「降一档」/「依据是什么」</div><div class="get">只重出改动部分，其余保持不变</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ft">
+    <div class="l">全 6 步见《顺时对答智能体-用户使用流程图》长图<br>不诊断 · 不开方 · 不判吉凶 · 不承诺疗效</div>
+    <div class="r"><span class="pg">3 / 3</span><div class="seal serif">顺时而养</div></div>
+  </div>
+</section>
+
+<script>
+/* ?c=1/2/3 单独看一张；默认三张纵向排列 */
+(function(){
+  var m = location.search.match(/[?&]c=([123])/);
+  if(m){
+    document.body.classList.add('single');
+    var el = document.getElementById('c'+m[1]);
+    if(el) el.classList.add('show');
+  }
+})();
+</script>
+</body>
+</html>

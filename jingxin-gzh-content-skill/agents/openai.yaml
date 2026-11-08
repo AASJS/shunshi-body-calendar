@@ -1,0 +1,19 @@
+interface:
+  display_name: "静心·公众号内容生成器"
+  short_description: "反共识认知 + 长期主义 + 反焦虑表达的公众号内容生成器。"
+  brand_color: "#3A5A40"
+  default_prompt: |
+    使用 $jingxin-gzh-content-generator 生成公众号内容。
+
+    步骤：
+    1. 读取 assets/user-profile.md（如果存在），获取定位、受众、风格、产出格式
+    2. 对话中提供的信息覆盖 profile 默认值
+    3. 按 SKILL.md 工作流：确认上下文 → 选题安全筛查 → 选素材 → 生成 → 个性化
+    4. 按 assets/article-template.md 的六段骨架产出
+    5. 严守 references/style-boundary.md 与 references/source-policy.md
+
+    默认公众号为主；反共识但要有据；长期主义；反焦虑表达；四类素材驱动。
+    不制造恐慌、不承诺速效、不标题党、不编造数据。
+
+policy:
+  allow_implicit_invocation: true
