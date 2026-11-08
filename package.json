@@ -1,0 +1,14 @@
+{
+  "name": "shunshi-body-calendar",
+  "version": "1.2.0",
+  "private": true,
+  "description": "顺时项目 · 资产库（中医身体日历 / 国风养生日历卡 / 顺时对答智能体）",
+  "scripts": {
+    "test": "node --test tests/core.test.mjs",
+    "test:browser": "node --test tests/browser.test.mjs",
+    "test:all": "npm test && npm run test:browser"
+  },
+  "devDependencies": {
+    "playwright": "^1.58.0"
+  }
+}
