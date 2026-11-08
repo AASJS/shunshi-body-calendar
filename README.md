@@ -119,8 +119,10 @@ npm i && npx playwright install chromium && npm run test:browser   # 浏览器�
 | 节气内容包 | 按季节批量生成长图 + 9:16 卡 + 文字报告 |
 | 部署与培训 | 离线工作站部署、内容流程配置与使用培训 |
 
-<span style="display:inline-block;margin:8px 0"><img src="assets/wechat-qrcode.png" alt="微信联系二维码" width="180"/></span>
-<br/>*扫码添加微信，注明「顺时定制」*
+<p align="center">
+  <img src="assets/wechat-qrcode.png" alt="微信联系二维码" width="120"/>
+</p>
+<p align="center"><em>扫码添加微信，注明「顺时定制」</em></p>
 
 ## 许可与使用
 
