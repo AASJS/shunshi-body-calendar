@@ -6,7 +6,7 @@
 
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-orange)](LICENSE)
 [![在线试用](https://img.shields.io/badge/在线试用-GitHub_Pages-2ea44f)](https://aasjs.github.io/shunshi-body-calendar/)
-[![访问统计](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FAASJS%2Fshunshi-body-calendar&count_bg=%23A05A2C&title_bg=%233D3226&title=%E8%AE%BF%E9%97%AE&edge_flat=false)](https://aasjs.github.io/shunshi-body-calendar/)
+[![访问统计](https://komarev.com/ghpvc/?username=AASJS&label=%E8%AE%BF%E9%97%AE&color=a05a2c&style=flat&short=true)](https://aasjs.github.io/shunshi-body-calendar/)
 [![Stars](https://img.shields.io/github/stars/AASJS/shunshi-body-calendar?style=social)](https://github.com/AASJS/shunshi-body-calendar/stargazers)
 [![Last Commit](https://img.shields.io/github/last-commit/AASJS/shunshi-body-calendar/main)](https://github.com/AASJS/shunshi-body-calendar/commits/main)
 [![更新日志](https://img.shields.io/badge/更新日志-CHANGELOG-blue)](CHANGELOG.md)
