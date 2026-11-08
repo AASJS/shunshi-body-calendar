@@ -5,7 +5,7 @@
 > 沉淀日期：2026-11-08
 
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-orange)](LICENSE)
-[![tests](https://github.com/AASJS/shunshi-body-calendar/actions/workflows/test.yml/badge.svg)](https://github.com/AASJS/shunshi-body-calendar/actions/workflows/test.yml)
+[![tests](https://img.shields.io/badge/%E5%9B%9E%E5%BD%92%E6%B5%8B%E8%AF%95-17%2B5%20%E4%BE%8B%E9%80%9A%E8%BF%87-2ea44f)](tests/README.md)
 [![在线试用](https://img.shields.io/badge/在线试用-GitHub_Pages-2ea44f)](https://aasjs.github.io/shunshi-body-calendar/)
 [![访问统计](https://komarev.com/ghpvc/?username=AASJS&label=%E8%AE%BF%E9%97%AE&color=a05a2c&style=flat&short=true)](https://aasjs.github.io/shunshi-body-calendar/)
 [![Stars](https://img.shields.io/github/stars/AASJS/shunshi-body-calendar?style=social)](https://github.com/AASJS/shunshi-body-calendar/stargazers)
@@ -100,14 +100,14 @@
 
 ## 自动化测试
 
-关键回归（生成结果 / 区县解析 / PNG 导出 / 窄屏布局 / 医疗安全边界）已固化为可重复测试，每次 push 由 GitHub Actions 自动执行：
+关键回归（生成结果 / 区县解析 / PNG 导出 / 窄屏布局 / 医疗安全边界）已固化为可重复测试，本地一键复跑：
 
 ```bash
-npm test                 # 核心回归（零依赖）
-npm i && npx playwright install chromium && npm run test:browser   # 浏览器回归
+npm test                 # 核心回归（零依赖，17 例）
+npm i && npx playwright install chromium && npm run test:browser   # 浏览器回归（5 例）
 ```
 
-详见 [tests/README.md](tests/README.md)。
+详见 [tests/README.md](tests/README.md)。CI 自动化（GitHub Actions）已备好工作流文件，待启用。
 
 ## 许可与使用
 
