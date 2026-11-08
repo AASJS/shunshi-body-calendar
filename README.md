@@ -109,6 +109,19 @@ npm i && npx playwright install chromium && npm run test:browser   # 浏览器�
 
 详见 [tests/README.md](tests/README.md)。CI 自动化（GitHub Actions）已备好工作流文件，待启用。
 
+## 商用与定制
+
+个人学习与个人公众号内容创作**免费使用**（见下方许可证）。用于商业用途（品牌定制、机构内容生产、批量商用等）需获得授权，同时提供配套定制服务：
+
+| 服务 | 内容 |
+|---|---|
+| 品牌定制 | 基于现有 10 套国风模板定制品牌配色、落款、封面样式 |
+| 节气内容包 | 按季节批量生成长图 + 9:16 卡 + 文字报告 |
+| 部署与培训 | 离线工作站部署、内容流程配置与使用培训 |
+
+<span style="display:inline-block;margin:8px 0"><img src="assets/wechat-qrcode.png" alt="微信联系二维码" width="180"/></span>
+<br/>*扫码添加微信，注明「顺时定制」*
+
 ## 许可与使用
 
 - 本库以 **CC BY-NC 4.0**（署名—非商业性使用）许可发布，详见 [LICENSE](LICENSE)；引用请注明出处。
