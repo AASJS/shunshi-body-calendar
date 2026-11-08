@@ -4,6 +4,13 @@
 > 离线单文件工作站 + L1 Skill 包 + 方案与索引文档
 > 沉淀日期：2026-11-08
 
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-orange)](LICENSE)
+[![在线试用](https://img.shields.io/badge/在线试用-GitHub_Pages-2ea44f)](https://aasjs.github.io/shunshi-body-calendar/)
+[![访问统计](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FAASJS%2Fshunshi-body-calendar&count_bg=%23A05A2C&title_bg=%233D3226&title=%E8%AE%BF%E9%97%AE&edge_flat=false)](https://aasjs.github.io/shunshi-body-calendar/)
+[![Stars](https://img.shields.io/github/stars/AASJS/shunshi-body-calendar?style=social)](https://github.com/AASJS/shunshi-body-calendar/stargazers)
+[![Last Commit](https://img.shields.io/github/last-commit/AASJS/shunshi-body-calendar/main)](https://github.com/AASJS/shunshi-body-calendar/commits/main)
+[![更新日志](https://img.shields.io/badge/更新日志-CHANGELOG-blue)](CHANGELOG.md)
+
 **👉 在线试用（GitHub Pages，免下载）：<https://aasjs.github.io/shunshi-body-calendar/>**
 
 ## 效果速览
@@ -91,3 +98,10 @@
 - 本库以 **CC BY-NC 4.0**（署名—非商业性使用）许可发布，详见 [LICENSE](LICENSE)；引用请注明出处。
 - 内容仅供健康生活参考，不构成医疗建议；就医请遵医嘱。
 - 生成产物（日历卡、报告）可自由用于个人公众号与社媒发布（非商业用途）。
+
+## 更新日志
+
+- **v1.1.0（2026-11-08）**：GitHub Pages 在线试用站点、CC BY-NC 4.0 许可证、README 效果速览与徽章
+- **v1.0.0（2026-11-08）**：首次发布——智能体 / 一源多出 / 县级联动内核 / 国风日历卡 / Skill 包 / 文档索引 / 16 张成品图
+
+完整记录见 [CHANGELOG.md](CHANGELOG.md)。
