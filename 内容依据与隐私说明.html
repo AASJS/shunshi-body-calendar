@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>内容依据与隐私说明 · 顺时项目</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --ink:#3d3226; --ink2:#6b5d4a; --ink3:#a3967f; --accent:#a05a2c; --line:#e5ddcd; --bg:#f7f4ee; --card:#fff; }
+  body { background: var(--bg); color: var(--ink); font-family: "PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; line-height: 1.85; padding: 32px 16px 64px; }
+  .wrap { max-width: 860px; margin: 0 auto; }
+  .kicker { letter-spacing: 4px; font-size: 13px; color: var(--accent); margin-bottom: 8px; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  .sub { color: var(--ink2); font-size: 14px; margin-bottom: 30px; }
+  h2 { font-size: 20px; margin: 38px 0 14px; padding-left: 12px; border-left: 4px solid var(--accent); }
+  h3 { font-size: 16px; margin: 22px 0 8px; color: var(--ink); }
+  p { font-size: 15px; color: var(--ink2); margin-bottom: 10px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; margin-bottom: 14px; }
+  .card b.t { display: block; font-size: 16px; margin-bottom: 6px; }
+  .card p, .card li { font-size: 14.5px; color: var(--ink2); }
+  ul { padding-left: 22px; margin-bottom: 8px; }
+  li { margin-bottom: 6px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; background: var(--card); font-size: 14px; }
+  th, td { border: 1px solid var(--line); padding: 9px 12px; text-align: left; vertical-align: top; }
+  th { background: #efe9dd; color: var(--ink); font-weight: 600; white-space: nowrap; }
+  td code { background: #efe9dd; padding: 1px 6px; border-radius: 4px; font-size: 13px; color: var(--accent); white-space: nowrap; }
+  .hl { background: #fdf8ee; border: 1px solid #e8d9b8; border-radius: 10px; padding: 14px 18px; font-size: 14.5px; color: var(--ink2); margin: 14px 0; }
+  .warn { color: #8c2f1d; font-weight: 600; }
+  .btnrow { margin: 18px 0 6px; display: flex; gap: 12px; flex-wrap: wrap; }
+  button { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 10px 22px; font-size: 15px; cursor: pointer; }
+  button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  #clearMsg { font-size: 14px; color: var(--ink2); margin-top: 8px; min-height: 22px; }
+  code.inline { background: #efe9dd; padding: 1px 6px; border-radius: 4px; font-size: 13.5px; }
+  footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink3); }
+  @media (max-width: 640px) { table { font-size: 13px; } th, td { padding: 7px 8px; } h1 { font-size: 24px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">顺时项目 · 黄帝内经养生日历</div>
+  <h1>内容依据与隐私说明</h1>
+  <div class="sub">本页说明生成的健康内容来自哪里、如何审校，以及本机记忆（localStorage）保存什么、如何清除。最后更新：2026-11-08</div>
+
+  <h2>一、健康内容的四类来源</h2>
+
+  <div class="card"><b class="t">1. 经典总纲 ——《黄帝内经 · 素问 · 四气调神大论》</b>
+    <p>四时节律与作息基调由此而来：春三月「夜卧早起」，夏三月「夜卧早起，无厌于日」，秋三月「早卧早起，与鸡俱兴」，冬三月「<b>早卧晚起，必待日光</b>」。生成产物中的作息主线、宜忌方向与「收」与「泄」的节气总述，均取自该篇原文精神，只做白话转述，不做经文发挥。</p>
+  </div>
+
+  <div class="card"><b class="t">2. 历法框架 —— 二十四节气与农历（离线内置）</b>
+    <p>节气日期与农历干支由内置历法表（<code.inline>TERM_DATA</code.inline>）离线推算，不依赖网络。产物中「节气已过 N 天、距下一节气 N 天」即由此计算，用于把经典总纲落到「今天是哪一节气、处在哪一段」。</p>
+  </div>
+
+  <div class="card"><b class="t">3. 现代剂量与安全阈值 —— 大众运动健康通识指引</b>
+    <p>运动强度采用 RPE 自感用力等级（本库默认 9–11，即「能正常说话、微微出汗」），配合热身加倍、微汗即止、运动后不立即洗浴等大众通识边界；泡脚限水温不高于 40℃、10–15 分钟。剂量数字取保守下限，宁低勿高。</p>
+  </div>
+
+  <div class="card"><b class="t">4. 当日条件 —— 区县气候画像 + 实时天气</b>
+    <p>全国 2995 个区县离线内置气候常识画像（干冷 / 湿冷 / 湿热 / 高原等），定位精确到县；可选联网时经 Open-Meteo 免密钥接口取当日天气作增量提示。天气接口不携带任何个人数据，也不需要账号。</p>
+  </div>
+
+  <div class="hl">经典提供<b>思想框架</b>，现代指南提供<b>剂量与安全阈值</b>，气象与历法提供<b>当日条件</b>；三者合成当日的宜、忌、作息与运动边界。<b>四者均不构成医疗建议。</b></div>
+
+  <h2>二、审校方式：固定规则，不是自由发挥</h2>
+  <ul>
+    <li><b>规则库人工沉淀</b>：所有提示条目来自人工整理的固定规则库（按节气 × 气候画像 × 天气增量组合），生成时按规则拼装，<b>不存在每次随机改写</b>；同一天同一地点，生成结果可复现。</li>
+    <li><b>安全边界内置</b>：全程不诊断、不开方药 / 药膳 / 穴位、不判吉凶、不承诺疗效；任何情形下红旗症状一律提示「<span class="warn">立即停止并就医</span>」。</li>
+    <li><b>运动默认保守</b>：默认中低强度，并对高血压、糖尿病、孕期、术后恢复等情形给出「先咨询医生」的保守提示。</li>
+    <li><b>可回归验证</b>：生成结果、区县解析、医疗安全边界均有自动化测试（<code.inline>tests/</code.inline> 目录），每次提交都会重复验证，防止规则被误改。</li>
+    <li><b>使用建议</b>：产物仅供健康生活参考。有慢性病、孕期、术后恢复或症状持续加重的，请先咨询专业医生，就医请遵医嘱。</li>
+  </ul>
+
+  <h2>三、本机记忆（localStorage）保存什么</h2>
+  <p>工具是纯离线单文件 HTML，<b>没有账号体系、没有服务器存储</b>。你的三件事（年龄、身体状况、所在区县）只保存在浏览器本机的 localStorage 里，用于下次打开时自动带出、不必重报。具体键如下：</p>
+
+  <table>
+    <tr><th>键名</th><th>保存内容</th><th>写入页面</th></tr>
+    <tr><td><code>jx_loc</code></td><td>最近一次确认的省 / 市 / 区县定位</td><td>顺时对答智能体</td></tr>
+    <tr><td><code>shunshi_profile</code></td><td>年龄 + 身体状况（需要照顾的情况）+ 个性化约束</td><td>顺时对答智能体</td></tr>
+    <tr><td><code>shunshi_skin</code></td><td>上次选择的国风皮肤序号（1–10）</td><td>顺时对答智能体</td></tr>
+    <tr><td><code>shunshi_last</code></td><td>最近一次生成的日历快照（打开页面自动恢复）</td><td>顺时对答智能体</td></tr>
+    <tr><td><code>jx_cal_loc</code></td><td>县级联动内核的定位记忆</td><td>身体日历 · 县级联动 / 一源多出</td></tr>
+  </table>
+
+  <div class="hl"><b>隐私承诺：</b>以上数据只存本机浏览器，<b>不上传、不同步、无统计埋点、无 Cookie</b>。除可选的天气查询（Open-Meteo，请求中不含任何个人数据）外，页面不发起任何网络请求。清除浏览器数据即彻底删除，我们无法帮你恢复，也不会留副本。</div>
+
+  <h2>四、如何清除本机记忆</h2>
+
+  <div class="card"><b class="t">方式 1 · 本页一键清除（推荐）</b>
+    <p>用与工具页面相同的浏览器打开本页，点击下方按钮即可清除上表全部 5 个键：</p>
+    <div class="btnrow">
+      <button id="btnClear">一键清除本机记忆</button>
+      <button id="btnCheck" class="ghost">查看当前保存情况</button>
+    </div>
+    <div id="clearMsg"></div>
+  </div>
+
+  <div class="card"><b class="t">方式 2 · 浏览器设置手动清除</b>
+    <p>浏览器设置 → 隐私与安全 → 清除浏览数据 → 勾选「Cookie 及其他站点数据」。本地双击打开的页面（<code.inline>file://</code.inline>）可在地址栏站点权限里单独清除，或直接清除全部站点数据。</p>
+  </div>
+
+  <div class="card"><b class="t">方式 3 · 开发者控制台</b>
+    <p>在工具页面按 <code.inline>F12</code.inline> 打开控制台，输入 <code.inline>localStorage.clear()</code.inline> 并回车，刷新页面即恢复空白状态。</p>
+  </div>
+
+  <footer>
+    顺时项目 · 内容依据与隐私说明 —— 本页为静态离线文档，可随仓库自由分发（非商业用途，详见 LICENSE）。内容仅供健康生活参考，不构成医疗建议。
+  </footer>
+</div>
+<script>
+(function(){
+  var KEYS=['jx_loc','shunshi_profile','shunshi_skin','shunshi_last','jx_cal_loc'];
+  var NAMES={'jx_loc':'定位','shunshi_profile':'个人情况（年龄/身体状况）','shunshi_skin':'皮肤偏好','shunshi_last':'上次生成的日历快照','jx_cal_loc':'内核定位记忆'};
+  function $(id){return document.getElementById(id)}
+  $('btnClear').onclick=function(){
+    var removed=[],miss=[];
+    KEYS.forEach(function(k){
+      try{
+        if(localStorage.getItem(k)!==null){localStorage.removeItem(k);removed.push(NAMES[k]);}
+        else miss.push(NAMES[k]);
+      }catch(e){miss.push(NAMES[k]);}
+    });
+    var msg;
+    if(removed.length){
+      msg='已清除 '+removed.length+' 项：'+removed.join('、')+'。';
+    }else{
+      msg='当前没有需要清除的记录，'+(miss.length?miss.join('、'):'全部')+'均为空。';
+    }
+    $('clearMsg').textContent=msg+'下次打开工具页将从空白状态开始。';
+  };
+  $('btnCheck').onclick=function(){
+    var found=[],empty=[];
+    KEYS.forEach(function(k){
+      try{ (localStorage.getItem(k)!==null?found:empty).push(NAMES[k]); }catch(e){ empty.push(NAMES[k]); }
+    });
+    var msg;
+    if(found.length){
+      msg='本机已保存：'+found.join('、')+'。'+(empty.length?('（为空：'+empty.join('、')+'）'):'');
+    }else{
+      msg='本机没有保存任何上述记录，全部为空。';
+    }
+    $('clearMsg').textContent=msg;
+  };
+})();
+</script>
+</body>
+</html>
