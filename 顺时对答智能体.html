@@ -412,7 +412,7 @@ body.export-on .png-tools button.hi{background:var(--cinnabar);border-color:var(
     <div class="msgs" id="msgs"></div>
     <div class="quick" id="quick"></div>
     <div class="inputbar">
-      <textarea id="inp" placeholder="例：30岁，肩颈僵硬，喉咙有痰，运动以后就背部冒大汗，在陕西汉中（补到区县更准）"></textarea>
+      <textarea id="inp" placeholder="例：42岁，久坐腰膝酸软，睡眠不佳，怕冷，在四川成都（补到区县更准）"></textarea>
       <button id="btnSend">发送</button>
     </div>
   </section>
@@ -1033,7 +1033,7 @@ $('msgs').addEventListener('click',function(e){
   var b=e.target.closest('button[data-act]');if(!b)return;
   var a=b.getAttribute('data-act');
   if(a==='gen'){say('u','生成');doGenerate()}
-  else if(a==='demo'){var d='48岁，肩颈僵硬，喉咙有痰，运动以后就背部冒大汗，在陕西省汉中市西乡县';say('u',d);handle(d)}
+  else if(a==='demo'){var d='42岁，久坐腰膝酸软，睡眠不佳，怕冷，在四川省成都市锦江区';say('u',d);handle(d)}
   else if(a==='default'){say('u','用默认值');S.locPending=null;
     if(S.cal){say('a','好，位置沿用 **'+esc(S.slots.loc.name)+'**，其余槽位不重问，重新生成。');doGenerate()}
     else confirmOrAsk(true)}
@@ -1044,7 +1044,7 @@ $('msgs').addEventListener('click',function(e){
 /* ---------- 快捷指令 ---------- */
 var QUICK=[
   ['生成今天的身体日历','生成今天的身体日历'],
-  ['示例 · 年龄 + 状况 + 省市县','48岁，肩颈僵硬，喉咙有痰，运动以后就背部冒大汗，在陕西省汉中市西乡县'],
+  ['示例 · 年龄 + 状况 + 省市县','42岁，久坐腰膝酸软，睡眠不佳，怕冷，在四川省成都市锦江区'],
   ['导出卡片','导出卡片'],
   ['换一套','换第 7 套'],
   ['解释依据','这条建议依据是什么']
@@ -1200,7 +1200,7 @@ function extract(t){
 /* ---------- 收集 / 确认 ---------- */
 /* 第②步固定为「一句话三段式」：年龄 + 身体状况（需要照顾的情况）+ 所在城市（省 / 市 / 区县） */
 var SLOT_HINT='年龄 + 身体状况（需要照顾的情况）+ 所在城市（省 / 市 / 区县）';
-var SLOT_EXAMPLE='30岁，肩颈僵硬，喉咙有痰，运动以后就背部冒大汗，在陕西汉中';
+var SLOT_EXAMPLE='42岁，久坐腰膝酸软，睡眠不佳，怕冷，在四川成都';
 
 /* 只写到市级：列该市区县，一键补齐，不反复追问、不替用户猜 */
 function showCountyPicker(){
@@ -1243,7 +1243,7 @@ function confirmOrAsk(useDefault){
       setPhase('collect','COLLECT');
       say('a','一句话给我三样就行：\n**'+SLOT_HINT+'**\n例：'+SLOT_EXAMPLE+'\n\n写到区县最准；只写到市，我把该市的区县列出来给你点一下。不说也行 —— 我按「普通健康成年人 · 中低强度保守版」生成，位置沿用上次记忆。');
       say('s',cardHTML('也可以直接选',[
-        ['示例（三段）','年龄 48 岁 · 身体状况 肩颈 / 有痰 / 易大汗 · 所在城市 陕西汉中西乡县'],
+        ['示例（三段）','年龄 42 岁 · 身体状况 久坐 / 畏寒 / 睡眠不佳 · 所在城市 四川成都锦江区'],
         ['默认','不填身体情况，按通用保守版']
       ],[{t:'用示例情况',act:'demo'},{t:'用默认值',act:'default',gh:true}]),'html');
       setStatus();return;
@@ -1844,7 +1844,7 @@ function boot(){
   say('s',cardHTML('怎么用',[
     ['① 开口','「生成今天的身体日历」或直接点下方示例'],
     ['② 答一句','年龄 + 身体状况（需要照顾的情况）+ 省 / 市 / 区县'],
-    ['　例','30岁，肩颈僵硬，喉咙有痰，运动以后就背部冒大汗，在陕西汉中'],
+    ['　例','42岁，久坐腰膝酸软，睡眠不佳，怕冷，在四川成都'],
     ['　补全','写到区县最准；只写到市，我把该市区县列出来点一下即可'],
     ['③ 生成','我查天气 + 历法，跑三层规则引擎'],
     ['④ 收两份','长页 + 9:16 卡；说「导出卡片」直接下载 PNG'],
