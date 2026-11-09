@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>顺时四问 · 每日身体记录</title>
+<style>
+  :root{
+    --paper:#F7F3EA; --card:#FFFDF8; --ink:#3D3226; --ink2:#6B5D48;
+    --tan:#A05A2C; --tan-l:#C98A5B; --line:#D8CBB4; --rule:#E4DAC6;
+    --ok:#5B7A4A; --warn:#9C4A32; --warn-bg:#F4E6DF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:"Noto Serif SC","Songti SC","PingFang SC","Microsoft YaHei",serif;
+    min-height:100vh;padding-bottom:90px;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:22px 18px 0;}
+  /* 顶栏 */
+  header{text-align:center;padding:10px 0 18px;}
+  header .kicker{font-size:13px;letter-spacing:8px;color:var(--tan);}
+  header h1{font-size:26px;font-weight:700;letter-spacing:3px;margin-top:8px;}
+  header .date{font-size:15px;color:var(--ink2);margin-top:6px;}
+  .rule{width:64px;height:3px;background:var(--tan);margin:12px auto 0;border-radius:2px;}
+
+  /* 卡片 */
+  .card{
+    background:var(--card);border:1.5px solid var(--line);border-radius:14px;
+    padding:16px 16px 18px;margin-bottom:14px;
+  }
+  .card h2{font-size:18px;font-weight:700;letter-spacing:1px;margin-bottom:4px;}
+  .card .hint{font-size:13px;color:var(--ink2);margin-bottom:10px;}
+  .card .no{
+    display:inline-block;background:var(--tan);color:#FFFDF8;
+    font-size:12px;padding:2px 12px;border-radius:999px;letter-spacing:2px;margin-bottom:8px;
+  }
+  /* 表单控件 */
+  .row{display:flex;gap:10px;}
+  input[type=time],input[type=text],textarea,select{
+    width:100%;background:var(--paper);border:1.5px solid var(--line);
+    border-radius:10px;padding:10px 12px;font-size:16px;color:var(--ink);
+    font-family:inherit;outline:none;
+  }
+  input:focus,textarea:focus,select:focus{border-color:var(--tan-l);}
+  textarea{resize:vertical;min-height:64px;line-height:1.6;}
+  label.f{display:block;font-size:14px;color:var(--ink2);margin:10px 0 6px;letter-spacing:1px;}
+  /* 睡眠时长提示 */
+  .sleepsum{font-size:13px;color:var(--tan);margin-top:8px;min-height:18px;}
+  /* 芯片选择 */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    padding:8px 16px;border-radius:999px;border:1.5px solid var(--line);
+    background:var(--paper);font-size:15px;color:var(--ink2);cursor:pointer;user-select:none;
+  }
+  .chip.on{background:var(--tan);border-color:var(--tan);color:#FFFDF8;font-weight:700;}
+  /* 信号追踪 */
+  .sig{display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px dashed var(--rule);}
+  .sig:last-child{border-bottom:none;}
+  .sig input[type=checkbox]{width:20px;height:20px;accent-color:var(--warn);}
+  .sig .name{font-size:15px;flex:1;}
+  .sig .memo{font-size:12px;color:var(--ink2);}
+  .addsig{display:flex;gap:8px;margin-top:10px;}
+  .addsig input{flex:1;font-size:14px;padding:8px 10px;}
+  /* 按钮 */
+  .btn{
+    display:block;width:100%;border:none;border-radius:12px;
+    padding:14px;font-size:17px;letter-spacing:3px;cursor:pointer;
+    font-family:inherit;font-weight:700;
+  }
+  .btn.primary{background:var(--tan);color:#FFFDF8;}
+  .btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink2);font-weight:400;font-size:15px;}
+  .btncol{display:flex;flex-direction:column;gap:10px;}
+  .savedmsg{text-align:center;font-size:14px;color:var(--ok);min-height:20px;margin-top:8px;}
+  /* 历史条目 */
+  .rec{border-bottom:1px dashed var(--rule);padding:12px 2px;}
+  .rec:last-child{border-bottom:none;}
+  .rec .d{font-size:15px;font-weight:700;color:var(--tan);letter-spacing:1px;}
+  .rec .l{font-size:14px;color:var(--ink);line-height:1.7;margin-top:4px;}
+  .rec .warnline{color:var(--warn);}
+  .empty{text-align:center;font-size:14px;color:var(--ink2);padding:14px 0;}
+  /* 统计 */
+  .stats{display:flex;gap:10px;}
+  .stat{flex:1;background:var(--paper);border-radius:10px;padding:12px 6px;text-align:center;}
+  .stat b{display:block;font-size:26px;color:var(--tan);}
+  .stat span{font-size:12px;color:var(--ink2);letter-spacing:1px;}
+  /* 边界 */
+  .boundary{
+    background:var(--warn-bg);border-left:8px solid var(--warn);
+    border-radius:10px;padding:12px 14px;margin:4px 0 14px;
+    font-size:13px;line-height:1.7;color:var(--ink);
+  }
+  .boundary b{color:var(--warn);}
+  /* 底部导航 */
+  nav{
+    position:fixed;bottom:0;left:0;right:0;background:var(--card);
+    border-top:1.5px solid var(--line);display:flex;z-index:9;
+  }
+  nav button{
+    flex:1;background:none;border:none;padding:12px 0 14px;
+    font-size:15px;color:var(--ink2);font-family:inherit;letter-spacing:2px;cursor:pointer;
+    border-bottom:3px solid transparent;
+  }
+  nav button.on{color:var(--tan);border-bottom-color:var(--tan);font-weight:700;}
+  .view{display:none;}
+  .view.on{display:block;}
+  /* 清除提示 */
+  .clearmsg{text-align:center;font-size:13px;color:var(--warn);min-height:18px;margin-top:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">顺 时 四 问</div>
+    <h1>每日身体记录</h1>
+    <div class="date" id="todayStr"></div>
+    <div class="rule"></div>
+  </header>
+
+  <!-- ===== 记录页 ===== -->
+  <div class="view on" id="v-record">
+    <div class="card">
+      <span class="no">问 一</span>
+      <h2>昨晚睡得怎么样？</h2>
+      <div class="row">
+        <div style="flex:1"><label class="f">入睡时间</label><input type="time" id="sleepAt"></div>
+        <div style="flex:1"><label class="f">起床时间</label><input type="time" id="wakeAt"></div>
+      </div>
+      <div class="sleepsum" id="sleepSum"></div>
+      <label class="f">睡眠质量（可选填一句）</label>
+      <input type="text" id="sleepNote" placeholder="入睡快慢 / 夜里醒不醒 / 起床感觉">
+    </div>
+
+    <div class="card">
+      <span class="no">问 二</span>
+      <h2>今天精力如何？</h2>
+      <label class="f">上午</label>
+      <div class="chips" id="amChips">
+        <div class="chip" data-v="充沛">充沛</div><div class="chip" data-v="平常">平常</div><div class="chip" data-v="疲乏">疲乏</div>
+      </div>
+      <label class="f">下午</label>
+      <div class="chips" id="pmChips">
+        <div class="chip" data-v="充沛">充沛</div><div class="chip" data-v="平常">平常</div><div class="chip" data-v="疲乏">疲乏</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="no">问 三</span>
+      <h2>胃口和活动怎么样？</h2>
+      <label class="f">食欲</label>
+      <div class="chips" id="appChips">
+        <div class="chip" data-v="好">好</div><div class="chip" data-v="平常">平常</div><div class="chip" data-v="差">差</div>
+      </div>
+      <label class="f">活动（类型与时长）</label>
+      <input type="text" id="activity" placeholder="如：散步 30 分钟">
+    </div>
+
+    <div class="card">
+      <span class="no">问 四</span>
+      <h2>天气变化与身体感受</h2>
+      <label class="f">天气</label>
+      <input type="text" id="weather" placeholder="如：阴，降温 5 度">
+      <label class="f">身体感受</label>
+      <textarea id="feel" placeholder="只描述发生了什么，不下结论"></textarea>
+    </div>
+
+    <div class="card">
+      <h2>重点关注信号</h2>
+      <div class="hint">勾选今天是否出现（用于追踪频率，出现即为记一笔）</div>
+      <div id="sigList"></div>
+      <div class="addsig">
+        <input type="text" id="newSig" placeholder="添加要追踪的信号，如：睡眠不佳">
+        <button class="btn ghost" style="width:auto;padding:8px 16px" id="btnAddSig">添加</button>
+      </div>
+    </div>
+
+    <div class="btncol">
+      <button class="btn primary" id="btnSave">保存今日记录</button>
+      <div class="savedmsg" id="savedMsg"></div>
+    </div>
+
+    <div class="boundary" style="margin-top:16px">
+      <b>边界</b>：本页是观察与学习工具，不替代诊疗。信号持续加重、明显加重或出现胸闷胸痛、气短、肢体麻木持续不缓解等急性表现，<b>当天就医</b>。数据只存在本机。
+    </div>
+  </div>
+
+  <!-- ===== 复盘页 ===== -->
+  <div class="view" id="v-review">
+    <div class="card">
+      <h2>记录概览</h2>
+      <div class="stats" id="statBox"></div>
+      <div class="hint" style="margin-top:12px">复盘纪律：只把持续一周以上的变化计入归因，不把偶然好转归功于某种做法。</div>
+    </div>
+    <div class="card">
+      <h2>信号出现频次</h2>
+      <div class="hint">按最近 30 天统计</div>
+      <div id="sigStats"></div>
+    </div>
+    <div class="card">
+      <h2>睡眠趋势</h2>
+      <div class="hint">最近记录的平均时长与入睡点</div>
+      <div id="sleepStats"></div>
+    </div>
+    <div class="btncol">
+      <button class="btn ghost" id="btnCopy">复制全部记录为文本</button>
+      <button class="btn ghost" id="btnDownload">下载备份（.md）</button>
+      <button class="btn ghost" id="btnClear">清除全部记录</button>
+      <div class="clearmsg" id="clearMsg"></div>
+    </div>
+  </div>
+
+  <!-- ===== 历史页 ===== -->
+  <div class="view" id="v-history">
+    <div class="card">
+      <h2>历史记录</h2>
+      <div class="hint">按日期倒序，今天保存过的可直接回记录页修改</div>
+      <div id="histList"></div>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <button class="on" data-v="v-record">记录</button>
+  <button data-v="v-history">历史</button>
+  <button data-v="v-review">复盘</button>
+</nav>
+
+<script>
+(function(){
+  'use strict';
+  var KEY='jx_four_q_v1';
+  var SIGKEY='jx_four_q_sig_v1';
+  var DEFAULT_SIGS=[
+    {name:'睡眠不佳',memo:'持续观察项'},
+    {name:'久坐腰背紧',memo:'工间活动项'},
+    {name:'怕冷',memo:'保暖观察项'},
+  ];
+
+  function load(){ try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return {};} }
+  function save(d){ localStorage.setItem(KEY,JSON.stringify(d)); }
+  function loadSigs(){ try{return JSON.parse(localStorage.getItem(SIGKEY))||null;}catch(e){return null;} }
+  function saveSigs(s){ localStorage.setItem(SIGKEY,JSON.stringify(s)); }
+
+  function todayKey(){
+    var d=new Date();
+    return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+  }
+  function fmtDate(k){
+    var p=k.split('-');
+    return p[0]+' 年 '+parseInt(p[1],10)+' 月 '+parseInt(p[2],10)+' 日';
+  }
+  function weekdays(k){
+    var names=['日','一','二','三','四','五','六'];
+    return '星期'+names[new Date(k+'T00:00:00').getDay()];
+  }
+  function sleepHours(a,b){
+    if(!a||!b)return null;
+    var m=parseInt(a.slice(0,2),10)*60+parseInt(a.slice(3),10);
+    var n=parseInt(b.slice(0,2),10)*60+parseInt(b.slice(3),10);
+    if(n<=m)n+=24*60;
+    return (n-m)/60;
+  }
+
+  var chipsState={};
+  function initChips(id,key){
+    var box=document.getElementById(id);
+    chipsState[key]=null;
+    box.addEventListener('click',function(e){
+      var t=e.target;
+      if(!t.classList.contains('chip'))return;
+      var was=t.classList.contains('on');
+      Array.prototype.forEach.call(box.children,function(c){c.classList.remove('on');});
+      if(was){chipsState[key]=null;}
+      else{t.classList.add('on');chipsState[key]=t.getAttribute('data-v');}
+    });
+  }
+  function setChips(id,key,v){
+    var box=document.getElementById(id);
+    chipsState[key]=v||null;
+    Array.prototype.forEach.call(box.children,function(c){
+      c.classList.toggle('on',c.getAttribute('data-v')===v);
+    });
+  }
+
+  var sigs=loadSigs()||DEFAULT_SIGS.slice();
+  function currentChecked(){
+    var out=[],rows=document.querySelectorAll('#sigList input[type=checkbox]');
+    for(var i=0;i<rows.length;i++){
+      if(rows[i].checked&&rows[i].getAttribute('data-sig'))out.push(rows[i].getAttribute('data-sig'));
+    }
+    return out;
+  }
+  function renderSigs(sel,rec){
+    var box=document.getElementById('sigList');
+    var keep=box.children.length?currentChecked():(rec&&rec.signals?rec.signals.slice():[]);
+    box.innerHTML='';
+    sigs.forEach(function(s){
+      var row=document.createElement('div');row.className='sig';
+      var cb=document.createElement('input');cb.type='checkbox';
+      cb.setAttribute('data-sig',s.name);
+      cb.checked=keep.indexOf(s.name)>=0;
+      cb.addEventListener('change',function(){});
+      var nm=document.createElement('div');nm.className='name';nm.textContent=s.name;
+      var mm=document.createElement('div');mm.className='memo';mm.textContent=s.memo||'';
+      row.appendChild(cb);row.appendChild(nm);row.appendChild(mm);
+      box.appendChild(row);
+    });
+  }
+  function collectSigs(){
+    var out=[];
+    var rows=document.querySelectorAll('#sigList input[type=checkbox]');
+    for(var i=0;i<rows.length;i++){
+      if(rows[i].checked&&sigs[i])out.push(sigs[i].name);
+    }
+    return out;
+  }
+
+  var data=load();
+  var today=todayKey();
+
+  function fillForm(rec){
+    document.getElementById('sleepAt').value=(rec&&rec.sleepAt)||'';
+    document.getElementById('wakeAt').value=(rec&&rec.wakeAt)||'';
+    document.getElementById('sleepNote').value=(rec&&rec.sleepNote)||'';
+    setChips('amChips','am',rec&&rec.energyAm);
+    setChips('pmChips','pm',rec&&rec.energyPm);
+    setChips('appChips','app',rec&&rec.appetite);
+    document.getElementById('activity').value=(rec&&rec.activity)||'';
+    document.getElementById('weather').value=(rec&&rec.weather)||'';
+    document.getElementById('feel').value=(rec&&rec.feel)||'';
+    renderSigs(null,rec);
+    updateSleepSum();
+  }
+
+  function updateSleepSum(){
+    var h=sleepHours(document.getElementById('sleepAt').value,document.getElementById('wakeAt').value);
+    document.getElementById('sleepSum').textContent=h?('共 '+h.toFixed(1)+' 小时'):'';
+  }
+
+  function currentRecord(){
+    return data[today]||{};
+  }
+
+  // 保存
+  document.getElementById('btnSave').addEventListener('click',function(){
+    var rec={
+      sleepAt:document.getElementById('sleepAt').value,
+      wakeAt:document.getElementById('wakeAt').value,
+      sleepNote:document.getElementById('sleepNote').value,
+      energyAm:chipsState.am||'',
+      energyPm:chipsState.pm||'',
+      appetite:chipsState.app||'',
+      activity:document.getElementById('activity').value,
+      weather:document.getElementById('weather').value,
+      feel:document.getElementById('feel').value,
+      signals:collectSigs(),
+      savedAt:new Date().toISOString()
+    };
+    data[today]=rec;
+    save(data);
+    var m=document.getElementById('savedMsg');
+    m.textContent='已保存（仅存本机）· '+fmtDate(today);
+    setTimeout(function(){m.textContent='';},2500);
+  });
+
+  document.getElementById('sleepAt').addEventListener('change',updateSleepSum);
+  document.getElementById('wakeAt').addEventListener('change',updateSleepSum);
+
+  document.getElementById('btnAddSig').addEventListener('click',function(){
+    var v=document.getElementById('newSig').value.trim();
+    if(!v)return;
+    sigs.push({name:v,memo:''});
+    saveSigs(sigs);
+    document.getElementById('newSig').value='';
+    renderSigs(null,currentRecord());
+  });
+
+  // 导航
+  var navBtns=document.querySelectorAll('nav button');
+  navBtns.forEach(function(b){
+    b.addEventListener('click',function(){
+      navBtns.forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      document.querySelectorAll('.view').forEach(function(v){v.classList.remove('on');});
+      var v=document.getElementById(b.getAttribute('data-v'));
+      v.classList.add('on');
+      if(b.getAttribute('data-v')==='v-history')renderHistory();
+      if(b.getAttribute('data-v')==='v-review')renderReview();
+      window.scrollTo(0,0);
+    });
+  });
+
+  function recordToText(k){
+    var r=data[k];
+    if(!r)return '';
+    var L=[];
+    L.push('## '+fmtDate(k)+'（'+weekdays(k)+'）');
+    L.push('- 睡眠：'+(r.sleepAt||'?')+' 睡 / '+(r.wakeAt||'?')+' 起'+(sleepHours(r.sleepAt,r.wakeAt)?('（'+sleepHours(r.sleepAt,r.wakeAt).toFixed(1)+' 小时）'):'')+(r.sleepNote?('，'+r.sleepNote):''));
+    L.push('- 精力：上午 '+(r.energyAm||'未记')+' / 下午 '+(r.energyPm||'未记'));
+    L.push('- 胃口：'+(r.appetite||'未记')+'；活动：'+(r.activity||'未记'));
+    L.push('- 天气：'+(r.weather||'未记'));
+    if(r.feel)L.push('- 身体感受：'+r.feel);
+    if(r.signals&&r.signals.length)L.push('- **重点关注信号：'+r.signals.join('、')+'**');
+    return L.join('\n');
+  }
+
+  function renderHistory(){
+    var box=document.getElementById('histList');
+    var keys=Object.keys(data).sort().reverse();
+    box.innerHTML='';
+    if(!keys.length){box.innerHTML='<div class="empty">还没有记录，去「记录」页写下第一篇。</div>';return;}
+    keys.forEach(function(k){
+      var div=document.createElement('div');div.className='rec';
+      var t=recordToText(k).split('\n').slice(1).join('<br>').replace(/- /g,'· ');
+      div.innerHTML='<div class="d">'+fmtDate(k)+'（'+weekdays(k)+'）'+(k===today?' · 今天':'')+'</div><div class="l">'+t+'</div>';
+      box.appendChild(div);
+    });
+  }
+
+  function renderReview(){
+    var keys=Object.keys(data).sort();
+    var n=keys.length;
+    var sl=0,slc=0;
+    keys.forEach(function(k){
+      var h=sleepHours(data[k].sleepAt,data[k].wakeAt);
+      if(h){sl+=h;slc++;}
+    });
+    var box=document.getElementById('statBox');
+    box.innerHTML='';
+    [['记录天数',n],['平均睡眠',slc?(sl/slc).toFixed(1)+' h':'—']].forEach(function(p){
+      var d=document.createElement('div');d.className='stat';
+      d.innerHTML='<b>'+p[1]+'</b><span>'+p[0]+'</span>';
+      box.appendChild(d);
+    });
+    // 信号频次（30 天）
+    var cnt={};
+    var cut=new Date();cut.setDate(cut.getDate()-30);
+    keys.forEach(function(k){
+      if(new Date(k+'T00:00:00')<cut)return;
+      (data[k].signals||[]).forEach(function(s){cnt[s]=(cnt[s]||0)+1;});
+    });
+    var sb=document.getElementById('sigStats');
+    sb.innerHTML='';
+    var names=Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a];});
+    if(!names.length){sb.innerHTML='<div class="empty">近 30 天无信号记录。</div>';}
+    names.forEach(function(s){
+      var d=document.createElement('div');d.className='rec';
+      d.innerHTML='<div class="l"><span class="warnline">'+s+'</span> · 出现 '+cnt[s]+' 天</div>';
+      sb.appendChild(d);
+    });
+    // 睡眠趋势
+    var ss=document.getElementById('sleepStats');
+    if(slc){
+      var avg=sl/slc;
+      var late=0;
+      keys.forEach(function(k){
+        var a=data[k].sleepAt;
+        if(a&&parseInt(a.slice(0,2),10)>=23)late++;
+      });
+      ss.innerHTML='<div class="l">平均时长 <b style="color:var(--tan)">'+avg.toFixed(1)+' 小时</b>；23:00 后入睡 '+late+' 天（共 '+slc+' 天有睡眠记录）。</div>';
+    }else{
+      ss.innerHTML='<div class="empty">暂无带时间的睡眠记录。</div>';
+    }
+  }
+
+  document.getElementById('btnCopy').addEventListener('click',function(){
+    var keys=Object.keys(data).sort();
+    var out=['# 顺时四问 · 身体记录备份','',].concat(keys.map(recordToText));
+    var text=out.join('\n\n');
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){
+        document.getElementById('clearMsg').textContent='已复制到剪贴板。';
+        setTimeout(function(){document.getElementById('clearMsg').textContent='';},2500);
+      },function(){fallbackCopy(text);});
+    }else fallbackCopy(text);
+  });
+  function fallbackCopy(text){
+    var ta=document.createElement('textarea');ta.value=text;
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');document.getElementById('clearMsg').textContent='已复制到剪贴板。';}
+    catch(e){document.getElementById('clearMsg').textContent='复制失败，请用下载备份。';}
+    document.body.removeChild(ta);
+    setTimeout(function(){document.getElementById('clearMsg').textContent='';},2500);
+  }
+  document.getElementById('btnDownload').addEventListener('click',function(){
+    var keys=Object.keys(data).sort();
+    var out=['# 顺时四问 · 身体记录备份（导出于 '+todayKey()+'）',''].concat(keys.map(recordToText));
+    var blob=new Blob([out.join('\n\n')],{type:'text/markdown;charset=utf-8'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='顺时四问-身体记录-'+todayKey()+'.md';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+  document.getElementById('btnClear').addEventListener('click',function(){
+    var m=document.getElementById('clearMsg');
+    if(m.getAttribute('data-armed')!=='1'){
+      m.setAttribute('data-armed','1');
+      m.textContent='再点一次确认清除全部记录（不可恢复，建议先备份）。';
+      setTimeout(function(){m.setAttribute('data-armed','0');m.textContent='';},4000);
+      return;
+    }
+    data={};save(data);
+    m.setAttribute('data-armed','0');
+    m.textContent='已清除全部记录。';
+    renderHistory();renderReview();
+  });
+
+  // 初始化
+  document.getElementById('todayStr').textContent=fmtDate(today)+' · '+weekdays(today);
+  initChips('amChips','am');initChips('pmChips','pm');initChips('appChips','app');
+  fillForm(currentRecord());
+})();
+</script>
+</body>
+</html>
